@@ -1,0 +1,125 @@
+@import url("https://fonts.cdnfonts.com/css/premier-sans");
+
+.navbar {
+  background-color: #37003c;
+  font-family: "Premier Sans", sans-serif;
+
+  .container-fluid {
+    .navbar-toggler {
+      border-color: white;
+      .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgb(255,255,255)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+      }
+    }
+
+    .navbar-toggler:focus {
+      box-shadow: 0.2px 0.2px 0.2px white;
+    }
+
+    .navbar-brand {
+      img {
+        width: 60px;
+      }
+    }
+    .offcanvas {
+      background-color: #37003c;
+
+      .offcanvas-title {
+        color: white;
+        font-size: 40px;
+      }
+      .offcanvas-body {
+        .navbar-nav {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .nav-link {
+            img {
+              width: 40px;
+              transition: all 0.2s ease-in-out;
+            }
+
+            img:hover {
+              transform: scale(1.4);
+            }
+            span {
+              color: white;
+              display: none;
+              font-size: 30px;
+              margin-left: 5px;
+            }
+          }
+
+          .club {
+            color: white;
+
+            font-size: 30px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.navbar::after {
+  background: linear-gradient(
+    93.93deg,
+    #05f0ff 1.12%,
+    #7367ff 63.34%,
+    #963cff 82.72%
+  );
+  content: "";
+  display: block;
+  height: 0.4rem;
+  left: 0;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: auto;
+}
+
+@media (max-width: 1350px) {
+  .navbar {
+    .container-fluid {
+      .offcanvas {
+        .offcanvas-body {
+          .navbar-nav {
+            .nav-link {
+              padding: 5px;
+              img {
+                width: 27px;
+              }
+            }
+
+            .club {
+              padding: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 991px) {
+  .navbar {
+    .container-fluid {
+      .offcanvas {
+        .offcanvas-body {
+          .navbar-nav {
+            display: block;
+            .nav-link {
+              img {
+                width: 40px;
+              }
+              span {
+                display: inline;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

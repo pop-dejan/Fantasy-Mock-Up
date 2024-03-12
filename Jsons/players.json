@@ -1,0 +1,224 @@
+[
+  {
+    "kit_src": "assets/img/kits/spurs.webp",
+    "name": "Son",
+    "club": "Tottenham",
+    "position": "mid"
+  },
+  {
+    "kit_src": "assets/img/kits/spurs.webp",
+    "name": "Udogie",
+    "club": "Tottenham",
+    "position": "def"
+  },
+  {
+    "kit_src": "assets/img/kits/spurs.webp",
+    "name": "Maddison",
+    "club": "Tottenham",
+    "position": "mid"
+  },
+  {
+    "kit_src": "assets/img/kits/spursGK.webp",
+    "name": "Vicario",
+    "club": "Tottenham",
+    "position": "gkp"
+  },
+  {
+    "kit_src": "assets/img/kits/spurs.webp",
+    "name": "Veliz",
+    "club": "Tottenham",
+    "position": "att"
+  },
+  {
+    "kit_src": "assets/img/kits/chelseaGK.webp",
+    "name": "Sanchez",
+    "club": "Chelsea",
+    "position": "gkp"
+  },
+  {
+    "kit_src": "assets/img/kits/palaceGK.webp",
+    "name": "Johnstone",
+    "club": "Palace",
+    "position": "gkp"
+  },
+  {
+    "kit_src": "assets/img/kits/unitedGK.webp",
+    "name": "Onana",
+    "club": "United",
+    "position": "gkp"
+  },
+  {
+    "kit_src": "assets/img/kits/liverpoolGK.webp",
+    "name": "Alisson",
+    "club": "Liverpool",
+    "position": "gkp"
+  },
+  {
+    "kit_src": "assets/img/kits/newcastleGK.webp",
+    "name": "Dubravka",
+    "club": "Newcastle",
+    "position": "gkp"
+  },
+  {
+    "kit_src": "assets/img/kits/arsenal.webp",
+    "name": "Saliba",
+    "club": "Arsenal",
+    "position": "def"
+  },
+  {
+    "kit_src": "assets/img/kits/brighton.webp",
+    "name": "Estupinan",
+    "club": "Brighton",
+    "position": "def"
+  },
+  {
+    "kit_src": "assets/img/kits/chelsea.webp",
+    "name": "Colwill",
+    "club": "Chelsea",
+    "position": "def"
+  },
+  {
+    "kit_src": "assets/img/kits/city.webp",
+    "name": "Walker",
+    "club": "City",
+    "position": "def"
+  },
+  {
+    "kit_src": "assets/img/kits/liverpool.webp",
+    "name": "Van Dijk",
+    "club": "Liverpool",
+    "position": "def"
+  },
+  {
+    "kit_src": "assets/img/kits/newcastle.webp",
+    "name": "Livramento",
+    "club": "Newcastle",
+    "position": "def"
+  },
+  {
+    "kit_src": "assets/img/kits/palace.webp",
+    "name": "Guehi",
+    "club": "Palace",
+    "position": "def"
+  },
+  {
+    "kit_src": "assets/img/kits/united.webp",
+    "name": "Shaw",
+    "club": "United",
+    "position": "def"
+  },
+  {
+    "kit_src": "assets/img/kits/villa.webp",
+    "name": "Cash",
+    "club": "Villa",
+    "position": "def"
+  },
+  {
+    "kit_src": "assets/img/kits/arsenal.webp",
+    "name": "Saka",
+    "club": "Arsenal",
+    "position": "mid"
+  },
+  {
+    "kit_src": "assets/img/kits/brighton.webp",
+    "name": "Mitoma",
+    "club": "Brighton",
+    "position": "mid"
+  },
+  {
+    "kit_src": "assets/img/kits/chelsea.webp",
+    "name": "Palmer",
+    "club": "Chelsea",
+    "position": "mid"
+  },
+  {
+    "kit_src": "assets/img/kits/city.webp",
+    "name": "Foden",
+    "club": "City",
+    "position": "mid"
+  },
+  {
+    "kit_src": "assets/img/kits/liverpool.webp",
+    "name": "Salah",
+    "club": "Liverpool",
+    "position": "mid"
+  },
+  {
+    "kit_src": "assets/img/kits/newcastle.webp",
+    "name": "Gordon",
+    "club": "Newcastle",
+    "position": "mid"
+  },
+  {
+    "kit_src": "assets/img/kits/palace.webp",
+    "name": "Eze",
+    "club": "Palace",
+    "position": "mid"
+  },
+  {
+    "kit_src": "assets/img/kits/united.webp",
+    "name": "Garnacho",
+    "club": "United",
+    "position": "mid"
+  },
+  {
+    "kit_src": "assets/img/kits/villa.webp",
+    "name": "Diaby",
+    "club": "Villa",
+    "position": "mid"
+  },
+  {
+    "kit_src": "assets/img/kits/arsenal.webp",
+    "name": "G.Jesus",
+    "club": "Arsenal",
+    "position": "att"
+  },
+  {
+    "kit_src": "assets/img/kits/brighton.webp",
+    "name": "Joao Pedro",
+    "club": "Brighton",
+    "position": "att"
+  },
+  {
+    "kit_src": "assets/img/kits/chelsea.webp",
+    "name": "Nkunku",
+    "club": "Chelsea",
+    "position": "att"
+  },
+  {
+    "kit_src": "assets/img/kits/city.webp",
+    "name": "Haaland",
+    "club": "City",
+    "position": "att"
+  },
+  {
+    "kit_src": "assets/img/kits/liverpool.webp",
+    "name": "Darwin",
+    "club": "Liverpool",
+    "position": "att"
+  },
+  {
+    "kit_src": "assets/img/kits/newcastle.webp",
+    "name": "Isak",
+    "club": "Newcastle",
+    "position": "att"
+  },
+  {
+    "kit_src": "assets/img/kits/palace.webp",
+    "name": "Edouard",
+    "club": "Palace",
+    "position": "att"
+  },
+  {
+    "kit_src": "assets/img/kits/united.webp",
+    "name": "Hojlund",
+    "club": "United",
+    "position": "att"
+  },
+  {
+    "kit_src": "assets/img/kits/villa.webp",
+    "name": "Watkins",
+    "club": "Villa",
+    "position": "att"
+  }
+]

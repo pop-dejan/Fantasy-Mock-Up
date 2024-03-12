@@ -1,0 +1,273 @@
+<div class="wrapper">
+  <div class="goalkepper">
+    <div
+      class="player"
+      (click)="openModal(modalContent)"
+      #elementRef
+      id="{{ user[0].goalkeeper[0].name }}"
+    >
+      <div class="kit">
+        <img src="{{ user[0].goalkeeper[0].kit_src }}" alt="" />
+      </div>
+      <div class="name">
+        {{ user[0].goalkeeper[0].name }}
+      </div>
+      <div class="club">
+        {{ user[0].goalkeeper[0].club }}
+      </div>
+
+      <ng-template #modalContent let-modal>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">
+              {{ user[0].goalkeeper[0].name }}
+            </h4>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <button
+              type="button"
+              class="btn btn-secondary switch"
+              (click)="function(user[0].goalkeeper[0], elementRef)"
+              (click)="modal.close('Close click')"
+            >
+              Switch
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary info"
+              (click)="modal.close('Close click')"
+            >
+              View Information
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary cancel"
+              (click)="modal.close('Close click')"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="defence">
+    <div
+      class="player"
+      *ngFor="let player of user[0].defence"
+      #elementRef
+      (click)="openModal(modalContent)"
+      id="{{ player.name }}"
+    >
+      <div class="kit">
+        <img src="{{ player.kit_src }}" alt="" />
+      </div>
+      <div class="name">
+        {{ player.name }}
+      </div>
+      <div class="club">
+        {{ player.club }}
+      </div>
+
+      <ng-template #modalContent let-modal class="modal fade">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">
+              {{ player.name }}
+            </h4>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <button
+              type="button"
+              class="btn btn-secondary switch"
+              (click)="function(player, elementRef)"
+              (click)="modal.close('Close click')"
+            >
+              Switch
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary info"
+              (click)="modal.close('Close click')"
+            >
+              View Information
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="midfield">
+    <div
+      class="player"
+      *ngFor="let player of user[0].midfield"
+      #elementRef
+      (click)="openModal(modalContent)"
+      id="{{ player.name }}"
+    >
+      <div class="kit">
+        <img src="{{ player.kit_src }}" alt="" />
+      </div>
+      <div class="name">
+        {{ player.name }}
+      </div>
+      <div class="club">
+        {{ player.club }}
+      </div>
+
+      <ng-template #modalContent let-modal class="modal fade">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">
+              {{ player.name }}
+            </h4>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <button
+              type="button"
+              class="btn btn-secondary switch"
+              (click)="function(player, elementRef)"
+              (click)="modal.close('Close click')"
+            >
+              Switch
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary info"
+              (click)="modal.close('Close click')"
+            >
+              View Information
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="attack">
+    <div
+      class="player"
+      *ngFor="let player of user[0].attack"
+      #elementRef
+      (click)="openModal(modalContent)"
+      id="{{ player.name }}"
+    >
+      <div class="kit">
+        <img src="{{ player.kit_src }}" alt="" />
+      </div>
+      <div class="name">
+        {{ player.name }}
+      </div>
+      <div class="club">
+        {{ player.club }}
+      </div>
+
+      <ng-template #modalContent let-modal class="modal fade">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">
+              {{ player.name }}
+            </h4>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <button
+              type="button"
+              class="btn btn-secondary switch"
+              (click)="function(player, elementRef)"
+              (click)="modal.close('Close click')"
+            >
+              Switch
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary info"
+              (click)="modal.close('Close click')"
+            >
+              View Information
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="subs">
+    <div
+      class="player"
+      *ngFor="let player of user[0].subs"
+      #elementRef
+      (click)="openModal(modalContent)"
+      id="{{ player.name }}"
+    >
+      <div class="position">{{ player.position.toUpperCase() }}</div>
+      <div class="kit">
+        <img src="{{ player.kit_src }}" alt="" />
+      </div>
+      <div class="name">
+        {{ player.name }}
+      </div>
+      <div class="club">
+        {{ player.club }}
+      </div>
+
+      <ng-template #modalContent let-modal class="modal fade">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">
+              {{ player.name }}
+            </h4>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <button
+              type="button"
+              class="btn btn-secondary switch"
+              (click)="function(player, elementRef)"
+              (click)="modal.close('Close click')"
+            >
+              Switch
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary info"
+              (click)="modal.close('Close click')"
+            >
+              View Information
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

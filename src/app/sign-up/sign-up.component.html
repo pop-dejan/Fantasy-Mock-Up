@@ -1,0 +1,53 @@
+<div class="main">
+  <form role="form" [formGroup]="myForm">
+    <div class="form-group">
+      <h2>Sign Up</h2>
+      <label for="exampleInputEmail1">Email address</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email-sign-up"
+        aria-describedby="emailHelp"
+        placeholder="Enter email"
+        formControlName="email"
+      />
+      <small id="emailHelp" class="form-text text-muted"
+        >We'll never share your email with anyone else.</small
+      >
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password-sign-up"
+        placeholder="Password"
+        formControlName="password"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="exampleInputPassword1">Confirm Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="confirm-password-sign-up"
+        placeholder="Confirm Password"
+        formControlName="confirmPassword"
+      />
+    </div>
+    <div class="form-group form-check">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+      <label class="form-check-label" for="exampleCheck1">Show Password</label>
+    </div>
+    <div class="text-center">
+      <button type="submit" (click)="onSubmit($event)" class="btn btn-primary">
+        Sign Up
+      </button>
+    </div>
+    <div class="signUp">
+      <p>Already have an account?</p>
+      <a [routerLink]="['/registration']">Sign In</a>
+    </div>
+  </form>
+</div>

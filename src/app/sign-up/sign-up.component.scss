@@ -1,0 +1,89 @@
+@import url("https://fonts.cdnfonts.com/css/premier-sans");
+
+.main {
+  background-image: url("../../assets/img/background.webp");
+  background-size: cover;
+  background-position: 10%;
+
+  padding-top: 300px;
+  padding-bottom: 300px;
+
+  form {
+    margin-left: 37%;
+    margin-right: 37%;
+    border-radius: 6%;
+
+    box-shadow: 0 0 8px 0 #e2e2e2;
+    padding: 30px;
+    background-color: white;
+
+    h2 {
+      text-align: center;
+      font-family: "Premier Sans", sans-serif;
+      font-size: 50px;
+    }
+
+    label {
+      font-family: "Premier Sans", sans-serif;
+      font-size: 30px;
+    }
+
+    .form-check-label {
+      font-size: 18px;
+    }
+
+    button {
+      font-family: "Premier Sans", sans-serif;
+      font-size: 30px;
+      background-color: #37003c;
+      transition: all 0.2s ease-in-out;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    .signUp {
+      display: flex;
+      flex-direction: row;
+      gap: 6px;
+      margin-top: 15px;
+      p {
+        margin: 0;
+      }
+
+      a {
+        color: #37003c;
+        text-decoration: none;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+@media (max-width: 1350px) {
+  .main {
+    form {
+      margin-left: 30%;
+      margin-right: 30%;
+    }
+  }
+}
+
+@media (max-width: 860px) {
+  .main {
+    form {
+      margin-left: 20%;
+      margin-right: 20%;
+    }
+  }
+}
+
+@media (max-width: 575px) {
+  .main {
+    form {
+      margin-left: 0%;
+      margin-right: 0%;
+    }
+  }
+}
