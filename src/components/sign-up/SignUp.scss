@@ -1,0 +1,183 @@
+@import url("https://fonts.cdnfonts.com/css/premier-sans");
+
+.loading {
+    height: 65dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .loading-react {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.error {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: red;
+    font-weight: 600;
+}
+
+.main-content {
+    background-image: url("../../assets/img/background.webp");
+    background-size: cover;
+    background-position: 10%;
+    padding-top: 300px;
+    padding-bottom: 300px;
+
+    .form {
+        margin-left: 37%;
+        margin-right: 37%;
+        border-radius: 6%;
+        box-shadow: 0 0 8px 0 #e2e2e2;
+        padding: 30px;
+        background-color: white;
+
+        .form-group {
+
+            .error-form {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+            h2 {
+                text-align: center;
+                font-family: "Premier Sans", sans-serif;
+                font-size: 3.125rem;
+            }
+
+            .showPassword {
+                margin-top: 5px;
+                padding-left: 0;
+            }
+
+            label {
+                font-family: "Premier Sans", sans-serif;
+                font-size: 1.875rem;
+            }
+
+            .gender-label {
+                display: block;
+                margin-bottom: 0;
+            }
+
+            .form-check-label {
+                font-size: 1.125rem;
+            }
+
+            .form-control {
+                border-color: hsl(0, 0%, 80%)
+            }
+
+            .form-control:focus {
+                box-shadow: 0 0 0 1px var(--color-purple-second);
+                border-color: var(--color-purple-second);
+            }
+
+            .gender-group {
+                .form-check {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    ;
+
+                    label {
+                        font-size: 1.5rem;
+                        margin-top: 5px;
+                    }
+                }
+            }
+
+            .my-select-clubs,
+            .my-select-countries {
+
+                .css-art2ul-ValueContainer2 {
+                    height: 55px;
+                }
+
+                .css-t3ipsp-control {
+                    border-color: var(--color-purple-second);
+                    box-shadow: 0 0 0 1px var(--color-purple-second);
+                }
+
+                input[type="text"] {
+                    caret-color: transparent;
+                }
+
+                .club-option {
+                    img {
+                        width: 50px;
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+
+        .signIn {
+            display: flex;
+            flex-direction: row;
+            gap: 6px;
+            margin-top: 15px;
+
+            p {
+                margin: 0;
+            }
+
+            span {
+                color: var(--color-purple-second);
+                text-decoration: none;
+                font-weight: bold;
+                cursor: pointer;
+            }
+        }
+
+        .button-wrapper {
+            .my-button {
+                font-family: "Premier Sans", sans-serif;
+                font-size: 1.875rem;
+                background-color: var(--color-purple-second);
+                transition: all 0.2s ease-in-out;
+                --bs-btn-border-color: white;
+                --bs-btn-hover-border-color: white;
+                --bs-btn-active-bg: var(--color-purple-second);
+                --bs-btn-active-border-color: var(--color-purple-second);
+            }
+
+            .my-button:hover {
+                transform: scale(1.1);
+            }
+        }
+    }
+}
+
+@media (max-width: 1350px) {
+    .main-content {
+        .form {
+            margin-left: 30%;
+            margin-right: 30%;
+        }
+    }
+}
+
+@media (max-width: 860px) {
+    .main-content {
+        .form {
+            margin-left: 20%;
+            margin-right: 20%;
+        }
+    }
+}
+
+@media (max-width: 575px) {
+    .main-content {
+        padding: 100px 0;
+
+        .form {
+            margin-left: 0%;
+            margin-right: 0%;
+        }
+    }
+}

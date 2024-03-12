@@ -1,0 +1,698 @@
+.loading {
+    height: 65dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .loading-react {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.error {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: red;
+    font-weight: 600;
+}
+
+.title-pts {
+    display: flex;
+    align-items: center;
+    height: 160px;
+    color: var(--color-purple-second);
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding-left: 10px;
+    display: flex;
+    gap: 5px;
+
+    p {
+        margin: 0;
+    }
+}
+
+.down {
+    margin-left: 10%;
+    margin-right: 10%;
+    box-shadow: rgba(107, 107, 107, 0.08) 0px 8px 12px 0px;
+    overflow: hidden;
+
+    .upper-wrapper-points {
+        background-repeat: no-repeat;
+        background-position: 0px center, right top, 0px center;
+        background-image: linear-gradient(rgba(255, 255, 255, 0) 0px, rgba(255, 255, 255, 0.5) 120px, white 220px), url(../../assets/img/pattern.png), linear-gradient(to right, rgb(2, 239, 255), rgb(98, 123, 255));
+        height: 240px;
+        border-radius: 6px;
+        text-align: center;
+        padding: 10px;
+
+        .gameweek-points {
+            color: var(--color-purple-second);
+            font-size: 1.3rem;
+            font-weight: 600;
+            padding-bottom: 5px;
+            border-bottom: 1px rgb(239, 239, 239) solid;
+            margin-bottom: 10px;
+        }
+
+        .points-stats {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+
+            .points-counter {
+                background-color: var(--color-purple-second);
+                padding-top: 10px;
+                padding-left: 9%;
+                padding-right: 9%;
+                border-radius: 6px;
+
+                .counter-text {
+                    color: white;
+                    font-size: 0.8rem;
+                    margin: 0;
+                }
+
+                .points-final {
+                    background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
+                    background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    margin: 0;
+                    font-weight: 700;
+                    font-size: 3.8rem;
+                }
+            }
+
+            .rank {
+                color: var(--color-purple-second);
+                width: 40%;
+                border-bottom: 1px solid rgb(216, 216, 216);
+
+                .rank-up {
+                    font-size: 0.8rem;
+                    font-weight: 400;
+                }
+
+                .rank-down {
+                    font-weight: 400;
+                    font-size: 1.4rem;
+                }
+            }
+
+            .average {
+                color: var(--color-purple-second);
+                width: 40%;
+                border-bottom: 1px solid rgb(216, 216, 216);
+
+                .average-up {
+                    font-weight: 400;
+                    font-size: 0.8rem;
+                }
+
+                .average-down {
+                    font-weight: 400;
+                    font-size: 1.4rem;
+                }
+
+            }
+        }
+    }
+
+    .pitch-wrapper {
+        background-image: url("../../assets/img/pitch.svg");
+        height: 1000px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        display: flex;
+        flex-direction: column;
+        font-size: 0.75rem;
+        margin-bottom: 20px;
+
+        .goalkepper {
+            height: 10%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 70px;
+            font-weight: bold;
+
+            .player-points {
+                padding-left: 2%;
+                padding-right: 2%;
+
+                .kit {
+                    text-align: center;
+
+                    img {
+                        height: 100px;
+                        width: 90px;
+                        margin-bottom: 10px;
+                    }
+                }
+
+                .name {
+                    text-align: center;
+                    background-color: var(--color-purple-second);
+                    color: white;
+                    min-width: 60px;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                }
+
+                .point {
+                    text-align: center;
+                    background-color: white;
+                    color: var(--color-purple-second);
+                    min-width: 60px;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                }
+            }
+        }
+
+        .defence {
+            height: 10%;
+            margin-top: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding-top: 10px;
+            font-weight: bold;
+            width: 800px;
+            padding-left: 10px;
+            padding-right: 10px;
+            align-self: center;
+
+            .player-points {
+                padding-left: 2%;
+                padding-right: 2%;
+
+                .kit {
+                    text-align: center;
+
+                    img {
+                        height: 100px;
+                        width: 90px;
+                        margin-bottom: 10px;
+                    }
+                }
+
+                .name {
+                    text-align: center;
+                    background-color: var(--color-purple-second);
+                    color: white;
+                    min-width: 60px;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                }
+
+                .point {
+                    text-align: center;
+                    background-color: white;
+                    color: var(--color-purple-second);
+                    min-width: 60px;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                }
+            }
+        }
+
+        .midfield {
+            height: 10%;
+            margin-top: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding-top: 10px;
+            font-weight: bold;
+            width: 800px;
+            padding-left: 10px;
+            padding-right: 10px;
+            align-self: center;
+
+            .player-points {
+                padding-left: 2%;
+                padding-right: 2%;
+
+                .kit {
+                    text-align: center;
+
+                    img {
+                        height: 100px;
+                        width: 90px;
+                        margin-bottom: 10px;
+                    }
+                }
+
+                .name {
+                    text-align: center;
+                    background-color: var(--color-purple-second);
+                    color: white;
+                    min-width: 60px;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                }
+
+                .point {
+                    text-align: center;
+                    background-color: white;
+                    color: var(--color-purple-second);
+                    min-width: 60px;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                }
+            }
+        }
+
+        .attack {
+            height: 10%;
+            margin-top: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding-top: 10px;
+            font-weight: bold;
+            width: 800px;
+            padding-left: 10px;
+            padding-right: 10px;
+            align-self: center;
+
+            .player-points {
+                padding-left: 2%;
+                padding-right: 2%;
+
+                .kit {
+                    text-align: center;
+
+                    img {
+                        height: 100px;
+                        width: 90px;
+                        margin-bottom: 10px;
+                    }
+                }
+
+                .name {
+                    text-align: center;
+                    background-color: var(--color-purple-second);
+                    color: white;
+                    min-width: 60px;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                }
+
+                .point {
+                    text-align: center;
+                    background-color: white;
+                    color: var(--color-purple-second);
+                    min-width: 60px;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                }
+            }
+        }
+
+        .subs {
+            margin-top: 66px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding-top: 10px;
+            font-weight: bold;
+            width: 800px;
+            padding: 25px;
+            align-self: center;
+            background-color: rgba(114, 207, 159, 0.9);
+
+            .player-points {
+                padding-left: 2%;
+                padding-right: 2%;
+
+                .position-points {
+                    text-align: center;
+                    margin-bottom: 10px;
+                }
+
+                .kit {
+                    text-align: center;
+
+                    img {
+                        height: 100px;
+                        width: 90px;
+                        margin-bottom: 10px;
+                    }
+                }
+
+                .name {
+                    text-align: center;
+                    background-color: var(--color-purple-second);
+                    color: white;
+                    min-width: 60px;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                }
+
+                .point {
+                    text-align: center;
+                    background-color: white;
+                    color: var(--color-purple-second);
+                    min-width: 60px;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1560px) {
+    .down {
+        .pitch-wrapper {
+            background-position: center;
+            background-size: 1400px 1000px;
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .title-pts {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+
+    .down {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+}
+
+@media (max-width: 800px) {
+    .down {
+        .pitch-wrapper {
+            background-position: top;
+            background-size: 1000px;
+            height: 757px;
+
+            .goalkepper {
+                margin-top: 30px;
+                padding-top: 20px;
+
+                .player-points {
+                    .kit {
+                        text-align: center;
+
+                        img {
+                            height: 70px;
+                            width: 65px;
+                        }
+                    }
+                }
+            }
+
+            .defence {
+                margin-top: 70px;
+                width: 670px;
+
+                .player-points {
+                    .kit {
+                        text-align: center;
+
+                        img {
+                            height: 70px;
+                            width: 65px;
+                        }
+                    }
+                }
+            }
+
+            .midfield {
+                margin-top: 70px;
+                width: 670px;
+
+                .player-points {
+                    .kit {
+                        text-align: center;
+
+                        img {
+                            height: 70px;
+                            width: 65px;
+                        }
+                    }
+                }
+            }
+
+            .attack {
+                margin-top: 70px;
+                width: 670px;
+
+                .player-points {
+                    .kit {
+                        text-align: center;
+
+                        img {
+                            height: 70px;
+                            width: 65px;
+                        }
+                    }
+                }
+            }
+
+            .subs {
+                margin-top: 50px;
+                width: 600px;
+                padding: 10px;
+
+                .player-points {
+                    .kit {
+                        text-align: center;
+
+                        img {
+                            height: 70px;
+                            width: 65px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 670px) {
+    .down {
+        .pitch-wrapper {
+            font-size: 0.625rem;
+            background-size: 900px;
+            height: 666px;
+
+            .goalkepper {
+                margin-top: 20px;
+
+                .player-points {
+                    .kit {
+                        img {
+                            width: 60px;
+                            height: 60px;
+                        }
+                    }
+
+                    .position-points {
+                        padding: 2px;
+                    }
+                }
+            }
+
+            .defence {
+                width: 510px;
+                margin-top: 60px;
+
+                .player-points {
+                    .kit {
+                        img {
+                            width: 60px;
+                            height: 60px;
+                        }
+                    }
+
+                    .position-points {
+                        padding: 2px;
+                    }
+                }
+            }
+
+            .midfield {
+                width: 510px;
+                margin-top: 60px;
+
+                .player-points {
+                    .kit {
+                        img {
+                            width: 60px;
+                            height: 60px;
+                        }
+                    }
+
+                    .position-points {
+                        padding: 2px;
+                    }
+                }
+            }
+
+            .attack {
+                width: 510px;
+                margin-top: 60px;
+
+                .player-points {
+                    .kit {
+                        img {
+                            width: 60px;
+                            height: 60px;
+                        }
+                    }
+
+                    .position-points {
+                        padding: 2px;
+                    }
+                }
+            }
+
+            .subs {
+                width: 490px;
+
+                .player-points {
+                    .kit {
+                        img {
+                            width: 60px;
+                            height: 60px;
+                        }
+                    }
+
+                    .position-points {
+                        padding: 2px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 500px) {
+    .down {
+        .upper-wrapper-points {
+            height: 220px;
+
+            .points-stats {
+                gap: 2px;
+
+                .points-counter {
+                    padding-left: 6%;
+                    padding-right: 6%;
+                }
+            }
+        }
+
+        .pitch-wrapper {
+            background-size: 610px;
+            height: 480px;
+
+            .goalkepper {
+                padding-top: 40px;
+                margin-top: 0px;
+                font-size: 0.625rem;
+
+                .player-points {
+                    padding-left: 3px;
+                    padding-right: 3px;
+
+                    .kit {
+                        img {
+                            width: 35px;
+                            height: 40px;
+                        }
+                    }
+                }
+            }
+
+            .defence {
+                padding-top: 0;
+                margin-top: 60px;
+                font-size: 0.625rem;
+                width: 340px;
+
+                .player-points {
+                    padding-left: 3px;
+                    padding-right: 3px;
+
+                    .kit {
+                        img {
+                            width: 35px;
+                            height: 40px;
+                        }
+                    }
+                }
+            }
+
+            .midfield {
+                padding-top: 0;
+                margin-top: 40px;
+                font-size: 0.625rem;
+                width: 340px;
+
+                .player-points {
+                    padding-left: 3px;
+                    padding-right: 3px;
+
+                    .kit {
+                        img {
+                            width: 35px;
+                            height: 40px;
+                        }
+                    }
+                }
+            }
+
+            .attack {
+                padding-top: 0;
+                margin-top: 40px;
+                font-size: 0.625rem;
+                width: 360px;
+
+                .player-points {
+                    padding-left: 3px;
+                    padding-right: 3px;
+
+                    .kit {
+                        img {
+                            width: 35px;
+                            height: 40px;
+                        }
+                    }
+                }
+            }
+
+            .subs {
+                padding: 5px 0;
+                margin-top: 29px;
+                font-size: 0.625rem;
+                width: 330px;
+
+                .player-points {
+                    padding-left: 3px;
+                    padding-right: 3px;
+
+                    .kit {
+                        img {
+                            width: 35px;
+                            height: 40px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

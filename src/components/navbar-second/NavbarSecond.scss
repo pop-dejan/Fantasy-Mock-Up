@@ -1,0 +1,159 @@
+@import url("https://fonts.cdnfonts.com/css/premier-sans");
+
+.loading {
+    height: 65dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .loading-react {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.error {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: red;
+    font-weight: 600;
+}
+
+.second-navbar {
+    background: linear-gradient(93.93deg,
+            #05f0ff 1.12%,
+            #7367ff 63.34%,
+            #963cff 82.72%);
+    height: 240px;
+    position: relative;
+
+    svg {
+        position: absolute;
+        left: 10%;
+        top: 20%;
+        z-index: 2;
+    }
+
+    img {
+        position: absolute;
+        right: 10%;
+    }
+
+    .btn-group {
+        position: absolute;
+        bottom: 0;
+        left: 10%;
+        z-index: 2;
+
+        .btn {
+
+            margin-left: 2px !important;
+            margin-right: 2px !important;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-top-left-radius: 0.5rem !important;
+            border-top-right-radius: 0.5rem !important;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+            --bs-btn-bg: #00ff87;
+            --bs-btn-color: var(--color-purple-second);
+            --bs-btn-border-color: #00ff87;
+            --bs-btn-active-bg: white;
+            --bs-btn-active-border-color: white;
+            --bs-btn-active-color: var(--color-purple-second);
+            font-weight: 500;
+
+            a {
+                text-decoration: none;
+                color: black;
+            }
+        }
+
+        .btn:focus {
+            background-color: white;
+            color: var(--color-purple-second);
+        }
+    }
+}
+
+@media (max-width: 1350px) {
+    .second-navbar {
+        svg {
+            left: 1%;
+        }
+
+        img {
+            right: 5%;
+        }
+
+        .btn-group {
+            left: 1%;
+        }
+    }
+}
+
+@media (max-width: 991px) {
+    .second-navbar {
+        background: linear-gradient(93.93deg,
+                #05f0ff 1.12%,
+                #7367ff 63.34%,
+                #963cff 82.72%);
+        height: 138px;
+        position: relative;
+
+        svg {
+            position: absolute;
+            left: 0;
+            top: 20%;
+            z-index: 2;
+            height: 35px;
+            width: 190px;
+        }
+
+        img {
+            position: absolute;
+            right: 1%;
+            bottom: 0;
+            width: 200px;
+        }
+
+        .btn-group {
+            position: absolute;
+            bottom: 0;
+            left: 1%;
+            z-index: 2;
+
+            .btn {
+                margin-left: 2px;
+                margin-right: 2px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                border-bottom: none;
+                border-top-left-radius: 0.5rem;
+                border-top-right-radius: 0.5rem;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+                --bs-btn-bg: #00ff87;
+                --bs-btn-color: var(--color-purple-second);
+                --bs-btn-border-color: #00ff87;
+                --bs-btn-active-bg: white;
+                --bs-btn-active-border-color: white;
+                --bs-btn-active-color: var(--color-purple-second);
+                font-weight: 500;
+                font-size: 0.75rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 375px) {
+    .second-navbar {
+        .btn-group {
+            .btn {
+                padding-left: 6.5px;
+                padding-right: 6.5px;
+            }
+        }
+    }
+}

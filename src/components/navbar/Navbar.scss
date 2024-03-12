@@ -1,0 +1,136 @@
+@import url("https://fonts.cdnfonts.com/css/premier-sans");
+
+.navbar {
+    background-color: var(--color-purple-second);
+    font-family: "Premier Sans", sans-serif;
+
+    .container-fluid {
+        --bs-gutter-x: 0.9rem;
+
+        .navbar-toggler {
+            border-color: white;
+
+            .navbar-toggler-icon {
+                background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgb(255,255,255)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+            }
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0.2px 0.2px 0.2px white;
+        }
+
+        .navbar-brand {
+            cursor: pointer;
+            transition: opacity 0.2s ease-in-out 0s, transform 0.2s ease 0s;
+
+            img {
+                width: 60px;
+            }
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.1);
+        }
+
+        .offcanvas {
+            background-color: var(--color-purple-second);
+
+            .offcanvas-title {
+                color: white;
+                font-size: 2.5rem;
+            }
+
+            .offcanvas-body {
+                .navbar-nav {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    .nav-link {
+                        img {
+                            width: 40px;
+                            transition: all 0.2s ease-in-out;
+                        }
+
+                        img:hover {
+                            transform: scale(1.4);
+                        }
+
+                        span {
+                            color: white;
+                            display: none;
+                            font-size: 1.875rem;
+                            margin-left: 5px;
+                        }
+                    }
+
+                    .navbar-sign-in {
+                        font-size: 1.5rem;
+                        padding-left: 0.5rem;
+                        padding-right: 0.5rem;
+                        margin-left: 15px;
+                    }
+
+                    .club {
+                        color: white;
+                        font-size: 1.875rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1350px) {
+    .navbar {
+        .container-fluid {
+            .offcanvas {
+                .offcanvas-body {
+                    .navbar-nav {
+                        .nav-link {
+                            padding: 5px;
+
+                            img {
+                                width: 27px;
+                            }
+                        }
+
+                        .club {
+                            padding: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 991px) {
+    .navbar {
+        .container-fluid {
+            .offcanvas {
+                .offcanvas-body {
+                    .navbar-nav {
+                        display: block;
+
+                        .navbar-sign-in {
+                            width: 100%;
+                            margin-top: 10px;
+                            margin-left: 0;
+                        }
+
+                        .nav-link {
+                            img {
+                                width: 40px;
+                            }
+
+                            span {
+                                display: inline;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

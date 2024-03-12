@@ -1,0 +1,1179 @@
+.modal-content {
+    border: none;
+
+    .modal-header {
+        padding: 30px 20px;
+        border: none;
+        position: relative;
+        background-position: right top, 0px center, 0px center;
+        background-repeat: no-repeat;
+        background-image: url("../../assets/img/modalBackground.png"),
+            linear-gradient(rgba(255, 255, 255, 0) 10px,
+                rgba(255, 255, 255, 0.2) 30px,
+                white 60px),
+            linear-gradient(to right, rgb(2, 239, 255), rgb(98, 123, 255));
+
+        .modal-title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn-close {
+
+            position: absolute;
+            left: 90%;
+        }
+    }
+
+    .modal-body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .add,
+        .info,
+        .restore {
+            width: 100%;
+            border: none;
+        }
+
+        .add,
+        .restore {
+            background-color: rgb(150, 60, 255);
+            display: block;
+        }
+
+        .info {
+            color: var(--color-purple);
+            background-image: linear-gradient(to right,
+                    rgb(0, 255, 135),
+                    rgb(2, 239, 255));
+        }
+
+        .chosen,
+        .chosenSecond {
+            background-color: var(--color-red);
+            color: white;
+            padding: 5px;
+            text-align: center;
+        }
+    }
+}
+
+.loading {
+    height: 65dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .loading-react {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.error {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: red;
+    font-weight: 600;
+}
+
+.page-wrapper {
+    margin: 0 10%;
+
+    .left-side {
+        position: relative;
+
+        .select-form {
+            border-radius: 6%;
+            box-shadow: 0 0 8px 0 #898585;
+            padding: 30px;
+            margin-bottom: 20px;
+
+            .form-group {
+
+                .error-form {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                }
+
+                h2 {
+                    text-align: center;
+                    font-family: "Premier Sans", sans-serif;
+                    font-size: 3.125rem;
+                }
+
+                .showPassword {
+                    margin-top: 5px;
+                    padding-left: 0;
+                }
+
+                label {
+                    font-family: "Premier Sans", sans-serif;
+                    font-size: 1.875rem;
+                }
+
+                .gender-label {
+                    display: block;
+                    margin-bottom: 0;
+                }
+
+                .form-check-label {
+                    font-size: 1.125rem;
+                }
+
+                .form-control {
+                    border-color: hsl(0, 0%, 80%)
+                }
+
+                .form-control:focus {
+                    box-shadow: 0 0 0 1px #37003c;
+                    border-color: #37003c;
+                }
+
+                .gender-group {
+                    .form-check {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        ;
+
+                        label {
+                            font-size: 1.5rem;
+                            margin-top: 5px;
+                        }
+                    }
+                }
+
+                .my-select-clubs,
+                .my-select-countries {
+
+                    .css-art2ul-ValueContainer2 {
+                        height: 55px;
+                    }
+
+                    .css-t3ipsp-control {
+                        border-color: #37003c;
+                        box-shadow: 0 0 0 1px #37003c;
+                    }
+
+                    input[type="text"] {
+                        caret-color: transparent;
+                    }
+
+                    .club-option {
+                        img {
+                            width: 50px;
+                            margin-right: 5px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .enter-squad {
+            width: 40%;
+            margin-left: 30%;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            border-radius: 3px;
+            color: white;
+            background-color: rgba(150, 60, 255);
+            font-weight: 700;
+            border: none;
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+
+        .enter-squad:disabled {
+            border: none;
+            padding: 10px;
+            border-radius: 3px;
+            color: rgb(84, 84, 84);
+            font-weight: 600;
+            background-color: rgb(234, 233, 236);
+        }
+
+        .title-wrapper {
+            height: 170px;
+            position: relative;
+            margin-bottom: 5px;
+
+            .title-select {
+                display: block;
+                margin: 0;
+                position: absolute;
+                top: 40px;
+                left: 10px;
+                right: 10px;
+                color: #37003c;
+                font-size: 1.4rem;
+                font-weight: 700;
+            }
+
+            .sub-title {
+                display: block;
+                position: absolute;
+                top: 85px;
+                left: 10px;
+                right: 10px;
+                color: #37003c;
+                padding-top: 10px;
+                border-top: 1px solid;
+                border-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgb(239, 239, 239) 50%, rgba(255, 255, 255, 0) 100%);
+                border-image-slice: 1;
+            }
+
+            .player-list {
+                position: absolute;
+                cursor: pointer;
+                right: 10px;
+                top: 46px;
+                display: none;
+                align-items: center;
+                gap: 5px;
+                font-size: 1rem;
+                cursor: pointer;
+
+                span {
+                    color: var(--color-purple);
+                    font-weight: 700;
+                }
+
+                svg {
+                    fill: var(--color-purple);
+                }
+            }
+        }
+
+        .upper-wrapper-select {
+            background-repeat: no-repeat;
+            background-position: 0px center, right top, 0px center;
+            background-image: linear-gradient(rgba(255, 255, 255, 0) 20px, rgba(255, 255, 255, 0.2) 0px, white 300px), url(../../assets/img/pattern.png), linear-gradient(to right, rgb(2, 239, 255), rgb(98, 123, 255));
+            height: 340px;
+            padding-top: 30px;
+            border-radius: 6px;
+            text-align: center;
+
+            .control-wrapper {
+                background: rgba(255, 255, 255, 0.6);
+                box-shadow: rgba(107, 107, 107, 0.32);
+                border-radius: 6px;
+                margin-left: 15px;
+                margin-right: 15px;
+                padding-left: 10px;
+                padding-right: 10px;
+
+                .control-headline {
+                    padding: 0.2rem 1.5rem;
+                    margin-left: 10px;
+                    margin-right: 10px;
+                    border-radius: 0px 0px 1rem 1rem;
+                    background-color: var(--color-purple);
+                    border-top: 1px solid;
+                    border-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgb(239, 239, 239) 50%, rgba(255, 255, 255, 0) 100%);
+                    border-image-slice: 1;
+
+                    .gameweek {
+                        background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
+                        background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        font-weight: 500;
+                    }
+                }
+
+                .timeline {
+                    color: #37003c;
+                    padding: 5px;
+                    margin-left: 20px;
+                    margin-right: 20px;
+                    border-bottom: 1px rgb(239, 239, 239) solid;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 5px;
+
+                    .week {
+                        text-align: center;
+                        font-size: 1rem;
+                        font-weight: 500;
+                    }
+
+                    .time {
+                        text-align: center;
+                        font-size: 1.1rem;
+                        font-weight: 700;
+                    }
+                }
+
+                .main-controls {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 5px;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+
+                    .divide-line {
+                        border-left: 1px rgb(239, 239, 239) solid;
+                        height: 123px;
+                    }
+
+                    .selected-players {
+                        width: 100%;
+                        padding-left: 10%;
+                        padding-right: 10%;
+
+                        .text {
+                            font-size: 0.8rem;
+                            color: #37003c;
+                            padding: 0;
+                        }
+
+                        .counter {
+                            background-color: var(--color-red);
+                            width: 80px;
+                            padding: 0;
+                            color: white;
+                            font-size: 1.4rem;
+                            font-weight: 700;
+                            padding: 0;
+                            border-radius: 3px;
+                            margin: 10px auto;
+                        }
+
+                        .my-button {
+
+                            padding-top: 12px;
+                            padding-bottom: 12px;
+                            width: 100%;
+                            background-color: white;
+                            color: black;
+                            font-size: 0.9rem;
+                            border: none;
+                        }
+
+                        .my-button:disabled {
+                            opacity: 0.8;
+                        }
+
+                    }
+
+                    .money {
+                        width: 100%;
+                        padding-left: 10%;
+                        padding-right: 10%;
+
+                        .text {
+                            font-size: 0.8rem;
+                            color: #37003c;
+                            padding: 0;
+                        }
+
+                        .counter {
+                            background-color: rgb(0, 255, 135);
+                            color: #37003c;
+                            width: 80px;
+                            padding: 0;
+                            font-size: 1.4rem;
+                            font-weight: 700;
+                            padding: 0;
+                            border-radius: 3px;
+                            margin: 10px auto;
+                        }
+
+                        .my-button {
+                            padding-top: 12px;
+                            padding-bottom: 12px;
+                            width: 100%;
+                            background-color: rgb(150, 60, 255);
+                            font-size: 0.9rem;
+                            font-weight: 700;
+                        }
+
+                        .my-button:disabled {
+                            background-color: white;
+                            color: black;
+                            border: none;
+                            opacity: 1;
+                            opacity: 0.8;
+                            font-weight: 600;
+                        }
+
+                    }
+                }
+            }
+
+            .error-wrapper {
+                text-align: center;
+                margin-top: 20px;
+
+                .error {
+                    display: inline-block;
+                    font-weight: 100;
+                    padding: 2px 4px;
+                    border-radius: 3px;
+                    background-color: var(--color-red);
+                    text-align: center;
+                    color: white;
+                    font-size: 1rem;
+
+                    .error-club-name {
+                        font-weight: 500;
+                        font-size: 1.1rem;
+                    }
+                }
+            }
+        }
+
+
+        .pitch-wrapper {
+            background-image: url("../../assets/img/pitch-short.jpg");
+            height: 806px;
+            background-repeat: no-repeat;
+            background-size: 1160px 836px;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            font-size: 0.813rem;
+            margin-bottom: 20px;
+            box-shadow: rgba(107, 107, 107, 0.08) 0px 8px 12px 0px;
+
+            .goalkeepers {
+                height: 10%;
+                margin-top: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 7%;
+                padding-top: 10px;
+                font-weight: bold;
+                width: 720px;
+                padding-left: 10px;
+                padding-right: 10px;
+                align-self: center;
+
+                .player {
+                    cursor: pointer;
+                    padding-left: 2%;
+                    padding-right: 2%;
+
+                    .kit {
+                        text-align: center;
+
+                        img {
+                            height: 100px;
+                            width: 90px;
+                            margin-bottom: 10px;
+                        }
+                    }
+
+                    .position {
+                        text-align: center;
+                        background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
+                        color: var(--color-purple);
+                        min-width: 60px;
+                        padding: 7px;
+                    }
+
+                    .name {
+                        text-align: center;
+                        background-color: #37003c;
+                        color: white;
+                        min-width: 60px;
+                        padding-left: 1px;
+                        padding-right: 1px;
+                    }
+
+                    .price {
+                        text-align: center;
+                        background-color: white;
+                        color: #37003c;
+                        min-width: 60px;
+                        padding-left: 1px;
+                        padding-right: 1px;
+                    }
+                }
+            }
+
+            .defence {
+                height: 10%;
+                margin-top: 100px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-top: 10px;
+                font-weight: bold;
+                width: 720px;
+                padding-left: 10px;
+                padding-right: 10px;
+                align-self: center;
+
+                .player {
+                    padding-left: 2%;
+                    padding-right: 2%;
+                    cursor: pointer;
+
+                    .kit {
+                        text-align: center;
+
+                        img {
+                            height: 100px;
+                            width: 90px;
+                            margin-bottom: 10px;
+                        }
+                    }
+
+                    .position {
+                        text-align: center;
+                        background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
+                        color: var(--color-purple);
+                        min-width: 60px;
+                        padding: 7px;
+                    }
+
+                    .name {
+                        text-align: center;
+                        background-color: #37003c;
+                        color: white;
+                        min-width: 60px;
+                        padding-left: 1px;
+                        padding-right: 1px;
+                    }
+
+                    .price {
+                        text-align: center;
+                        background-color: white;
+                        color: #37003c;
+                        min-width: 60px;
+                        padding-left: 1px;
+                        padding-right: 1px;
+                    }
+                }
+            }
+
+            .midfield {
+                height: 10%;
+                margin-top: 130px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-top: 10px;
+                font-weight: bold;
+                width: 720px;
+                padding-left: 10px;
+                padding-right: 10px;
+                align-self: center;
+
+                .player {
+                    cursor: pointer;
+                    padding-left: 2%;
+                    padding-right: 2%;
+
+                    .kit {
+                        text-align: center;
+
+                        img {
+                            height: 100px;
+                            width: 90px;
+                            margin-bottom: 10px;
+                        }
+                    }
+
+                    .position {
+                        text-align: center;
+                        background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
+                        color: var(--color-purple);
+                        min-width: 60px;
+                        padding: 7px;
+                    }
+
+                    .name {
+                        text-align: center;
+                        background-color: #37003c;
+                        color: white;
+                        min-width: 60px;
+                        padding-left: 1px;
+                        padding-right: 1px;
+                    }
+
+                    .price {
+                        text-align: center;
+                        background-color: white;
+                        color: #37003c;
+                        min-width: 60px;
+                        padding-left: 1px;
+                        padding-right: 1px;
+                    }
+                }
+            }
+
+            .attack {
+                height: 10%;
+                margin-top: 110px;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                padding-top: 10px;
+                font-weight: bold;
+                width: 800px;
+                padding-left: 10px;
+                padding-right: 10px;
+                align-self: center;
+
+                .player {
+                    cursor: pointer;
+                    padding-left: 2%;
+                    padding-right: 2%;
+
+                    .kit {
+                        text-align: center;
+
+                        img {
+                            height: 100px;
+                            width: 90px;
+                            margin-bottom: 10px;
+                        }
+                    }
+
+                    .position {
+                        text-align: center;
+                        background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
+                        color: var(--color-purple);
+                        min-width: 60px;
+                        padding: 7px;
+                    }
+
+                    .name {
+                        text-align: center;
+                        background-color: #37003c;
+                        color: white;
+                        min-width: 60px;
+                        padding-left: 1px;
+                        padding-right: 1px;
+                    }
+
+                    .price {
+                        text-align: center;
+                        background-color: white;
+                        color: #37003c;
+                        min-width: 60px;
+                        padding-left: 1px;
+                        padding-right: 1px;
+                    }
+                }
+            }
+        }
+    }
+
+    .players {
+        margin-bottom: 1.25rem;
+        margin-top: 1.5rem;
+        min-width: 260px;
+        border-radius: 6px;
+        background-repeat: no-repeat;
+        background-position: 0px center, right top, 0px center;
+        background-image: linear-gradient(rgba(255, 255, 255, 0) 10px, rgba(255, 255, 255, 0.2) 30px, white 60px), url(../../assets/img/pattern.png), linear-gradient(to right, rgb(2, 239, 255), rgb(98, 123, 255));
+        box-shadow: rgba(107, 107, 107, 0.08) 0px 8px 12px 0px;
+        overflow: auto;
+
+        .player-selection {
+            padding-top: 10px;
+            padding-left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            span {
+                font-weight: 500;
+                color: var(--color-purple);
+                font-size: 1.4rem;
+            }
+
+
+            .back-to-pitch {
+                display: none;
+                padding: 10px;
+                cursor: pointer;
+
+                span {
+                    color: var(--color-purple);
+                    font-weight: 700;
+                    font-size: 1rem;
+                }
+
+                svg {
+                    fill: var(--color-purple);
+                    ;
+                }
+            }
+        }
+
+        .player-subtext {
+            color: var(--color-purple);
+            font-size: 1.1rem;
+            padding-top: 25px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .amount-banner {
+            margin: 15px 10px 30px;
+            padding: 4px;
+            color: var(--color-purple);
+            border-radius: 12px;
+            background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+
+            span {
+                font-weight: 400;
+            }
+        }
+
+        .goalkeepers-list,
+        .defenders-list,
+        .midfielders-list,
+        .attackers-list {
+            margin-top: 20px;
+            border-top: 2px rgb(239, 239, 239) solid;
+
+            .title-player-list {
+                display: inline-block;
+                margin-left: 10px;
+                border-radius: 0px 0px 1rem 1rem;
+                padding: 0.1rem 0.8rem;
+                background-color: var(--color-purple);
+
+                h3 {
+                    background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
+                    background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    font-size: 1.1rem;
+                }
+            }
+        }
+
+        table {
+            width: 100%;
+
+            thead {
+                tr {
+                    .price-icon {
+                        padding: 0 17px;
+                        text-align: center;
+                    }
+
+                    .rating-icon {
+                        padding: 0 17px;
+                        text-align: center;
+                    }
+                }
+            }
+
+            tbody {
+
+                tr {
+                    cursor: pointer;
+                    border-top: 2px rgb(239, 239, 239) solid;
+                    border-bottom: 1px so2id rgb(239, 239, 239);
+
+                    .info {
+                        margin: 8px 0;
+                        padding: 0 10px;
+                    }
+
+                    .player-info {
+                        margin: 8px 0;
+                        padding-left: 8px;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        border-left: 2px rgb(239, 239, 239) solid;
+
+                        img {
+                            width: 24px;
+                            height: 32px;
+                        }
+
+                        .player-details {
+                            color: var(--color-purple);
+                            font-size: 1rem;
+
+                            .name {
+                                font-weight: 700;
+                                padding: 0;
+                                margin: 0;
+                            }
+
+                            .other {
+                                display: flex;
+                                gap: 10px;
+                            }
+
+                        }
+                    }
+
+                    .price {
+                        margin: 8px 0;
+                        padding: 10px 10px;
+                        text-align: center;
+                        border-left: 2px rgb(239, 239, 239) solid;
+                    }
+
+                    .rating {
+                        margin: 8px 0;
+                        text-align: center;
+                        padding: 10px 10px;
+                        border-left: 2px rgb(239, 239, 239) solid;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1240px) {
+    .page-wrapper {
+        margin: 0 1%;
+
+        .left-side {
+            .upper-wrapper-select {
+                height: 340px;
+            }
+
+            .pitch-wrapper {
+                background-position: center;
+                background-size: 1006px 806px;
+            }
+        }
+
+    }
+}
+
+@media (max-width: 992px) {
+
+    .page-wrapper {
+        .left-side {
+            .enter-squad {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .title-wrapper {
+                .player-list {
+                    display: flex;
+                }
+            }
+
+            .upper-wrapper-select {
+
+                .pitch-wrapper {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        .players {
+            display: none;
+
+            .player-selection {
+                .back-to-pitch {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                    justify-content: flex-end;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 800px) {
+    .page-wrapper {
+
+        .left-side {
+            .pitch-wrapper {
+                background-position: top;
+                background-size: 1000px;
+                height: 596px;
+
+
+                .goalkeepers {
+                    margin-top: 35px;
+                    padding-top: 20px;
+                    width: 650px;
+
+                    .player {
+                        .kit {
+                            text-align: center;
+
+                            img {
+                                height: 70px;
+                                width: 65px;
+                            }
+                        }
+                    }
+                }
+
+                .defence {
+                    margin-top: 90px;
+                    width: 650px;
+
+                    .player {
+                        .kit {
+                            text-align: center;
+
+                            img {
+                                height: 70px;
+                                width: 65px;
+                            }
+                        }
+                    }
+                }
+
+                .midfield {
+                    margin-top: 90px;
+                    width: 650px;
+
+                    .player {
+                        .kit {
+                            text-align: center;
+
+                            img {
+                                height: 70px;
+                                width: 65px;
+                            }
+                        }
+                    }
+                }
+
+                .attack {
+                    margin-top: 90px;
+                    width: 650px;
+
+                    .player {
+                        .kit {
+                            text-align: center;
+
+                            img {
+                                height: 70px;
+                                width: 65px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 670px) {
+    .page-wrapper .left-side {
+        .title-wrapper {
+            .title-select {
+                font-size: 1.4rem !important;
+            }
+        }
+
+        .upper-wrapper-select {
+            height: 320px;
+
+            .control-wrapper {
+                .main-controls {
+                    .selected-players {
+                        padding: 0;
+                    }
+
+                    .money {
+                        padding: 0;
+                    }
+                }
+            }
+        }
+
+        .pitch-wrapper {
+            font-size: 0.813rem;
+            background-size: 800px;
+            height: 520px;
+
+            .goalkeepers {
+                margin-top: 23px;
+                width: 500px;
+
+                .player {
+                    .kit {
+                        img {
+                            width: 60px;
+                            height: 60px;
+                        }
+                    }
+
+                    .position {
+                        padding: 2px;
+                    }
+                }
+            }
+
+            .defence {
+                width: 500px;
+                margin-top: 76px;
+
+                .player {
+                    .kit {
+                        img {
+                            width: 60px;
+                            height: 60px;
+                        }
+                    }
+
+                    .position {
+                        padding: 2px;
+                    }
+                }
+            }
+
+            .midfield {
+                width: 500px;
+                margin-top: 76px;
+
+                .player {
+                    .kit {
+                        img {
+                            width: 60px;
+                            height: 60px;
+                        }
+                    }
+
+                    .position {
+                        padding: 2px;
+                    }
+                }
+            }
+
+            .attack {
+                width: 500px;
+                margin-top: 76px;
+
+                .player {
+                    .kit {
+                        img {
+                            width: 60px;
+                            height: 60px;
+                        }
+                    }
+
+                    .position {
+                        padding: 2px;
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+@media (max-width: 500px) {
+    .page-wrapper {
+        .left-side {
+            .upper-wrapper-select {
+                .control-wrapper {
+                    .timeline {
+
+                        .week {
+                            font-size: 0.8rem;
+                        }
+
+                        .time {
+                            font-size: 0.9rem;
+                        }
+                    }
+                }
+            }
+
+            .pitch-wrapper {
+                background-size: 600px;
+                height: 380px;
+
+                .goalkeepers {
+                    padding-top: 0;
+                    margin-top: 25px;
+                    font-size: 0.625rem;
+                    width: 320px;
+                    justify-content: center;
+
+                    .player {
+                        .kit {
+                            img {
+                                width: 35px;
+                                height: 40px;
+                            }
+                        }
+                    }
+                }
+
+                .defence {
+                    padding-top: 0;
+                    margin-top: 55px;
+                    font-size: 0.625rem;
+                    width: 320px;
+                    justify-content: center;
+
+                    .player {
+                        padding-left: 3px;
+                        padding-right: 3px;
+
+                        .kit {
+                            img {
+                                width: 35px;
+                                height: 40px;
+                            }
+                        }
+                    }
+                }
+
+                .midfield {
+                    padding-top: 0;
+                    margin-top: 55px;
+                    font-size: 0.625rem;
+                    width: 320px;
+                    justify-content: center;
+
+                    .player {
+                        padding-left: 3px;
+                        padding-right: 3px;
+
+                        .kit {
+                            img {
+                                width: 35px;
+                                height: 40px;
+                            }
+                        }
+                    }
+                }
+
+                .attack {
+                    padding-top: 0;
+                    margin-top: 55px;
+                    font-size: 0.625rem;
+                    width: 320px;
+
+                    .player {
+                        .kit {
+                            img {
+                                width: 35px;
+                                height: 40px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
