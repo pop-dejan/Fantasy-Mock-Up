@@ -1,9 +1,16 @@
 import "./App.scss";
 import React, { useEffect, useState } from "react";
-import { Route, Routes, Navigate, useLocation } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { AuthProvider } from "./help-files/AuthContext";
 import { ProtectedRoute } from "./help-files/ProtectedRoute";
-import { auth } from "./help-files/firebase";
+import { auth, database } from "./help-files/firebase";
+import { get, ref } from "firebase/database";
 import getCookie from "./help-files/getCookie";
 import SignIn from "./components/sign-in/SignIn";
 import SignUp from "./components/sign-up/SignUp";
@@ -18,6 +25,8 @@ import NavbarSecond from "./components/navbar-second/NavbarSecond";
 
 function App() {
   // Function handling home page based on if user is logged
+  const usersRef = ref(database, "usersFantasy/" + getCookie("id"));
+  const [error, setError] = useState("");
   const [valueHome, setValueHome] = useState(() => {
     const storedValue = getCookie("myValueHome");
     if (storedValue === null) {
@@ -37,6 +46,8 @@ function App() {
 
   // Checking if user is logged in
   const [currentUser, setCurrentUser] = useState(null);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const userCheck = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
@@ -45,11 +56,42 @@ function App() {
         setCurrentUser(null);
       }
     });
-  }, []);
 
-  useEffect(() => {
     if (!getCookie("id")) {
       auth.signOut();
+    } else {
+      if (valueHome === "/home") {
+        document.cookie = `myValueHome=/home`;
+        setValueHome("/home");
+      } else if (valueHome === "/pick-team") {
+        get(usersRef)
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              if (snapshot.val().gameweeks) {
+                document.cookie = `myValueHome=/points`;
+                setValueHome("/points");
+                navigate("/");
+              }
+            }
+          })
+          .catch((error) => {
+            setError(error.message);
+          });
+      } else if (valueHome === "/points") {
+        get(usersRef)
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              if (!snapshot.val().gameweeks) {
+                document.cookie = `myValueHome=/pick-team`;
+                setValueHome("/pick-team");
+                navigate("/");
+              }
+            }
+          })
+          .catch((error) => {
+            setError(error.message);
+          });
+      }
     }
   }, []);
 
@@ -64,6 +106,10 @@ function App() {
     return true;
   }
 
+  if (error) {
+    return <div className="error">Error: {error}</div>;
+  }
+
   return (
     <>
       <AuthProvider>
@@ -71,10 +117,11 @@ function App() {
 
         {showNavbarSecond(location.pathname) && (
           <NavbarSecond
-            showButtons={valueHome === "/points"}
+            showButtons={valueHome === "/points" || valueHome === "/pick-team"}
             showHome={valueHome === "/home"}
             hideAllButtons={getCookie("id")}
             onUpdateValueHome={updateValueHome}
+            valueHome={valueHome}
           />
         )}
 

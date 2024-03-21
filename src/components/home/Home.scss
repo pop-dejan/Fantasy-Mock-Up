@@ -1,3 +1,16 @@
+.loading {
+    height: 65dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .loading-react {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
 .home-wrapper {
     --bs-gutter-x: 10%;
 

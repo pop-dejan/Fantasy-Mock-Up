@@ -1,15 +1,15 @@
-import "../select-team/SelectTeam.scss";
+import "./SelectTeam.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
-import getCookie from "../../help-files/getCookie";
+import getCookie from "../../help-files/getCookie.js";
 import { firebase, database } from "../../help-files/firebase.js";
 import { get, ref, set } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../models/user.ts";
 import { Player } from "../../models/players.ts";
-import Users from "../../assets/usersFantasyStart.json";
-import Countries from "../../assets/countries.json";
-import Clubs from "../../assets/clubs.json";
+import Users from "../../assets/help-jsons/usersFantasyStart.json";
+import Countries from "../../assets/help-jsons/countries.json";
+import { Clubs } from "../../assets/help-jsons/clubs.js";
 import Select from "react-select";
 import ReactLoading from "react-loading";
 import Form from "react-bootstrap/Form";
@@ -20,11 +20,14 @@ function SelectTeam({ onUpdateValueHome }) {
   // Variables related to fetching data, error and loading interface and other
   const [user, setUser] = useState([]);
   const [players, setPlayers] = useState([]);
+  const [gameweekInfo, setGameweekInfo] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const usersRef = ref(database, "usersFantasy/" + getCookie("id"));
   const playersRef = ref(database, "players");
+  const gameweekRef = ref(database, "currentGameweek");
+  const updatingRef = ref(database, "updating");
   const navigate = useNavigate();
 
   // Variables separting user players into their positions
@@ -360,7 +363,8 @@ function SelectTeam({ onUpdateValueHome }) {
         allPlayers[i].name = "";
         allPlayers[i].club = "";
         allPlayers[i].price = 0;
-        allPlayers[i].kit_src = "assets/img/kits/selected-kit.webp";
+        allPlayers[i].kit_src =
+          "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f";
       }
     }
 
@@ -450,7 +454,9 @@ function SelectTeam({ onUpdateValueHome }) {
         });
         playerList.style.display = "flex";
         wrapperDiv.style.display = "flex";
-        formSelect.style.display = "block";
+        if (formSelect) {
+          formSelect.style.display = "block";
+        }
         addSquadButton.style.display = "block";
         playersDiv.style.display = "none";
         upperWrapperDiv.style.display = "block";
@@ -459,7 +465,9 @@ function SelectTeam({ onUpdateValueHome }) {
           backToPitchDiv.style.display = "flex";
           playerList.style.display = "none";
           wrapperDiv.style.display = "none";
-          formSelect.style.display = "none";
+          if (formSelect) {
+            formSelect.style.display = "none";
+          }
           addSquadButton.style.display = "none";
           playersDiv.style.display = "block";
           upperWrapperDiv.style.display = "none";
@@ -488,7 +496,9 @@ function SelectTeam({ onUpdateValueHome }) {
           titleWrapperDiv.style.display = "block";
           playerList.style.display = "none";
           wrapperDiv.style.display = "flex";
-          formSelect.style.display = "block";
+          if (formSelect) {
+            formSelect.style.display = "block";
+          }
           addSquadButton.style.display = "block";
           playersDiv.style.display = "block";
         } else {
@@ -518,7 +528,9 @@ function SelectTeam({ onUpdateValueHome }) {
     element.style.display = "none";
     titleWrapperDiv.style.display = "none";
     wrapperDiv.style.display = "none";
-    formSelect.style.display = "none";
+    if (formSelect) {
+      formSelect.style.display = "none";
+    }
     playersDiv.style.display = "block";
     upperWrapperDiv.style.display = "none";
     playersDiv.classList.add("active");
@@ -538,7 +550,9 @@ function SelectTeam({ onUpdateValueHome }) {
     titleWrapperDiv.style.display = "block";
     backToPitchDiv.style.display = "none";
     wrapperDiv.style.display = "flex";
-    formSelect.style.display = "block";
+    if (formSelect) {
+      formSelect.style.display = "block";
+    }
     addSquadButton.style.display = "block";
     playersDiv.style.display = "none";
     playerList.style.display = "flex";
@@ -557,72 +571,17 @@ function SelectTeam({ onUpdateValueHome }) {
 
   // Functions handling auto-pick button
   const handleAutopick = () => {
-    const getData = async () => {
-      try {
-        setIsLoading(true);
-        const [snapshot1, snapshot2] = await Promise.all([
-          get(usersRef),
-          get(playersRef),
-        ]);
+    let condition = autoPickCallback(
+      JSON.parse(JSON.stringify(user)),
+      JSON.parse(JSON.stringify(players))
+    );
 
-        const data1 = snapshot1.val();
-        const data2 = snapshot2.val();
-
-        setUser(new User(data1));
-        const allPlayers = [
-          ...data1.goalkeeper,
-          ...data1.defence,
-          ...data1.midfield,
-          ...data1.attack,
-          ...data1.subs,
-        ];
-
-        let addedPlayersBig = [];
-        allPlayers.forEach((player) => {
-          if (player.add == true) {
-            addedPlayersBig.push(player);
-          }
-        });
-        data2.forEach((player) => {
-          const smallObj = addedPlayersBig.find(
-            (obj) => obj.name === player.name
-          );
-          if (smallObj) {
-            player.set = true;
-          }
-        });
-
-        setPlayers(data2.map((player) => new Player(player)));
-        setGoalkeepers(data2.filter((player) => player.position === "gkp"));
-        setDefenders(data2.filter((player) => player.position === "def"));
-        setMidfielders(data2.filter((player) => player.position === "mid"));
-        setAttackers(data2.filter((player) => player.position === "att"));
-
-        let dataUsers = new User(data1);
-        let dataUsersCopy = dataUsers;
-        let dataPlayers = data2.map((player) => new Player(player));
-        let dataPlayersCopy = [...dataPlayers];
-
-        const conditionMet = autoPickCallback(dataUsersCopy, dataPlayersCopy);
-
-        if (conditionMet == true) {
-          getData();
-        } else {
-          setResetButton(true);
-          setResetButton(false);
-          setAutopickButton(true);
-          setAddSquad(false);
-          setUser(dataUsers);
-          updateUser(dataUsers);
-          setisAutoPickFinish(true);
-        }
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getData();
+    do {
+      condition = autoPickCallback(
+        JSON.parse(JSON.stringify(user)),
+        JSON.parse(JSON.stringify(players))
+      );
+    } while (condition);
   };
 
   // Function handling autopick functionality
@@ -725,6 +684,7 @@ function SelectTeam({ onUpdateValueHome }) {
         }
       }
     }
+
     newUser = new User(newUser);
 
     let resultNew = findDuplicateValue(newUser.clubs, 3);
@@ -738,6 +698,15 @@ function SelectTeam({ onUpdateValueHome }) {
       return true;
     } else {
       restorePlayer();
+
+      setResetButton(true);
+      setResetButton(false);
+      setAutopickButton(true);
+      setAddSquad(false);
+      setUser(newUser);
+      updateUser(newUser);
+      setisAutoPickFinish(true);
+
       return false;
     }
   }
@@ -772,7 +741,7 @@ function SelectTeam({ onUpdateValueHome }) {
       if (handleFormData() == true) {
         let userTemp = user;
         userTemp = new User(userTemp);
-        let players = [
+        let allPlayers = [
           ...userTemp.goalkeeper,
           ...userTemp.defence,
           ...userTemp.midfield,
@@ -780,7 +749,7 @@ function SelectTeam({ onUpdateValueHome }) {
           ...userTemp.subs,
         ];
 
-        players.forEach((player) => {
+        allPlayers.forEach((player) => {
           player.add = false;
           player.remove = false;
           player.set = false;
@@ -796,15 +765,21 @@ function SelectTeam({ onUpdateValueHome }) {
         userTemp.favouriteClub = formData.favouriteClub;
         userTemp.email = formData.email;
         userTemp.addedSquad = true;
+        userTemp.countTransfers = 0;
+        userTemp.cost = 0;
 
-        onUpdateValueHome("/points");
+        allPlayers.forEach((player) => {
+          delete player.points;
+        });
+
+        onUpdateValueHome("/pick-team");
         updateUser(userTemp);
-        navigate("/points");
+        navigate("/pick-team");
       }
     } else if (user.signInProviders == false) {
       let userTemp = user;
       userTemp = new User(userTemp);
-      let players = [
+      let allPlayers = [
         ...userTemp.goalkeeper,
         ...userTemp.defence,
         ...userTemp.midfield,
@@ -812,17 +787,23 @@ function SelectTeam({ onUpdateValueHome }) {
         ...userTemp.subs,
       ];
 
-      players.forEach((player) => {
+      allPlayers.forEach((player) => {
         player.add = false;
         player.remove = false;
         player.set = false;
       });
 
       userTemp.addedSquad = true;
+      userTemp.countTransfers = 0;
+      userTemp.cost = 0;
 
-      onUpdateValueHome("/points");
+      allPlayers.forEach((player) => {
+        delete player.points;
+      });
+
+      onUpdateValueHome("/pick-team");
       updateUser(userTemp);
-      navigate("/points");
+      navigate("/pick-team");
     }
   }
 
@@ -954,13 +935,31 @@ function SelectTeam({ onUpdateValueHome }) {
   const getData = async () => {
     try {
       setIsLoading(true);
-      const [snapshot1, snapshot2] = await Promise.all([
+      const [snapshot1, snapshot2, snapshot3, snapshot4] = await Promise.all([
         get(usersRef),
         get(playersRef),
+        get(gameweekRef),
+        get(updatingRef),
       ]);
 
       const data1 = snapshot1.val();
       const data2 = snapshot2.val();
+      const data3 = snapshot3.val();
+      const data4 = snapshot4.val();
+      setGameweekInfo(data3);
+      if (data4.isUpdating) {
+        navigate("/");
+      }
+
+      let playersTemp = data2;
+      playersTemp.forEach((player) => {
+        let count = 0;
+        player.playerGameweeks.forEach((gameweek) => {
+          count = count + gameweek.gameweekPoints;
+        });
+
+        player.points = count;
+      });
 
       setUser(new User(data1));
       const allPlayers = [
@@ -977,6 +976,50 @@ function SelectTeam({ onUpdateValueHome }) {
           addedPlayers.push(player);
         }
       });
+
+      let countAddedPlayers = 0;
+      allPlayers.forEach((player) => {
+        if (player.add == false) {
+          countAddedPlayers++;
+        }
+      });
+
+      if (countAddedPlayers == 9 && data1.money < 38.4) {
+        setAutopickButton(true);
+      }
+
+      if (countAddedPlayers == 8 && data1.money < 33.6) {
+        setAutopickButton(true);
+      }
+
+      if (countAddedPlayers == 7 && data1.money < 29.4) {
+        setAutopickButton(true);
+      }
+
+      if (countAddedPlayers == 6 && data1.money < 25) {
+        setAutopickButton(true);
+      }
+
+      if (countAddedPlayers == 5 && data1.money < 20.2) {
+        setAutopickButton(true);
+      }
+
+      if (countAddedPlayers == 4 && data1.money < 16.6) {
+        setAutopickButton(true);
+      }
+
+      if (countAddedPlayers == 3 && data1.money < 12.5) {
+        setAutopickButton(true);
+      }
+
+      if (countAddedPlayers == 2 && data1.money < 8) {
+        setAutopickButton(true);
+      }
+
+      if (countAddedPlayers == 1 && data1.money < 4) {
+        setAutopickButton(true);
+      }
+
       data2.forEach((player) => {
         const smallObj = addedPlayers.find((obj) => obj.name === player.name);
         if (smallObj) {
@@ -984,11 +1027,11 @@ function SelectTeam({ onUpdateValueHome }) {
         }
       });
 
-      setPlayers(data2.map((player) => new Player(player)));
-      setGoalkeepers(data2.filter((player) => player.position === "gkp"));
-      setDefenders(data2.filter((player) => player.position === "def"));
-      setMidfielders(data2.filter((player) => player.position === "mid"));
-      setAttackers(data2.filter((player) => player.position === "att"));
+      setPlayers(playersTemp.map((player) => new Player(player)));
+      setGoalkeepers(playersTemp.filter((player) => player.position === "gkp"));
+      setDefenders(playersTemp.filter((player) => player.position === "def"));
+      setMidfielders(playersTemp.filter((player) => player.position === "mid"));
+      setAttackers(playersTemp.filter((player) => player.position === "att"));
 
       if (data1.clubs) {
         let result = findDuplicateValue(data1.clubs, 3);
@@ -1012,7 +1055,7 @@ function SelectTeam({ onUpdateValueHome }) {
         }
       }
 
-      if (data1.money < 0) {
+      if (data1.money < 0.0) {
         setErrorMoneyShow(true);
       } else {
         setErrorMoneyShow(false);
@@ -1029,7 +1072,7 @@ function SelectTeam({ onUpdateValueHome }) {
       }
     } catch (error) {
       navigate("/");
-      setError(error.message);
+      setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -1044,7 +1087,7 @@ function SelectTeam({ onUpdateValueHome }) {
       })
       .catch((error) => {
         navigate("/");
-        setError(error.message);
+        setError("Something went wrong. Please try again.");
       })
       .finally(() => {
         setIsLoading(false);
@@ -1109,7 +1152,7 @@ function SelectTeam({ onUpdateValueHome }) {
               Restore Player
             </Button>
           )}
-          {player && player.remove && (
+          {player && player.remove && !player.chosen && (
             <Button
               variant="primary"
               className="btn btn-secondary cancel"
@@ -1198,11 +1241,17 @@ function SelectTeam({ onUpdateValueHome }) {
           >
             <div className="control-wrapper">
               <div className="control-headline">
-                <div className="gameweek">Gameweek 25</div>
+                <div className="gameweek">
+                  Gameweek {gameweekInfo.currentGameweekNumber}
+                </div>
               </div>
               <div className="timeline">
-                <span className="week">Gameweek 25 deadline:</span>
-                <span className="time">Sat 17 Feb 12:00</span>
+                <span className="week">
+                  Gameweek {gameweekInfo.currentGameweekNumber} deadline:
+                </span>
+                <span className="time">
+                  {gameweekInfo.currentGameweekDeadline}
+                </span>
               </div>
               <div className="main-controls">
                 <div className="selected-players">
@@ -1291,7 +1340,7 @@ function SelectTeam({ onUpdateValueHome }) {
               >
                 <div className="kit">
                   <img
-                    src={user ? `src/${user.goalkeeper[0].kit_src}` : ""}
+                    src={user ? `${user.goalkeeper[0].kit_src}` : ""}
                     alt={user ? `${user.goalkeeper[0].club}.jpg` : ""}
                   />
                 </div>
@@ -1316,7 +1365,7 @@ function SelectTeam({ onUpdateValueHome }) {
               >
                 <div className="kit">
                   <img
-                    src={user ? `src/${user.subs[0].kit_src}` : ""}
+                    src={user ? `${user.subs[0].kit_src}` : ""}
                     alt={user ? `${user.subs[0].club}.jpg` : ""}
                   />
                 </div>
@@ -1343,10 +1392,7 @@ function SelectTeam({ onUpdateValueHome }) {
                     onClick={(event) => handleShow(event, player)}
                   >
                     <div className="kit">
-                      <img
-                        src={"src/" + player.kit_src}
-                        alt={player.club + ".jpeg"}
-                      />
+                      <img src={player.kit_src} alt={player.club + ".jpeg"} />
                     </div>
                     {user && !player.name && !player.club && (
                       <div className="position">
@@ -1369,7 +1415,7 @@ function SelectTeam({ onUpdateValueHome }) {
               >
                 <div className="kit">
                   <img
-                    src={user ? `src/${user.subs[1].kit_src}` : ""}
+                    src={user ? `${user.subs[1].kit_src}` : ""}
                     alt={user ? `${user.subs[1].club}.jpg` : ""}
                   />
                 </div>
@@ -1397,10 +1443,7 @@ function SelectTeam({ onUpdateValueHome }) {
                     onClick={(event) => handleShow(event, player)}
                   >
                     <div className="kit">
-                      <img
-                        src={"src/" + player.kit_src}
-                        alt={player.club + ".jpeg"}
-                      />
+                      <img src={player.kit_src} alt={player.club + ".jpeg"} />
                     </div>
                     {user && !player.name && !player.club && (
                       <div className="position">
@@ -1423,7 +1466,7 @@ function SelectTeam({ onUpdateValueHome }) {
               >
                 <div className="kit">
                   <img
-                    src={user ? `src/${user.subs[2].kit_src}` : ""}
+                    src={user ? `${user.subs[2].kit_src}` : ""}
                     alt={user ? `${user.subs[2].club}.jpg` : ""}
                   />
                 </div>
@@ -1451,10 +1494,7 @@ function SelectTeam({ onUpdateValueHome }) {
                     onClick={(event) => handleShow(event, player)}
                   >
                     <div className="kit">
-                      <img
-                        src={"src/" + player.kit_src}
-                        alt={player.club + ".jpeg"}
-                      />
+                      <img src={player.kit_src} alt={player.club + ".jpeg"} />
                     </div>
                     {user && !player.name && !player.club && (
                       <div className="position">
@@ -1477,7 +1517,7 @@ function SelectTeam({ onUpdateValueHome }) {
               >
                 <div className="kit">
                   <img
-                    src={user ? `src/${user.subs[3].kit_src}` : ""}
+                    src={user ? `${user.subs[3].kit_src}` : ""}
                     alt={user ? `${user.subs[3].club}.jpg` : ""}
                   />
                 </div>
@@ -1858,7 +1898,7 @@ function SelectTeam({ onUpdateValueHome }) {
                           style={goalkeeper.set ? { opacity: "0.6" } : {}}
                         >
                           <img
-                            src={"src/" + goalkeeper.kit_src}
+                            src={goalkeeper.kit_src}
                             alt={goalkeeper.club + ".jpeg"}
                           />
                           <div className="player-details">
@@ -1938,7 +1978,7 @@ function SelectTeam({ onUpdateValueHome }) {
                           style={defender.set ? { opacity: "0.6" } : {}}
                         >
                           <img
-                            src={"src/" + defender.kit_src}
+                            src={defender.kit_src}
                             alt={defender.club + ".jpeg"}
                           />
                           <div className="player-details">
@@ -2018,7 +2058,7 @@ function SelectTeam({ onUpdateValueHome }) {
                           style={midfielder.set ? { opacity: "0.6" } : {}}
                         >
                           <img
-                            src={"src/" + midfielder.kit_src}
+                            src={midfielder.kit_src}
                             alt={midfielder.club + ".jpeg"}
                           />
                           <div className="player-details">
@@ -2098,7 +2138,7 @@ function SelectTeam({ onUpdateValueHome }) {
                           style={attacker.set ? { opacity: "0.6" } : {}}
                         >
                           <img
-                            src={"src/" + attacker.kit_src}
+                            src={attacker.kit_src}
                             alt={attacker.club + ".jpeg"}
                           />
                           <div className="player-details">

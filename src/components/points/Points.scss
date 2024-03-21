@@ -52,12 +52,37 @@
         padding: 10px;
 
         .gameweek-points {
-            color: var(--color-purple-second);
-            font-size: 1.3rem;
-            font-weight: 600;
-            padding-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             border-bottom: 1px rgb(239, 239, 239) solid;
+            padding-bottom: 5px;
             margin-bottom: 10px;
+
+            .gameweek-number {
+                color: var(--color-purple-second);
+                font-size: 1.3rem;
+                font-weight: 700;
+                margin-right: 28px;
+            }
+
+            .paginate-buttons {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 5px;
+                border-radius: 8px;
+                font-size: 0.9rem;
+                padding: 8px;
+                background: rgba(255, 255, 255, 0.6);
+                color: var(--color-purple-second);
+                font-weight: 700;
+                cursor: pointer;
+
+                .arrow {
+                    fill: var(--color-purple-second);
+                }
+            }
         }
 
         .points-stats {
@@ -65,6 +90,8 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgb(216, 216, 216);
 
             .points-counter {
                 background-color: var(--color-purple-second);
@@ -77,6 +104,7 @@
                     color: white;
                     font-size: 0.8rem;
                     margin: 0;
+                    min-width: 70px;
                 }
 
                 .points-final {
@@ -89,37 +117,81 @@
                 }
             }
 
-            .rank {
-                color: var(--color-purple-second);
-                width: 40%;
-                border-bottom: 1px solid rgb(216, 216, 216);
+            .right-stats {
+                display: flex;
+                align-items: center;
+                width: 25%;
 
-                .rank-up {
-                    font-size: 0.8rem;
-                    font-weight: 400;
+                .transfers {
+                    color: var(--color-purple-second);
+                    width: 49%;
+
+                    .transfers-up {
+                        font-size: 0.8rem;
+                        font-weight: 700;
+                    }
+
+                    .transfers-down {
+                        font-weight: 500;
+                        font-size: 1.4rem;
+
+                        .gameweek-cost {
+                            font-weight: 300;
+                        }
+                    }
                 }
 
-                .rank-down {
-                    font-weight: 400;
-                    font-size: 1.4rem;
+                .gw-rank {
+                    color: var(--color-purple-second);
+                    width: 49%;
+
+                    .gw-rank-up {
+                        font-weight: 400;
+                        font-size: 0.8rem;
+                    }
+
+                    .gw-rank-down {
+                        font-weight: 500;
+                        font-size: 1.4rem;
+                    }
                 }
             }
 
-            .average {
-                color: var(--color-purple-second);
-                width: 40%;
-                border-bottom: 1px solid rgb(216, 216, 216);
 
-                .average-up {
-                    font-weight: 400;
-                    font-size: 0.8rem;
+            .left-stats {
+                display: flex;
+                align-items: center;
+                width: 25%;
+
+                .average {
+                    color: var(--color-purple-second);
+                    width: 49%;
+
+                    .average-up {
+                        font-weight: 400;
+                        font-size: 0.8rem;
+                    }
+
+                    .average-down {
+                        font-weight: 500;
+                        font-size: 1.4rem;
+                    }
                 }
 
-                .average-down {
-                    font-weight: 400;
-                    font-size: 1.4rem;
-                }
+                .highest {
+                    color: var(--color-purple-second);
+                    width: 49%;
 
+                    .highest-up {
+                        font-weight: 700;
+                        font-size: 0.8rem;
+                    }
+
+                    .highest-down {
+                        font-weight: 500;
+                        font-size: 1.4rem;
+                    }
+                }
             }
         }
     }
@@ -389,6 +461,99 @@
     .down {
         margin-left: 2%;
         margin-right: 2%;
+
+        .upper-wrapper-points {
+            .points-stats {
+                .left-stats {
+                    width: 100%;
+                    margin-top: 5px;
+                    flex-direction: column;
+
+                    .average {
+                        width: 100%;
+                        border-bottom: 1px solid rgb(216, 216, 216);
+
+                        .average-up {
+                            font-size: 0.7rem;
+                            margin: 0;
+                        }
+
+                        .average-down {
+                            font-size: 1.3rem;
+                            margin-bottom: 7px;
+                        }
+                    }
+
+                    .highest {
+                        width: 100%;
+
+                        .highest-up {
+                            font-size: 0.7rem;
+                            margin-top: 7px;
+                            margin-bottom: 0;
+                        }
+
+                        .highest-down {
+                            font-size: 1.3rem;
+                            margin-top: 7px;
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+
+                .right-stats {
+                    width: 100%;
+                    margin-top: 5px;
+                    flex-direction: column;
+
+                    .gw-rank {
+                        width: 100%;
+                        border-bottom: 1px solid rgb(216, 216, 216);
+
+                        .gw-rank-up {
+                            font-size: 0.7rem;
+                            margin: 0;
+                        }
+
+                        .gw-rank-down {
+                            font-size: 1.3rem;
+                            margin-bottom: 7px;
+                        }
+                    }
+
+                    .transfers {
+                        width: 100%;
+
+                        .transfers-up {
+                            font-size: 0.7rem;
+                            margin-top: 7px;
+                            margin-bottom: 0;
+                        }
+
+                        .transfers-down {
+                            font-size: 1.3rem;
+                            margin-top: 7px;
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+            }
+
+            .gameweek-points {
+                .gameweek-number {
+                    font-size: 1rem;
+                    margin-right: 0;
+                }
+
+                .paginate-buttons {
+                    padding: 10px 14px;
+
+                    .paginate-text {
+                        display: none;
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -1,3 +1,4 @@
+import { Gameweek } from "./gameweek";
 import { Player } from "./players";
 
 export class User {
@@ -21,6 +22,9 @@ export class User {
   email: string;
   addedSquad: boolean;
   signInProviders: boolean;
+  gameweeks: Gameweek[];
+  countTransfers: number;
+  cost:number
 
   constructor(obj?: any) {
     this._id = (obj && obj._id) || "";
@@ -43,6 +47,9 @@ export class User {
     this.email = (obj && obj.email) || "";
     this.addedSquad = (obj && obj.addedSquad) || false;
     this.signInProviders = (obj && obj.signInProviders) || false;
+    this.gameweeks = obj && obj.gameweeks && obj.gameweeks.map((elem: any) => new Gameweek(elem)) || [];
+    this.countTransfers = (obj && obj.countTransfers) || 0;
+    this.cost = (obj && obj.cost) || 0;
   }
 }
 

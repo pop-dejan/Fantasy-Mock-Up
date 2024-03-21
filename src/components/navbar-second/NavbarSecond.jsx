@@ -1,4 +1,4 @@
-import "../navbar-second/NavbarSecond.scss";
+import "./NavbarSecond.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -6,12 +6,14 @@ import { signal } from "@preact/signals-react";
 import { firebase, auth } from "../../help-files/firebase.js";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
+import BannerImage from "../../assets/img/banner-image.png";
 
 function NavbarSecond({
   showButtons,
   showHome,
   hideAllButtons,
   onUpdateValueHome,
+  valueHome,
 }) {
   const [error, setError] = useState(null);
 
@@ -76,8 +78,6 @@ function NavbarSecond({
           width="453"
           height="104"
           viewBox="0 0 493 104"
-          id="ism-game-title"
-          className="App__HeadlineLogo-sc-1g9np4c-2 ibSWdl"
           style={hideAllButtons ? {} : { top: "30%" }}
         >
           <title>Fantasy</title>
@@ -98,7 +98,7 @@ function NavbarSecond({
                 Home
               </ToggleButton>
             )}
-            {showButtons && (
+            {showButtons && valueHome === "/points" && (
               <ToggleButton id="tbg-btn-1" className="btn" value={1}>
                 Points
               </ToggleButton>
@@ -128,7 +128,7 @@ function NavbarSecond({
           </ToggleButtonGroup>
         )}
 
-        <img src="src/assets/img/banner-image.png" alt="bannerImage.png" />
+        <img src={BannerImage} alt="BannerImage" />
       </div>
     </>
   );

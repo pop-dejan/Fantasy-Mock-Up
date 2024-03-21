@@ -1,7 +1,7 @@
-import "../sign-in/SignIn.scss";
+import "./SignIn.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { firebase, auth, database } from "../../help-files/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { get, ref, set } from "firebase/database";
@@ -11,7 +11,8 @@ import {
   GithubAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import Users from "../../assets/usersFantasyStart.json";
+import Users from "../../assets/help-jsons/usersFantasyStart.json";
+import ReactLoading from "react-loading";
 import FacebookImg from "../../assets/img/socials/icons8-facebook-150.png";
 import GoogleImg from "../../assets/img/socials/icons8-google-150.png";
 import GithubImg from "../../assets/img/socials/icons8-github-128.png";
@@ -19,8 +20,13 @@ import Form from "react-bootstrap/Form";
 import { Button } from "react-bootstrap";
 
 function SignIn({ onUpdateValueHome }) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const updatingRef = ref(database, "updating");
   const [error, setError] = useState(null);
+  const [updating, setUpdating] = useState("");
+  const [windowWidth, setWindowWidth] = useState(
+    window.matchMedia("(max-width: 992px)")
+  );
   const navigate = useNavigate();
 
   // Variables for display of errors
@@ -111,16 +117,22 @@ function SignIn({ onUpdateValueHome }) {
                   onUpdateValueHome("/home");
                   navigate("/select-team");
                 } else if (user.addedSquad == true) {
-                  document.cookie = `id=${user._id}`;
-                  onUpdateValueHome("/points");
-                  navigate("/");
+                  if (user.gameweeks) {
+                    document.cookie = `id=${user._id}`;
+                    onUpdateValueHome("/points");
+                    navigate("/");
+                  } else {
+                    document.cookie = `id=${user._id}`;
+                    onUpdateValueHome("/pick-team");
+                    navigate("/");
+                  }
                 }
               } else {
                 setError("No data available for this user.");
               }
             })
             .catch((error) => {
-              setError(error.message);
+              setError("Something went wrong. Please try again.");
             });
         })
         .catch((error) => {
@@ -151,9 +163,15 @@ function SignIn({ onUpdateValueHome }) {
                 onUpdateValueHome("/home");
                 navigate("/select-team");
               } else if (user.addedSquad == true) {
-                document.cookie = `id=${user._id}`;
-                onUpdateValueHome("/points");
-                navigate("/");
+                if (user.gameweeks) {
+                  document.cookie = `id=${user._id}`;
+                  onUpdateValueHome("/points");
+                  navigate("/");
+                } else {
+                  document.cookie = `id=${user._id}`;
+                  onUpdateValueHome("/pick-team");
+                  navigate("/");
+                }
               }
             } else {
               let userRefFirst = ref(
@@ -190,20 +208,20 @@ function SignIn({ onUpdateValueHome }) {
                       }
                     })
                     .catch((error) => {
-                      setError(error.message);
+                      setError("Something went wrong. Please try again.");
                     });
                 })
-                .catch(() => {
-                  setError(error.message);
+                .catch((error) => {
+                  setError("Something went wrong. Please try again.");
                 });
             }
           })
           .catch((error) => {
-            setError(error.message);
+            setError("Something went wrong. Please try again.");
           });
       })
       .catch((error) => {
-        setError(error.message);
+        setError("Something went wrong. Please try again.");
       })
       .finally(() => {
         setIsLoading(false);
@@ -229,10 +247,24 @@ function SignIn({ onUpdateValueHome }) {
   }
 
   useEffect(() => {
-    window.scrollTo({
-      top: 350,
-      behavior: "instant",
-    });
+    get(updatingRef)
+      .then((snapshot) => {
+        setIsLoading(true);
+        if (snapshot.exists()) {
+          setUpdating(new Object(snapshot.val()));
+
+          window.scrollTo({
+            top: 0,
+            behavior: "instant",
+          });
+        }
+      })
+      .catch((error) => {
+        setError("Something went wrong. Please try again.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   if (isLoading) {
@@ -255,115 +287,119 @@ function SignIn({ onUpdateValueHome }) {
 
   return (
     <>
-      <div className="main">
-        <Form className="form" onSubmit={handleSubmit}>
-          <Form.Group className="form-group">
-            <h2>Sign In</h2>
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              type="email"
-              className="form-control"
-              name="emailSignIn"
-              id="emailSignIn"
-              placeholder="Enter email address"
-              value={formData.email}
-              onChange={handleChangeEmail}
-            />
-            {blankEmail && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Email is required!</span>
-              </div>
-            )}
-            {invalidUser && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Email or password are incorrect!</span>
-              </div>
-            )}
-          </Form.Group>
-          <Form.Group className="form-group">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              className="form-control"
-              name="passwordSignIn"
-              id="passwordSignIn"
-              placeholder="Enter Password"
-              onChange={handlePassword}
-            />
-            {blankPassword && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Password is required!</span>
-              </div>
-            )}
-          </Form.Group>
-          <Form.Group className="form-group form-check">
-            <Form.Check
-              className="showPasswordSignIn"
-              label={"Show Password"}
-              id="showPasswordSignIn"
-              name="showPasswordSignIn"
-              onChange={handleShowPassword}
-            />
-          </Form.Group>
-          <div className="button-wrapper text-center">
-            <Button type="submit" className="btn btn-primary my-button">
-              Sign In
-            </Button>
-          </div>
-          <div className="signUp">
-            <p>Don't have an account?</p>
-            <span onClick={goToSignUp}>Sign Up</span>
-          </div>
-          <div className="orLoginWith">or login with</div>
-          <div className="socials">
-            <img
-              src={FacebookImg}
-              alt="Facebook Socials"
-              onClick={signInWithFacebookAuth}
-            />
-            <img
-              src={GoogleImg}
-              alt="Google Socials"
-              onClick={signInWithGoogleAuth}
-            />
-            <img
-              src={GithubImg}
-              alt="Github socials"
-              onClick={signInWithGithubAuth}
-            />
-          </div>
-        </Form>
-      </div>
+      {updating.isUpdating ? (
+        <Navigate to="/" />
+      ) : (
+        <div className="main">
+          <Form className="form" onSubmit={handleSubmit}>
+            <Form.Group className="form-group">
+              <h2>Sign In</h2>
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                className="form-control"
+                name="emailSignIn"
+                id="emailSignIn"
+                placeholder="Enter email address"
+                value={formData.email}
+                onChange={handleChangeEmail}
+              />
+              {blankEmail && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Email is required!</span>
+                </div>
+              )}
+              {invalidUser && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Email or password are incorrect!</span>
+                </div>
+              )}
+            </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                className="form-control"
+                name="passwordSignIn"
+                id="passwordSignIn"
+                placeholder="Enter Password"
+                onChange={handlePassword}
+              />
+              {blankPassword && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Password is required!</span>
+                </div>
+              )}
+            </Form.Group>
+            <Form.Group className="form-group form-check">
+              <Form.Check
+                className="showPasswordSignIn"
+                label={"Show Password"}
+                id="showPasswordSignIn"
+                name="showPasswordSignIn"
+                onChange={handleShowPassword}
+              />
+            </Form.Group>
+            <div className="button-wrapper text-center">
+              <Button type="submit" className="btn btn-primary my-button">
+                Sign In
+              </Button>
+            </div>
+            <div className="signUp">
+              <p>Don't have an account?</p>
+              <span onClick={goToSignUp}>Sign Up</span>
+            </div>
+            <div className="orLoginWith">or login with</div>
+            <div className="socials">
+              <img
+                src={FacebookImg}
+                alt="Facebook Socials"
+                onClick={signInWithFacebookAuth}
+              />
+              <img
+                src={GoogleImg}
+                alt="Google Socials"
+                onClick={signInWithGoogleAuth}
+              />
+              <img
+                src={GithubImg}
+                alt="Github socials"
+                onClick={signInWithGithubAuth}
+              />
+            </div>
+          </Form>
+        </div>
+      )}
     </>
   );
 }

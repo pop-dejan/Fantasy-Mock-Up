@@ -1,13 +1,13 @@
-import "../sign-up/SignUp.scss";
+import "./SignUp.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { firebase, auth, database } from "../../help-files/firebase.js";
 import { get, ref, set } from "firebase/database";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import Users from "../../assets/usersFantasyStart.json";
-import Countries from "../../assets/countries.json";
-import Clubs from "../../assets/clubs.json";
+import Users from "../../assets/help-jsons/usersFantasyStart.json";
+import Countries from "../../assets/help-jsons/countries.json";
+import { Clubs } from "../../assets/help-jsons/clubs.js";
 import Select from "react-select";
 import ReactLoading from "react-loading";
 import Form from "react-bootstrap/Form";
@@ -38,8 +38,13 @@ function SignUp() {
 
   // Other variables
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const updatingRef = ref(database, "updating");
+  const [updating, setUpdating] = useState("");
   const [error, setError] = useState(null);
+  const [windowWidth, setWindowWidth] = useState(
+    window.matchMedia("(max-width: 992px)")
+  );
 
   // Function reseting errors
   function resetErrors() {
@@ -288,7 +293,7 @@ function SignUp() {
                 }
               })
               .catch((error) => {
-                setError(error.message);
+                setError("Something went wrong. Please try again.");
               });
           });
         })
@@ -314,10 +319,24 @@ function SignUp() {
   };
 
   useEffect(() => {
-    window.scrollTo({
-      top: 350,
-      behavior: "instant",
-    });
+    get(updatingRef)
+      .then((snapshot) => {
+        setIsLoading(true);
+        if (snapshot.exists()) {
+          setUpdating(new Object(snapshot.val()));
+
+          window.scrollTo({
+            top: 0,
+            behavior: "instant",
+          });
+        }
+      })
+      .catch((error) => {
+        setError("Something went wrong. Please try again.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   // Data required to create clubs and countries select
@@ -344,491 +363,495 @@ function SignUp() {
 
   return (
     <>
-      <div className="main-content">
-        <Form className="form" onSubmit={handleSubmit}>
-          <Form.Group className="form-group">
-            <h2>Sign Up</h2>
-            <Form.Label>First Name</Form.Label>
-            <Form.Control
-              type="text"
-              className="form-control"
-              name="firstName"
-              id="firstName"
-              placeholder="Enter first name"
-              value={formData.firstName}
-              onChange={handleChangeCredentials}
-            />
-            {blankName && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>First name is required!</span>
-              </div>
-            )}
-          </Form.Group>
-          <Form.Group className="form-group">
-            <Form.Label>Last Name</Form.Label>
-            <Form.Control
-              type="text"
-              className="form-control"
-              name="lastName"
-              id="lastName"
-              placeholder="Enter last name"
-              value={formData.lastName}
-              onChange={handleChangeCredentials}
-            />
-            {blankLastName && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Last name is required!</span>
-              </div>
-            )}
-          </Form.Group>
-          <Form.Group className="form-group">
-            <Form.Label>Team Name</Form.Label>
-            <Form.Control
-              type="text"
-              className="form-control"
-              name="squadName"
-              id="squadName"
-              placeholder="Enter your team name"
-              value={formData.squadName}
-              onChange={handleChangeCredentials}
-            />
+      {updating.isUpdating ? (
+        <Navigate to="/" />
+      ) : (
+        <div className="main-content">
+          <Form className="form" onSubmit={handleSubmit}>
+            <Form.Group className="form-group">
+              <h2>Sign Up</h2>
+              <Form.Label>First Name</Form.Label>
+              <Form.Control
+                type="text"
+                className="form-control"
+                name="firstName"
+                id="firstName"
+                placeholder="Enter first name"
+                value={formData.firstName}
+                onChange={handleChangeCredentials}
+              />
+              {blankName && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>First name is required!</span>
+                </div>
+              )}
+            </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                type="text"
+                className="form-control"
+                name="lastName"
+                id="lastName"
+                placeholder="Enter last name"
+                value={formData.lastName}
+                onChange={handleChangeCredentials}
+              />
+              {blankLastName && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Last name is required!</span>
+                </div>
+              )}
+            </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label>Team Name</Form.Label>
+              <Form.Control
+                type="text"
+                className="form-control"
+                name="squadName"
+                id="squadName"
+                placeholder="Enter your team name"
+                value={formData.squadName}
+                onChange={handleChangeCredentials}
+              />
 
-            {blankTeamName && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Team name is required!</span>
-              </div>
-            )}
-          </Form.Group>
-          <Form.Group className="form-group">
-            <Form.Label className="gender-label">Gender</Form.Label>
+              {blankTeamName && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Team name is required!</span>
+                </div>
+              )}
+            </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label className="gender-label">Gender</Form.Label>
 
-            {["radio"].map((type) => (
-              <ToggleButtonGroup
-                key={`inline-${type}`}
-                className="gender-group mb-1"
-                type="radio"
-                name="options"
-                onChange={handleChangeGender}
+              {["radio"].map((type) => (
+                <ToggleButtonGroup
+                  key={`inline-${type}`}
+                  className="gender-group mb-1"
+                  type="radio"
+                  name="options"
+                  onChange={handleChangeGender}
+                >
+                  <Form.Check
+                    inline
+                    label="Male"
+                    name="male"
+                    type={type}
+                    value={"male"}
+                    id={"male"}
+                  />
+                  <Form.Check
+                    inline
+                    label="Female"
+                    name="female"
+                    type={type}
+                    value={"female"}
+                    id={"female"}
+                  />
+                  <Form.Check
+                    inline
+                    label="Unspecified"
+                    name="unspecified"
+                    type={type}
+                    value={"unspecified"}
+                    id={"unspecified"}
+                  />
+                </ToggleButtonGroup>
+              ))}
+              {blankGender && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Gender is required!</span>
+                </div>
+              )}
+            </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label>Date of Birth</Form.Label>
+              <Form.Control
+                type="date"
+                name="dateOfBirth"
+                value={formData.dateOfBirth}
+                onChange={handleChangeCredentials}
+                className="form-control"
+                id="dateOfBirth"
+              />
+              {blankDateOfBirth && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Date of birth is required!</span>
+                </div>
+              )}
+              {invalidDate && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Invalid date!</span>
+                </div>
+              )}
+            </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label>Country / Region of Residence</Form.Label>
+              <Select
+                options={countries}
+                className="my-select-countries"
+                placeholder="Select a country"
+                onChange={handleChangeCountries}
+                formatOptionLabel={(country) => (
+                  <div className="country-option">
+                    <span>{country.value}</span>
+                  </div>
+                )}
+              ></Select>
+              {blankCountry && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Country / Region of residence is required!</span>
+                </div>
+              )}
+            </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label>Select favourite club</Form.Label>
+              <Select
+                options={clubs}
+                className="my-select-clubs"
+                placeholder="Select a club"
+                onChange={handleChangeClub}
+                formatOptionLabel={(club) => (
+                  <div className="club-option">
+                    <img src={club.img} alt={club.value + ".kit"} />
+                    <span>{club.value}</span>
+                  </div>
+                )}
+              ></Select>
+              {blankClub && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Favourite club is required!</span>
+                </div>
+              )}
+            </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                className="form-control"
+                name="email"
+                id="email"
+                placeholder="Enter email address"
+                value={formData.email}
+                onChange={handleChangeCredentials}
+              />
+
+              {takenEmail && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Email address is already taken!</span>
+                </div>
+              )}
+
+              {blankEmail && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Email is required!</span>
+                </div>
+              )}
+
+              {invalidEmail && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Please enter valid email!</span>
+                </div>
+              )}
+            </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label>Password</Form.Label>
+
+              <Form.Control
+                type="password"
+                className="form-control"
+                name="password"
+                id="password"
+                placeholder="Enter Password"
+                onChange={handlePassword}
+                onMouseEnter={handleTooltipOpen}
+                onMouseLeave={handleTooltipClose}
+                onClick={handleTooltipClose}
+              />
+
+              <Tooltip
+                anchorSelect="#password"
+                opacity={1}
+                isOpen={open}
+                place="bottom"
+                style={{
+                  backgroundColor: "black",
+                  color: "white",
+                }}
               >
-                <Form.Check
-                  inline
-                  label="Male"
-                  name="male"
-                  type={type}
-                  value={"male"}
-                  id={"male"}
-                />
-                <Form.Check
-                  inline
-                  label="Female"
-                  name="female"
-                  type={type}
-                  value={"female"}
-                  id={"female"}
-                />
-                <Form.Check
-                  inline
-                  label="Unspecified"
-                  name="unspecified"
-                  type={type}
-                  value={"unspecified"}
-                  id={"unspecified"}
-                />
-              </ToggleButtonGroup>
-            ))}
-            {blankGender && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Gender is required!</span>
-              </div>
-            )}
-          </Form.Group>
-          <Form.Group className="form-group">
-            <Form.Label>Date of Birth</Form.Label>
-            <Form.Control
-              type="date"
-              name="dateOfBirth"
-              value={formData.dateOfBirth}
-              onChange={handleChangeCredentials}
-              className="form-control"
-              id="dateOfBirth"
-            />
-            {blankDateOfBirth && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Date of birth is required!</span>
-              </div>
-            )}
-            {invalidDate && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Invalid date!</span>
-              </div>
-            )}
-          </Form.Group>
-          <Form.Group className="form-group">
-            <Form.Label>Country / Region of Residence</Form.Label>
-            <Select
-              options={countries}
-              className="my-select-countries"
-              placeholder="Select a country"
-              onChange={handleChangeCountries}
-              formatOptionLabel={(country) => (
-                <div className="country-option">
-                  <span>{country.value}</span>
+                Password must include: <br />
+                - At least 6 characters <br />
+                - A mix of upper-case and lower-case characters
+                <br />
+                - At least one number <br />- At least one special character e.g
+                - !&*
+              </Tooltip>
+
+              {lowerCaseError && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Password must include lowercase letter!</span>
                 </div>
               )}
-            ></Select>
-            {blankCountry && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Country / Region of residence is required!</span>
-              </div>
-            )}
-          </Form.Group>
-          <Form.Group className="form-group">
-            <Form.Label>Select favourite club</Form.Label>
-            <Select
-              options={clubs}
-              className="my-select-clubs"
-              placeholder="Select a club"
-              onChange={handleChangeClub}
-              formatOptionLabel={(club) => (
-                <div className="club-option">
-                  <img src={club.img} alt={club.value + ".kit"} />
-                  <span>{club.value}</span>
+              {upperCaseError && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Password must include uppercase letter!</span>
                 </div>
               )}
-            ></Select>
-            {blankClub && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Favourite club is required!</span>
-              </div>
-            )}
-          </Form.Group>
-          <Form.Group className="form-group">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              type="email"
-              className="form-control"
-              name="email"
-              id="email"
-              placeholder="Enter email address"
-              value={formData.email}
-              onChange={handleChangeCredentials}
-            />
+              {numberError && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Password must include number!</span>
+                </div>
+              )}
+              {specialCharacterError && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Password must include special character!</span>
+                </div>
+              )}
+              {blankPassword && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Password is required!</span>
+                </div>
+              )}
 
-            {takenEmail && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Email address is already taken!</span>
-              </div>
-            )}
+              {invalidPassword && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Password must include at least 6 characters!</span>
+                </div>
+              )}
+            </Form.Group>
+            <Form.Group className="form-group">
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control
+                type="password"
+                className="form-control"
+                name="confirmPassword"
+                id="confirmPassword"
+                placeholder="Confirm Password"
+                onChange={handleComfirmPassword}
+              />
+              {blankComfirmPassword && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Comfirm password is required!</span>
+                </div>
+              )}
 
-            {blankEmail && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Email is required!</span>
-              </div>
-            )}
-
-            {invalidEmail && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Please enter valid email!</span>
-              </div>
-            )}
-          </Form.Group>
-          <Form.Group className="form-group">
-            <Form.Label>Password</Form.Label>
-
-            <Form.Control
-              type="password"
-              className="form-control"
-              name="password"
-              id="password"
-              placeholder="Enter Password"
-              onChange={handlePassword}
-              onMouseEnter={handleTooltipOpen}
-              onMouseLeave={handleTooltipClose}
-              onClick={handleTooltipClose}
-            />
-
-            <Tooltip
-              anchorSelect="#password"
-              opacity={1}
-              isOpen={open}
-              place="bottom"
-              style={{
-                backgroundColor: "black",
-                color: "white",
-              }}
-            >
-              Password must include: <br />
-              - At least 6 characters <br />
-              - A mix of upper-case and lower-case characters
-              <br />
-              - At least one number <br />- At least one special character e.g -
-              !&*
-            </Tooltip>
-
-            {lowerCaseError && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Password must include lowercase letter!</span>
-              </div>
-            )}
-            {upperCaseError && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Password must include uppercase letter!</span>
-              </div>
-            )}
-            {numberError && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Password must include number!</span>
-              </div>
-            )}
-            {specialCharacterError && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Password must include special character!</span>
-              </div>
-            )}
-            {blankPassword && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Password is required!</span>
-              </div>
-            )}
-
-            {invalidPassword && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Password must include at least 6 characters!</span>
-              </div>
-            )}
-          </Form.Group>
-          <Form.Group className="form-group">
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              type="password"
-              className="form-control"
-              name="confirmPassword"
-              id="confirmPassword"
-              placeholder="Confirm Password"
-              onChange={handleComfirmPassword}
-            />
-            {blankComfirmPassword && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Comfirm password is required!</span>
-              </div>
-            )}
-
-            {matchPasswords && (
-              <div className="form-text text-danger error-form">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="25"
-                  fill="currentColor"
-                  className="bi-x-circle-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
-                </svg>{" "}
-                <span>Passwords do not match!</span>
-              </div>
-            )}
-          </Form.Group>
-          <Form.Group className="form-group form-check">
-            <Form.Check
-              className="showPassword"
-              label={"Show Password"}
-              id="showPassword"
-              name="showPassword"
-              onChange={handleShowPassword}
-            />
-          </Form.Group>
-          <div className="button-wrapper text-center">
-            <Button type="submit" className="btn btn-primary my-button">
-              Sign Up
-            </Button>
-          </div>
-          <div className="signIn">
-            <p>Already have an account?</p>
-            <span onClick={goToSignIn}>Sign In</span>
-          </div>
-        </Form>
-      </div>
+              {matchPasswords && (
+                <div className="form-text text-danger error-form">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="25"
+                    height="25"
+                    fill="currentColor"
+                    className="bi-x-circle-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>{" "}
+                  <span>Passwords do not match!</span>
+                </div>
+              )}
+            </Form.Group>
+            <Form.Group className="form-group form-check">
+              <Form.Check
+                className="showPassword"
+                label={"Show Password"}
+                id="showPassword"
+                name="showPassword"
+                onChange={handleShowPassword}
+              />
+            </Form.Group>
+            <div className="button-wrapper text-center">
+              <Button type="submit" className="btn btn-primary my-button">
+                Sign Up
+              </Button>
+            </div>
+            <div className="signIn">
+              <p>Already have an account?</p>
+              <span onClick={goToSignIn}>Sign In</span>
+            </div>
+          </Form>
+        </div>
+      )}
     </>
   );
 }

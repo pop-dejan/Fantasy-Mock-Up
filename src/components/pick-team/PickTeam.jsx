@@ -1,23 +1,28 @@
-import "../pick-team/PickTeam.scss";
+import "./PickTeam.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../models/user.ts";
 import _ from "lodash";
-import getCookie from "../../help-files/getCookie";
+import getCookie from "../../help-files/getCookie.js";
 import { firebase, database } from "../../help-files/firebase.js";
 import { get, ref, set } from "firebase/database";
 import ReactLoading from "react-loading";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Updating from "../updating/Updating.jsx";
 
 function PickTeam() {
   const userRef = ref(database, "usersFantasy/" + getCookie("id"));
   const playersRef = ref(database, "players");
+  const gameweekRef = ref(database, "currentGameweek");
+  const updatingRef = ref(database, "updating");
   const navigate = useNavigate();
 
   const [user, setUser] = useState([]);
   const [players, setPlayers] = useState();
+  const [gameweekInfo, setGameweekInfo] = useState();
+  const [updating, setUpdating] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -768,7 +773,20 @@ function PickTeam() {
 
   // Function handling pick team function
   function handlePickTeam() {
-    updateUser();
+    let userTemp = user;
+    let allPlayers = [
+      ...userTemp.goalkeeper,
+      ...userTemp.defence,
+      ...userTemp.midfield,
+      ...userTemp.attack,
+      ...userTemp.subs,
+    ];
+
+    allPlayers.forEach((player) => {
+      delete player.points;
+    });
+
+    updateUser(userTemp);
   }
 
   // Fetching user and players from database and handling render of loading and error interface
@@ -779,18 +797,38 @@ function PickTeam() {
   const getData = async () => {
     try {
       setIsLoading(true);
-      const [snapshot1, snapshot2] = await Promise.all([
+      const [snapshot1, snapshot2, snapshot3, snapshot4] = await Promise.all([
         get(userRef),
         get(playersRef),
+        get(gameweekRef),
+        get(updatingRef),
       ]);
 
       const data1 = snapshot1.val();
       const data2 = snapshot2.val();
+      const data3 = snapshot3.val();
+      const data4 = snapshot4.val();
+
+      if (data4.isUpdating && getCookie("myValueHome") !== "/pick-team") {
+        navigate("/");
+      }
+
+      let playersTemp = data2;
+      playersTemp.forEach((player) => {
+        let count = 0;
+        player.playerGameweeks.forEach((gameweek) => {
+          count = count + gameweek.gameweekPoints;
+        });
+
+        player.points = count;
+      });
 
       setUser(data1);
-      setPlayers(data2);
+      setPlayers(playersTemp);
+      setGameweekInfo(data3);
+      setUpdating(data4);
     } catch (error) {
-      setError(error.message);
+      setError("Something went wrong. Please try again.");
       navigate("/");
     } finally {
       setIsLoading(false);
@@ -798,14 +836,14 @@ function PickTeam() {
   };
 
   // Updating user in database and handling render of loading and error interface
-  function updateUser() {
+  function updateUser(userTemp) {
     setIsLoading(true);
-    set(userRef, user)
+    set(userRef, userTemp)
       .then(() => {
         getData();
       })
       .catch((error) => {
-        setError(error.message);
+        setError("Something went wrong. Please try again.");
       })
       .finally(() => {
         setShowPickTeamButton(false);
@@ -833,6 +871,11 @@ function PickTeam() {
   if (error) {
     return <div className="error">Error: {error}</div>;
   }
+
+  if (updating.isUpdating) {
+    return <Updating></Updating>;
+  }
+
   return (
     <>
       <Modal
@@ -897,11 +940,17 @@ function PickTeam() {
         <div className="upper-wrapper">
           <div className="control-wrapper">
             <div className="control-headline">
-              <div className="gameweek">Gameweek 25</div>
+              <div className="gameweek">
+                Gameweek {gameweekInfo.currentGameweekNumber}
+              </div>
             </div>
             <div className="timeline">
-              <span className="week">Gameweek 25 deadline:</span>
-              <span className="time">Sat 17 Feb 12:00</span>
+              <span className="week">
+                Gameweek {gameweekInfo.currentGameweekNumber} deadline:
+              </span>
+              <span className="time">
+                {gameweekInfo.currentGameweekDeadline}
+              </span>
             </div>
           </div>
           <div className="info">
@@ -918,7 +967,7 @@ function PickTeam() {
             >
               <div className="kit">
                 <img
-                  src={user ? `src/${user.goalkeeper[0].kit_src}` : ""}
+                  src={user ? `${user.goalkeeper[0].kit_src}` : ""}
                   alt={user ? `${user.goalkeeper[0].club}.jpg` : ""}
                 />
               </div>
@@ -936,10 +985,7 @@ function PickTeam() {
                   onClick={(event) => handleShow(event, player)}
                 >
                   <div className="kit">
-                    <img
-                      src={"src/" + player.kit_src}
-                      alt={player.club + ".jpeg"}
-                    />
+                    <img src={player.kit_src} alt={player.club + ".jpeg"} />
                   </div>
                   <div className="name">{player.name}</div>
                   <div className="club">{player.club}</div>
@@ -956,10 +1002,7 @@ function PickTeam() {
                   onClick={(event) => handleShow(event, player)}
                 >
                   <div className="kit">
-                    <img
-                      src={"src/" + player.kit_src}
-                      alt={player.club + ".jpeg"}
-                    />
+                    <img src={player.kit_src} alt={player.club + ".jpeg"} />
                   </div>
                   <div className="name">{player.name}</div>
                   <div className="club">{player.club}</div>
@@ -976,10 +1019,7 @@ function PickTeam() {
                   onClick={(event) => handleShow(event, player)}
                 >
                   <div className="kit">
-                    <img
-                      src={"src/" + player.kit_src}
-                      alt={player.club + ".jpeg"}
-                    />
+                    <img src={player.kit_src} alt={player.club + ".jpeg"} />
                   </div>
                   <div className="name">{player.name}</div>
                   <div className="club">{player.club}</div>
@@ -999,10 +1039,7 @@ function PickTeam() {
                     {player.position.toUpperCase()}
                   </div>
                   <div className="kit">
-                    <img
-                      src={"src/" + player.kit_src}
-                      alt={player.club + ".jpeg"}
-                    />
+                    <img src={player.kit_src} alt={player.club + ".jpeg"} />
                   </div>
                   <div className="name">{player.name}</div>
                   <div className="club">{player.club}</div>

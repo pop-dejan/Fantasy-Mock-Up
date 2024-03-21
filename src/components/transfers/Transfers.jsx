@@ -1,15 +1,15 @@
-import "../transfers/Transfers.scss";
+import "./Transfers.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
-import getCookie from "../../help-files/getCookie";
+import getCookie from "../../help-files/getCookie.js";
 import { firebase, database } from "../../help-files/firebase.js";
 import { get, ref, set } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../models/user.ts";
 import { Player } from "../../models/players.ts";
-import clubsOnly from "../../assets/clubsOnly.json";
+import clubsOnly from "../../assets/help-jsons/clubsOnly.json";
 import ReactLoading from "react-loading";
-import Button from "react-bootstrap/Button";   
+import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Pagination from "../pagination/Pagination.jsx";
@@ -23,11 +23,15 @@ function Transfers() {
   const [namesInitial, setNamesInitial] = useState([]);
   const [players, setPlayers] = useState([]);
   const [playersInitial, setPlayersInitial] = useState([]);
+  const [gameweekInfo, setGameweekInfo] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [countTransfers, setCountTransfers] = useState(0);
 
   const userRef = ref(database, "usersFantasy/" + getCookie("id"));
   const playersRef = ref(database, "players");
+  const gameweekRef = ref(database, "currentGameweek");
+  const updatingRef = ref(database, "updating");
   const navigate = useNavigate();
 
   // Variables separting user players into their positions
@@ -38,9 +42,9 @@ function Transfers() {
 
   // Variables and function handling functionality of pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPlayers, setTotalPlayers] = useState(11);
+  const [totalPlayers, setTotalPlayers] = useState(23);
   const [playersPerPage, setPlayersPerPage] = useState(3);
-  const [playersPerPageGkp, setPlayersPerPageGkp] = useState(2);
+  const [playersPerPageGkp, setPlayersPerPageGkp] = useState(3);
   const [disablePrevious, setDisablePrevious] = useState(true);
   const [disableNext, setDisableNext] = useState(false);
   const [shouldSeePagination, setShouldSeePagination] = useState(true);
@@ -308,17 +312,14 @@ function Transfers() {
       ...userTemp.subs,
     ];
 
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].name === playerTmp.name) {
-        players[i].set = true;
+    let playersTemp = players;
+    for (let i = 0; i < playersTemp.length; i++) {
+      if (playersTemp[i].name === playerTmp.name) {
+        playersTemp[i].set = true;
       }
     }
 
-    setPlayers(players.map((player) => new Player(player)));
-    setGoalkeepers(players.filter((player) => player.position === "gkp"));
-    setDefenders(players.filter((player) => player.position === "def"));
-    setMidfielders(players.filter((player) => player.position === "mid"));
-    setAttackers(players.filter((player) => player.position === "att"));
+    updatePlayers(playersTemp);
 
     let isSame = false;
 
@@ -455,6 +456,7 @@ function Transfers() {
       seePitch();
     }
 
+    setCountTransfers(countMismatchedElements(namesInitial, namesTemp));
     setUser(userTemp);
     setShowSecond(false);
   }
@@ -480,16 +482,13 @@ function Transfers() {
       ...userInitialTemp.subs,
     ];
 
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].name === player.name) {
-        players[i].set = false;
+    let playersTemp = players;
+    for (let i = 0; i < playersTemp.length; i++) {
+      if (playersTemp[i].name === player.name) {
+        playersTemp[i].set = false;
       }
     }
-    setPlayers(players.map((player) => new Player(player)));
-    setGoalkeepers(players.filter((player) => player.position === "gkp"));
-    setDefenders(players.filter((player) => player.position === "def"));
-    setMidfielders(players.filter((player) => player.position === "mid"));
-    setAttackers(players.filter((player) => player.position === "att"));
+    updatePlayers(playersTemp);
 
     for (let i = 0; i < allPlayers.length; i++) {
       if (allPlayers[i].name === player.name) {
@@ -508,7 +507,8 @@ function Transfers() {
           userTemp.money = userTemp.money + allPlayers[i].price;
           let indexArr = userTemp.clubs.indexOf(allPlayers[i].club);
           userTemp.clubs.splice(indexArr, 1);
-          allPlayers[i].kit_src = "assets/img/kits/selected-kit.webp";
+          allPlayers[i].kit_src =
+            "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f";
         } else {
           allPlayers[i].add = false;
           allPlayers[i].remove = true;
@@ -517,7 +517,8 @@ function Transfers() {
           userTemp.money = userTemp.money + allPlayers[i].price;
           let indexArr = userTemp.clubs.indexOf(allPlayers[i].club);
           userTemp.clubs.splice(indexArr, 1);
-          allPlayers[i].kit_src = "assets/img/kits/selected-kit.webp";
+          allPlayers[i].kit_src =
+            "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f";
         }
       }
     }
@@ -560,6 +561,7 @@ function Transfers() {
       userTemp.freeTransfers = 0;
     }
 
+    setCountTransfers(countMismatchedElements(namesInitial, namesTemp));
     setMakeTransfers(true);
     setUser(userTemp);
     setShow(false);
@@ -594,16 +596,13 @@ function Transfers() {
         userTemp.clubs.push(allPlayers[i].club);
 
         let name = allPlayers[i].name;
-        for (let i = 0; i < players.length; i++) {
-          if (players[i].name === name) {
-            players[i].set = true;
+        let playersTemp = players;
+        for (let i = 0; i < playersTemp.length; i++) {
+          if (playersTemp[i].name === name) {
+            playersTemp[i].set = true;
           }
         }
-        setPlayers(players.map((player) => new Player(player)));
-        setGoalkeepers(players.filter((player) => player.position === "gkp"));
-        setDefenders(players.filter((player) => player.position === "def"));
-        setMidfielders(players.filter((player) => player.position === "mid"));
-        setAttackers(players.filter((player) => player.position === "att"));
+        updatePlayers(playersTemp);
       }
     }
 
@@ -659,6 +658,7 @@ function Transfers() {
       setMakeTransfers(false);
     }
 
+    setCountTransfers(countMismatchedElements(namesInitial, namesTemp));
     setUser(userTemp);
     setShow(false);
   }
@@ -697,6 +697,7 @@ function Transfers() {
     }
 
     paginatePrevEnd();
+    setInputSeatchValue("");
     setShow(false);
   }
 
@@ -715,7 +716,7 @@ function Transfers() {
     let result = findDuplicateValue(userTemp.clubs, 3);
     let flag = false;
     if (result.length > 0) {
-      setErrorClub(result[length]);
+      setErrorClub(result[0]);
       flag = true;
       setErrorClubShow(true);
     } else {
@@ -735,6 +736,11 @@ function Transfers() {
   // Function handling add squad button
   function handleMakeTransfers() {
     let userTemp = user;
+    let newCost = userTemp.cost + cost;
+    let newCountTransfers = userTemp.countTransfers + countTransfers;
+    userTemp.cost = newCost;
+    userTemp.countTransfers = newCountTransfers;
+
     userTemp = new User(userTemp);
     setPlayersToAdd([]);
     setErrorClubShow(false);
@@ -746,6 +752,18 @@ function Transfers() {
     window.scrollTo({
       top: 350,
       behavior: "instant",
+    });
+
+    let allPlayers = [
+      ...userTemp.goalkeeper,
+      ...userTemp.defence,
+      ...userTemp.midfield,
+      ...userTemp.attack,
+      ...userTemp.subs,
+    ];
+
+    allPlayers.forEach((player) => {
+      delete player.points;
     });
     updateUser(userTemp);
   }
@@ -785,11 +803,12 @@ function Transfers() {
       }
     });
 
-    setPlayers(resetPlayers.map((player) => new Player(player)));
-    setGoalkeepers(resetPlayers.filter((player) => player.position === "gkp"));
-    setDefenders(resetPlayers.filter((player) => player.position === "def"));
-    setMidfielders(resetPlayers.filter((player) => player.position === "mid"));
-    setAttackers(resetPlayers.filter((player) => player.position === "att"));
+    updatePlayers(resetPlayers);
+    setTotalPlayers(23);
+    setPlayersPerPage(3);
+    setPlayersPerPageGkp(3);
+
+    paginatePrevEnd();
   }
 
   // Function determining if there are more that two players added that are from the same club
@@ -940,9 +959,9 @@ function Transfers() {
     });
     updatePlayers(playersTemp);
 
-    setTotalPlayers(11);
+    setTotalPlayers(23);
     setPlayersPerPage(3);
-    setPlayersPerPageGkp(2);
+    setPlayersPerPageGkp(3);
     paginatePrevEnd();
     seeAllPlayers();
   }
@@ -996,9 +1015,9 @@ function Transfers() {
       let nextEnd = document.querySelector(".next-end");
       shouldShowPlayers();
 
-      setPlayersPerPage(20);
-      setPlayersPerPageGkp(20);
-      setTotalPlayers(20);
+      setPlayersPerPage(30);
+      setPlayersPerPageGkp(30);
+      setTotalPlayers(30);
 
       next.classList.add("my-disabled");
       nextEnd.classList.add("my-disabled");
@@ -1081,9 +1100,9 @@ function Transfers() {
         toggleShowVariablesPositions();
       }
 
-      setPlayersPerPage(20);
-      setPlayersPerPageGkp(20);
-      setTotalPlayers(20);
+      setPlayersPerPage(30);
+      setPlayersPerPageGkp(30);
+      setTotalPlayers(30);
 
       let next = document.querySelector(".next");
       let nextEnd = document.querySelector(".next-end");
@@ -1118,9 +1137,9 @@ function Transfers() {
         } else {
           toggleShowVariablesPositions();
         }
-        setTotalPlayers(11);
+        setTotalPlayers(23);
         setPlayersPerPage(3);
-        setPlayersPerPageGkp(2);
+        setPlayersPerPageGkp(3);
 
         paginatePrevEnd();
       }
@@ -1241,23 +1260,40 @@ function Transfers() {
   // Fetching user and players from database and handling render of loading and error interface
   useEffect(() => {
     getData();
-    
   }, []);
 
   const getData = async () => {
     try {
       setIsLoading(true);
-      const [snapshot1, snapshot2] = await Promise.all([
+      const [snapshot1, snapshot2, snapshot3, snapshot4] = await Promise.all([
         get(userRef),
         get(playersRef),
+        get(gameweekRef),
+        get(updatingRef),
       ]);
 
       const data1 = snapshot1.val();
       const data2 = snapshot2.val();
+      const data3 = snapshot3.val();
+      const data4 = snapshot4.val();
+      setGameweekInfo(data3);
+      if (data4.isUpdating) {
+        navigate("/");
+      }
+
+      let playersTemp = data2;
+      playersTemp.forEach((player) => {
+        let count = 0;
+        player.playerGameweeks.forEach((gameweek) => {
+          count = count + gameweek.gameweekPoints;
+        });
+
+        player.points = count;
+      });
 
       setUser(JSON.parse(JSON.stringify(data1)));
       setUserInitial(JSON.parse(JSON.stringify(data1)));
-      setPlayersInitial(JSON.parse(JSON.stringify(data2)));
+      setPlayersInitial(JSON.parse(JSON.stringify(playersTemp)));
       setFreeTransfersInitial(data1.freeTransfers);
 
       const playersData = [
@@ -1290,7 +1326,7 @@ function Transfers() {
       setMidfielders(data2.filter((player) => player.position === "mid"));
       setAttackers(data2.filter((player) => player.position === "att"));
     } catch (error) {
-      setError(error.message);
+      setError("Something went wrong. Please try again.");
       navigate("/");
     } finally {
       setIsLoading(false);
@@ -1305,7 +1341,7 @@ function Transfers() {
         getData();
       })
       .catch((error) => {
-        setError(error.message);
+        setError("Something went wrong. Please try again.");
       })
       .finally(() => {
         setIsLoading(false);
@@ -1449,7 +1485,7 @@ function Transfers() {
         </Modal.Body>
       </Modal>
 
-      <div className="page-wrapper grid gap-4">
+      <div className="page-wrapper grid gap-3">
         <div className="left-side g-col-12 g-col-lg-9">
           <div className="title-wrapper">
             <div className="title-select">Transfers</div>
@@ -1480,11 +1516,17 @@ function Transfers() {
           >
             <div className="control-wrapper">
               <div className="control-headline">
-                <div className="gameweek">Gameweek 25</div>
+                <div className="gameweek">
+                  Gameweek {gameweekInfo.currentGameweekNumber}
+                </div>
               </div>
               <div className="timeline">
-                <span className="week">Gameweek 25 deadline:</span>
-                <span className="time">Sat 17 Feb 12:00</span>
+                <span className="week">
+                  Gameweek {gameweekInfo.currentGameweekNumber} deadline:
+                </span>
+                <span className="time">
+                  {gameweekInfo.currentGameweekDeadline}
+                </span>
               </div>
               <div className="main-controls">
                 <div className="free-transfers">
@@ -1577,7 +1619,7 @@ function Transfers() {
               >
                 <div className="kit">
                   <img
-                    src={user ? `src/${user.goalkeeper[0].kit_src}` : ""}
+                    src={user ? `${user.goalkeeper[0].kit_src}` : ""}
                     alt={user ? `${user.goalkeeper[0].club}.jpg` : ""}
                   />
                 </div>
@@ -1605,7 +1647,7 @@ function Transfers() {
               >
                 <div className="kit">
                   <img
-                    src={user ? `src/${user.subs[0].kit_src}` : ""}
+                    src={user ? `${user.subs[0].kit_src}` : ""}
                     alt={user ? `${user.subs[0].club}.jpg` : ""}
                   />
                 </div>
@@ -1636,10 +1678,7 @@ function Transfers() {
                     onClick={(event) => handleShow(event, player)}
                   >
                     <div className="kit">
-                      <img
-                        src={"src/" + player.kit_src}
-                        alt={player.club + ".jpeg"}
-                      />
+                      <img src={player.kit_src} alt={player.club + ".jpeg"} />
                     </div>
 
                     {user && player.name && (
@@ -1667,7 +1706,7 @@ function Transfers() {
                       >
                         <div className="kit">
                           <img
-                            src={"src/" + player.kit_src}
+                            src={player.kit_src}
                             alt={player.club + ".jpeg"}
                           />
                         </div>
@@ -1696,10 +1735,7 @@ function Transfers() {
                     onClick={(event) => handleShow(event, player)}
                   >
                     <div className="kit">
-                      <img
-                        src={"src/" + player.kit_src}
-                        alt={player.club + ".jpeg"}
-                      />
+                      <img src={player.kit_src} alt={player.club + ".jpeg"} />
                     </div>
 
                     {user && player.name && (
@@ -1727,7 +1763,7 @@ function Transfers() {
                       >
                         <div className="kit">
                           <img
-                            src={"src/" + player.kit_src}
+                            src={player.kit_src}
                             alt={player.club + ".jpeg"}
                           />
                         </div>
@@ -1756,10 +1792,7 @@ function Transfers() {
                     onClick={(event) => handleShow(event, player)}
                   >
                     <div className="kit">
-                      <img
-                        src={"src/" + player.kit_src}
-                        alt={player.club + ".jpeg"}
-                      />
+                      <img src={player.kit_src} alt={player.club + ".jpeg"} />
                     </div>
 
                     {user && player.name && (
@@ -1787,7 +1820,7 @@ function Transfers() {
                       >
                         <div className="kit">
                           <img
-                            src={"src/" + player.kit_src}
+                            src={player.kit_src}
                             alt={player.club + ".jpeg"}
                           />
                         </div>
@@ -1943,7 +1976,7 @@ function Transfers() {
                             style={goalkeeper.set ? { opacity: "0.6" } : {}}
                           >
                             <img
-                              src={"src/" + goalkeeper.kit_src}
+                              src={goalkeeper.kit_src}
                               alt={goalkeeper.club + ".jpeg"}
                             />
                             <div className="player-details">
@@ -2027,7 +2060,7 @@ function Transfers() {
                             style={defender.set ? { opacity: "0.6" } : {}}
                           >
                             <img
-                              src={"src/" + defender.kit_src}
+                              src={defender.kit_src}
                               alt={defender.club + ".jpeg"}
                             />
                             <div className="player-details">
@@ -2109,7 +2142,7 @@ function Transfers() {
                             style={midfielder.set ? { opacity: "0.6" } : {}}
                           >
                             <img
-                              src={"src/" + midfielder.kit_src}
+                              src={midfielder.kit_src}
                               alt={midfielder.club + ".jpeg"}
                             />
                             <div className="player-details">
@@ -2193,7 +2226,7 @@ function Transfers() {
                             style={attacker.set ? { opacity: "0.6" } : {}}
                           >
                             <img
-                              src={"src/" + attacker.kit_src}
+                              src={attacker.kit_src}
                               alt={attacker.club + ".jpeg"}
                             />
                             <div className="player-details">
@@ -2233,17 +2266,19 @@ function Transfers() {
           )}
 
           {shouldSeePagination && (
-            <Pagination
-              playersPerPage={playersPerPage}
-              totalPlayers={totalPlayers}
-              paginatePrev={paginatePrev}
-              paginateNext={paginateNext}
-              paginatePrevEnd={paginatePrevEnd}
-              paginateNextEnd={paginateNextEnd}
-              disablePrevious={disablePrevious}
-              disableNext={disableNext}
-              currentPage={currentPage}
-            ></Pagination>
+            <div className="pagination-holder">
+              <Pagination
+                playersPerPage={playersPerPage}
+                totalPlayers={totalPlayers}
+                paginatePrev={paginatePrev}
+                paginateNext={paginateNext}
+                paginatePrevEnd={paginatePrevEnd}
+                paginateNextEnd={paginateNextEnd}
+                disablePrevious={disablePrevious}
+                disableNext={disableNext}
+                currentPage={currentPage}
+              ></Pagination>
+            </div>
           )}
         </div>
       </div>

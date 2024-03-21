@@ -8,6 +8,7 @@ export class Player {
   set: boolean;
   price: number;
   points: number;
+  playerGameweeks: PlayerGameweeks[];
 
   constructor(obj?: any) {
     this.kit_src = (obj && obj.kit_src) || '';
@@ -19,5 +20,15 @@ export class Player {
     this.add = (obj && obj.add) || false;
     this.remove = (obj && obj.remove) || false;
     this.set = (obj && obj.set) || false;
+  }
+}
+
+class PlayerGameweeks {
+  gameweekNumber: number;
+  gameweekPoints: number;
+
+  constructor(obj?: any) {
+    this.gameweekNumber = (obj && obj.gameweekNumber) || 0;
+    this.gameweekPoints = (obj && obj.gameweekPoints) || 0;
   }
 }

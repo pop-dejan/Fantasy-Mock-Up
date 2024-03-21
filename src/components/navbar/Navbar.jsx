@@ -1,6 +1,27 @@
-import "../navbar/Navbar.scss";
+import "./Navbar.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
+import MainLogo from "../../assets/img/pl-main-logo.png";
+import ArsenalLogo from "../../assets/img/club logos/arsenal.svg";
+import AstonVillaLogo from "../../assets/img/club logos/aston villa.svg";
+import BournemouthLogo from "../../assets/img/club logos/bournemouth.svg";
+import BrentfordLogo from "../../assets/img/club logos/brentford.svg";
+import BrightonLogo from "../../assets/img/club logos/brighton.svg";
+import BurnleyLogo from "../../assets/img/club logos/burnley.svg";
+import ChelseaLogo from "../../assets/img/club logos/chelsea.svg";
+import CrystalPalaceLogo from "../../assets/img/club logos/crystal palace.svg";
+import EvertonLogo from "../../assets/img/club logos/everton.svg";
+import ForestLogo from "../../assets/img/club logos/forest.svg";
+import FulhamLogo from "../../assets/img/club logos/fulham.svg";
+import LiverpoolLogo from "../../assets/img/club logos/liverpool.svg";
+import LutonLogo from "../../assets/img/club logos/luton.svg";
+import ManCityLogo from "../../assets/img/club logos/man city.svg";
+import ManUtdLogo from "../../assets/img/club logos/man utd.png";
+import NewcastleLogo from "../../assets/img/club logos/newcastle.png";
+import ShefieldLogo from "../../assets/img/club logos/shefield.svg";
+import SpursLogo from "../../assets/img/club logos/spurs.svg";
+import WestHamLogo from "../../assets/img/club logos/west ham.svg";
+import WolvesLogo from "../../assets/img/club logos/wolves.svg";
 
 function Navbar() {
   return (
@@ -8,7 +29,7 @@ function Navbar() {
       <nav className="navbar navbar-expand-lg">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand" id="navbar-brand">
-            <img src="src/assets/img/pl-main-logo.png" alt="main-logo.png" />
+            <img src={MainLogo} alt="Premier League Logo" />
           </Link>
           <button
             className="navbar-toggler"
@@ -48,10 +69,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.arsenal.com/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img
-                      src="src/assets/img/club logos/arsenal.svg"
-                      alt="arsenal-kit"
-                    />
+                    <img src={ArsenalLogo} alt="ArsenalLogo" />
                     <span>Arsenal</span>
                   </a>
                 </li>
@@ -63,10 +81,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.avfc.co.uk/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img
-                      src="src/assets/img/club logos/aston villa.svg"
-                      alt="villa-kit"
-                    />
+                    <img src={AstonVillaLogo} alt="AstonVillaLogo" />
                     <span>Aston Villa</span>
                   </a>
                 </li>
@@ -78,10 +93,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.afcb.co.uk/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img
-                      src="src/assets/img/club logos/bournemouth.svg"
-                      alt=""
-                    />
+                    <img src={BournemouthLogo} alt="BournemouthLogo" />
                     <span>Bournemouth</span>
                   </a>
                 </li>
@@ -93,7 +105,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.brentfordfc.com/en??utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/brentford.svg" alt="" />
+                    <img src={BrentfordLogo} alt="BrentfordLogo" />
                     <span>Brentford</span>
                   </a>
                 </li>
@@ -105,7 +117,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.brightonandhovealbion.com/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/brighton.svg" alt="" />
+                    <img src={BrightonLogo} alt="BrightonLogo" />
                     <span>Brighton</span>
                   </a>
                 </li>
@@ -117,7 +129,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.burnleyfootballclub.com/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/burnley.svg" alt="" />
+                    <img src={BurnleyLogo} alt="BurnleyLogo" />
                     <span>Burnley</span>
                   </a>
                 </li>
@@ -129,7 +141,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.chelseafc.com/en??utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/chelsea.svg" alt="" />
+                    <img src={ChelseaLogo} alt="ChelseaLogo" />
                     <span>Chelsea</span>
                   </a>
                 </li>
@@ -141,10 +153,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.cpfc.co.uk/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img
-                      src="src/assets/img/club logos/crystal palace.svg"
-                      alt=""
-                    />
+                    <img src={CrystalPalaceLogo} alt="CrystalPalaceLogo" />
                     <span>Crystal Palace</span>
                   </a>
                 </li>
@@ -156,7 +165,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.evertonfc.com/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/everton.svg" alt="" />
+                    <img src={EvertonLogo} alt="EvertonLogo" />
                     <span>Everton</span>
                   </a>
                 </li>
@@ -168,7 +177,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.nottinghamforest.co.uk/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/forest.svg" alt="" />
+                    <img src={ForestLogo} alt="NottinghamForestLogo" />
                     <span>Nottingham Forest</span>
                   </a>
                 </li>
@@ -180,7 +189,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.fulhamfc.com/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/fulham.svg" alt="" />
+                    <img src={FulhamLogo} alt="FulhamLogo" />
                     <span>Fulham</span>
                   </a>
                 </li>
@@ -192,7 +201,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.liverpoolfc.com/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/liverpool.svg" alt="" />
+                    <img src={LiverpoolLogo} alt="LiverpoolLogo" />
                     <span>Liverpool</span>
                   </a>
                 </li>
@@ -204,7 +213,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.lutontown.co.uk/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/luton.svg" alt="" />
+                    <img src={LutonLogo} alt="LutonLogo" />
                     <span>Luton</span>
                   </a>
                 </li>
@@ -216,7 +225,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.mancity.com/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/man city.svg" alt="" />
+                    <img src={ManCityLogo} alt="ManCityLogo" />
                     <span>Man City</span>
                   </a>
                 </li>
@@ -228,7 +237,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.manutd.com/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/man utd.png" alt="" />
+                    <img src={ManUtdLogo} alt="ManUtdLogo" />
                     <span>Man United</span>
                   </a>
                 </li>
@@ -240,7 +249,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.nufc.co.uk/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/newcastle.png" alt="" />
+                    <img src={NewcastleLogo} alt="NewcastleUtdLogo" />
                     <span>Newcastle</span>
                   </a>
                 </li>
@@ -252,7 +261,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.sufc.co.uk/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/shefield.svg" alt="" />
+                    <img src={ShefieldLogo} alt="SheffieldUtdLogo" />
                     <span>Sheffield</span>
                   </a>
                 </li>
@@ -264,7 +273,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.tottenhamhotspur.com/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/spurs.svg" alt="" />
+                    <img src={SpursLogo} alt="SpursLogo" />
                     <span>Spurs</span>
                   </a>
                 </li>
@@ -276,7 +285,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.whufc.com/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/west ham.svg" alt="" />
+                    <img src={WestHamLogo} alt="WestHamLogo" />
                     <span>West Ham</span>
                   </a>
                 </li>
@@ -288,7 +297,7 @@ function Navbar() {
                     tabIndex="0"
                     href="https://www.wolves.co.uk/?utm_source=premier-league-website&utm_campaign=website&utm_medium=link"
                   >
-                    <img src="src/assets/img/club logos/wolves.svg" alt="" />
+                    <img src={WolvesLogo} alt="WolvesLogo" />
                     <span>Wolves</span>
                   </a>
                 </li>

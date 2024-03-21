@@ -1,0 +1,62 @@
+{
+  "countPlayers": 0,
+  "money": 100.0001,
+  "freeTransfers": 1,
+  "addedSquad": false,
+  "signInProviders": false,
+  "goalkeeper": [
+    {
+      "kit_src": "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f"
+    }
+  ],
+  "defence": [
+    {
+      "kit_src": "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f"
+    },
+    {
+      "kit_src": "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f"
+    },
+    {
+      "kit_src": "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f"
+    },
+    {
+      "kit_src": "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f"
+    }
+  ],
+  "midfield": [
+    {
+      "kit_src": "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f"
+    },
+    {
+      "kit_src": "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f"
+    },
+    {
+      "kit_src": "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f"
+    },
+    {
+      "kit_src": "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f"
+    }
+  ],
+  "attack": [
+    {
+      "kit_src": "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f"
+    },
+    {
+      "kit_src": "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f"
+    }
+  ],
+  "subs": [
+    {
+      "kit_src": "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f"
+    },
+    {
+      "kit_src": "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f"
+    },
+    {
+      "kit_src": "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f"
+    },
+    {
+      "kit_src": "https://firebasestorage.googleapis.com/v0/b/fantasy-mock-up.appspot.com/o/img%2Fkits%2Fselected-kit.webp?alt=media&token=20ba24db-da92-4d00-831c-dda790dc8b8f"
+    }
+  ]
+}

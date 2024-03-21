@@ -1,4 +1,4 @@
-import "../pagination/Pagination.scss";
+import "./Pagination.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Pagination({

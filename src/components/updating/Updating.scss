@@ -1,0 +1,39 @@
+.updating-wrapper {
+    padding: 20px 10%;
+
+    h3 {
+        margin: 20px 0;
+        color: var(--color-purple-second);
+        font-weight: 700;
+    }
+
+    h4 {
+        margin: 15px 0;
+        color: var(--color-red);
+        font-weight: 700;
+    }
+
+
+    ul {
+        list-style-position: inside;
+        padding-left: 0;
+
+        li {
+            margin: 8px 0;
+            color: var(--color-purple-second);
+            font-size: calc(0.8rem + .6vw);
+            font-weight: 600;
+
+            a {
+                color: var(--color-red);
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .updating-wrapper {
+        padding: 20px 4%;
+    }
+}
