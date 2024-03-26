@@ -100,13 +100,16 @@
     margin: 0 10%;
 
     .left-side {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        box-shadow: rgba(107, 107, 107, 0.08) 0px 8px 12px 0px;
         position: relative;
 
         .make-transfers {
             width: 40%;
             margin-left: 30%;
             font-size: 0.8rem;
-            margin-bottom: 20px;
+            margin-bottom: 50px;
             font-weight: 700;
             border-radius: 3px;
             background-color: rgba(150, 60, 255);
@@ -126,7 +129,7 @@
         }
 
         .title-wrapper {
-            height: 170px;
+            height: 150px;
             position: relative;
             margin-bottom: 5px;
             margin-top: 20px;
@@ -135,7 +138,7 @@
                 display: block;
                 margin: 0;
                 position: absolute;
-                top: 40px;
+                top: 20px;
                 left: 10px;
                 right: 10px;
                 color: var(--color-purple-second);
@@ -146,7 +149,7 @@
             .sub-title {
                 display: block;
                 position: absolute;
-                top: 85px;
+                top: 65px;
                 left: 10px;
                 right: 10px;
                 color: var(--color-purple-second);
@@ -160,7 +163,7 @@
                 position: absolute;
                 cursor: pointer;
                 right: 10px;
-                top: 48px;
+                top: 28px;
                 display: none;
                 align-items: center;
                 gap: 5px;
@@ -407,15 +410,14 @@
 
                 .player {
                     cursor: pointer;
-                    padding-left: 2%;
-                    padding-right: 2%;
+                    width: 90px;
 
                     .kit {
                         text-align: center;
 
                         img {
-                            height: 100px;
-                            width: 90px;
+                            height: 80px;
+                            width: 60px;
                             margin-bottom: 10px;
                         }
                     }
@@ -454,16 +456,15 @@
                 align-self: center;
 
                 .player {
-                    padding-left: 2%;
-                    padding-right: 2%;
+                    width: 90px;
                     cursor: pointer;
 
                     .kit {
                         text-align: center;
 
                         img {
-                            height: 100px;
-                            width: 90px;
+                            height: 80px;
+                            width: 60px;
                             margin-bottom: 10px;
                         }
                     }
@@ -503,15 +504,14 @@
 
                 .player {
                     cursor: pointer;
-                    padding-left: 2%;
-                    padding-right: 2%;
+                    width: 90px;
 
                     .kit {
                         text-align: center;
 
                         img {
-                            height: 100px;
-                            width: 90px;
+                            height: 80px;
+                            width: 60px;
                             margin-bottom: 10px;
                         }
                     }
@@ -551,15 +551,14 @@
 
                 .player {
                     cursor: pointer;
-                    padding-left: 2%;
-                    padding-right: 2%;
+                    width: 90px;
 
                     .kit {
                         text-align: center;
 
                         img {
-                            height: 100px;
-                            width: 90px;
+                            height: 80px;
+                            width: 60px;
                             margin-bottom: 10px;
                         }
                     }
@@ -848,8 +847,9 @@
 @media (max-width: 992px) {
 
     .page-wrapper {
-
         .left-side {
+            margin-bottom: 0;
+
             .make-transfers {
                 width: 100%;
                 margin-left: 0;
@@ -905,8 +905,8 @@
 
 @media (max-width: 800px) {
     .page-wrapper {
-
         .left-side {
+
             .upper-wrapper-transfers {
                 height: 330px;
             }
@@ -922,14 +922,12 @@
                     padding-top: 20px;
                     width: 650px;
 
-                    .player {
-                        .kit {
-                            text-align: center;
+                    .kit {
+                        text-align: center;
 
-                            img {
-                                height: 70px;
-                                width: 65px;
-                            }
+                        img {
+                            height: 70px;
+                            width: 60px;
                         }
                     }
                 }
@@ -938,14 +936,12 @@
                     margin-top: 90px;
                     width: 650px;
 
-                    .player {
-                        .kit {
-                            text-align: center;
+                    .kit {
+                        text-align: center;
 
-                            img {
-                                height: 70px;
-                                width: 65px;
-                            }
+                        img {
+                            height: 70px;
+                            width: 60px;
                         }
                     }
                 }
@@ -954,14 +950,12 @@
                     margin-top: 90px;
                     width: 650px;
 
-                    .player {
-                        .kit {
-                            text-align: center;
+                    .kit {
+                        text-align: center;
 
-                            img {
-                                height: 70px;
-                                width: 65px;
-                            }
+                        img {
+                            height: 70px;
+                            width: 60px;
                         }
                     }
                 }
@@ -970,14 +964,12 @@
                     margin-top: 90px;
                     width: 650px;
 
-                    .player {
-                        .kit {
-                            text-align: center;
+                    .kit {
+                        text-align: center;
 
-                            img {
-                                height: 70px;
-                                width: 65px;
-                            }
+                        img {
+                            height: 70px;
+                            width: 60px;
                         }
                     }
                 }
@@ -1041,12 +1033,15 @@
                 width: 500px;
 
                 .player {
+                    width: 80px;
+
                     .kit {
                         img {
-                            width: 60px;
-                            height: 60px;
+                            height: 55px;
+                            width: 45px;
                         }
                     }
+
                 }
             }
 
@@ -1055,12 +1050,15 @@
                 margin-top: 76px;
 
                 .player {
+                    width: 80px;
+
                     .kit {
                         img {
-                            width: 60px;
-                            height: 60px;
+                            height: 55px;
+                            width: 45px;
                         }
                     }
+
                 }
             }
 
@@ -1069,12 +1067,15 @@
                 margin-top: 76px;
 
                 .player {
+                    width: 80px;
+
                     .kit {
                         img {
-                            width: 60px;
-                            height: 60px;
+                            height: 55px;
+                            width: 45px;
                         }
                     }
+
                 }
             }
 
@@ -1083,12 +1084,15 @@
                 margin-top: 76px;
 
                 .player {
+                    width: 80px;
+
                     .kit {
                         img {
-                            width: 60px;
-                            height: 60px;
+                            height: 55px;
+                            width: 45px;
                         }
                     }
+
                 }
             }
         }
@@ -1129,7 +1133,13 @@
                     justify-content: center;
 
                     .player {
+                        width: auto;
+                        padding-left: 3px;
+                        padding-right: 3px;
+
                         .kit {
+                            text-align: center;
+
                             img {
                                 width: 35px;
                                 height: 40px;
@@ -1146,10 +1156,13 @@
                     justify-content: center;
 
                     .player {
+                        width: auto;
                         padding-left: 3px;
                         padding-right: 3px;
 
                         .kit {
+                            text-align: center;
+
                             img {
                                 width: 35px;
                                 height: 40px;
@@ -1166,10 +1179,13 @@
                     justify-content: center;
 
                     .player {
+                        width: auto;
                         padding-left: 3px;
                         padding-right: 3px;
 
                         .kit {
+                            text-align: center;
+
                             img {
                                 width: 35px;
                                 height: 40px;
@@ -1185,7 +1201,13 @@
                     width: 320px;
 
                     .player {
+                        width: auto;
+                        padding-left: 3px;
+                        padding-right: 3px;
+
                         .kit {
+                            text-align: center;
+
                             img {
                                 width: 35px;
                                 height: 40px;

@@ -1,16 +1,16 @@
 import "./Points.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
-import getCookie from "../../help-files/getCookie.js";
 import { firebase, database } from "../../help-files/firebase.js";
 import { get, ref } from "firebase/database";
 import { useNavigate, Navigate } from "react-router-dom";
+import Fixtures from "../fixtures/Fixtures.jsx";
 import ReactLoading from "react-loading";
 import Updating from "../updating/Updating.jsx";
 
 function Points() {
   const navigate = useNavigate();
-  const userRef = ref(database, "usersFantasy/" + getCookie("id"));
+  const userRef = ref(database, "usersFantasy/" + localStorage.getItem("id"));
   const playersRef = ref(database, "players");
   const gameweekRef = ref(database, "currentGameweek");
   const updatingRef = ref(database, "updating");
@@ -77,9 +77,32 @@ function Points() {
   function displayPoints(playerName, gameweekNumber) {
     let playerToDisplay;
     let pointsToDisplay = 0;
-    players.forEach((player) => {
-      if (player.name === playerName) {
-        playerToDisplay = player;
+    let playersTemp = players;
+    let userTemp = user;
+    let gameweekTemp;
+    playersTemp.forEach((playerTemp) => {
+      if (playerTemp.name === playerName) {
+        playerToDisplay = playerTemp;
+      }
+    });
+
+    userTemp.gameweeks.forEach((gameweek) => {
+      if (gameweek.gameweekNumber == gameweekNumber) {
+        gameweekTemp = gameweek;
+      }
+    });
+
+    let playersData = [
+      ...gameweekTemp.goalkeeper,
+      ...gameweekTemp.defence,
+      ...gameweekTemp.midfield,
+      ...gameweekTemp.attack,
+    ];
+
+    let retVal = false;
+    playersData.forEach((playerTemp) => {
+      if (playerTemp.captain == true && playerTemp.name === playerName) {
+        retVal = true;
       }
     });
 
@@ -88,7 +111,13 @@ function Points() {
         pointsToDisplay = gameweek.gameweekPoints;
       }
     });
-    return pointsToDisplay;
+
+    if (retVal) {
+      let captainPointsToDisplay = pointsToDisplay * 2;
+      return captainPointsToDisplay;
+    } else {
+      return pointsToDisplay;
+    }
   }
 
   // Fetching data from database and handling display of loading and error interface
@@ -277,10 +306,29 @@ function Points() {
             </div>
           </div>
         </div>
-        <div className="pitch-wrapper">
+        <div className="pitch-wrapper-points">
           {currentGameweek.map((gameweek, index) => (
             <div className="goalkepper" key={index}>
               <div className="player-points" id={gameweek.goalkeeper[0].name}>
+                {gameweek.goalkeeper[0].captain && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    role="img"
+                    focusable="false"
+                    className="captain"
+                  >
+                    <title>Captain</title>
+                    <circle cx="12" cy="12" r="12" aria-hidden="true"></circle>
+                    <path
+                      d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
+                      fill="white"
+                      aria-hidden="true"
+                    ></path>
+                  </svg>
+                )}
                 <div className="kit">
                   <img
                     src={gameweek ? `${gameweek.goalkeeper[0].kit_src}` : ""}
@@ -303,6 +351,25 @@ function Points() {
           <div className="defence">
             {currentGameweek[0].defence.map((player, index) => (
               <div className="player-points" id={player.name} key={index}>
+                {player.captain && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    role="img"
+                    focusable="false"
+                    className="captain"
+                  >
+                    <title>Captain</title>
+                    <circle cx="12" cy="12" r="12" aria-hidden="true"></circle>
+                    <path
+                      d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
+                      fill="white"
+                      aria-hidden="true"
+                    ></path>
+                  </svg>
+                )}
                 <div className="kit">
                   <img src={player.kit_src} alt={player.club + ".jpeg"} />
                 </div>
@@ -319,6 +386,25 @@ function Points() {
           <div className="midfield">
             {currentGameweek[0].midfield.map((player, index) => (
               <div className="player-points" id={player.name} key={index}>
+                {player.captain && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    role="img"
+                    focusable="false"
+                    className="captain"
+                  >
+                    <title>Captain</title>
+                    <circle cx="12" cy="12" r="12" aria-hidden="true"></circle>
+                    <path
+                      d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
+                      fill="white"
+                      aria-hidden="true"
+                    ></path>
+                  </svg>
+                )}
                 <div className="kit">
                   <img src={player.kit_src} alt={player.club + ".jpeg"} />
                 </div>
@@ -335,6 +421,25 @@ function Points() {
           <div className="attack">
             {currentGameweek[0].attack.map((player, index) => (
               <div className="player-points" id={player.name} key={index}>
+                {player.captain && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    role="img"
+                    focusable="false"
+                    className="captain"
+                  >
+                    <title>Captain</title>
+                    <circle cx="12" cy="12" r="12" aria-hidden="true"></circle>
+                    <path
+                      d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
+                      fill="white"
+                      aria-hidden="true"
+                    ></path>
+                  </svg>
+                )}
                 <div className="kit">
                   <img src={player.kit_src} alt={player.club + ".jpeg"} />
                 </div>
@@ -368,6 +473,7 @@ function Points() {
             ))}
           </div>
         </div>
+        <Fixtures></Fixtures>
       </div>
     </>
   );

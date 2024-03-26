@@ -1,0 +1,330 @@
+@import url("https://fonts.cdnfonts.com/css/premier-sans");
+
+.upper-wrapper-fixtures {
+    background-repeat: no-repeat;
+    background-position: 0px center, right top, 0px center;
+    background-image: linear-gradient(rgba(255, 255, 255, 0) 0px, rgba(255, 255, 255, 0.5) 80px, white 200px), url(../../assets/img/pattern.png), linear-gradient(to right, rgb(2, 239, 255), rgb(98, 123, 255));
+    height: fit-content;
+    border-radius: 6px;
+    text-align: center;
+    padding: 10px;
+
+    .fixtures-headline {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px rgb(239, 239, 239) solid;
+
+        img {
+            width: 60px;
+        }
+
+        .fixtures-headline-text {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--color-purple-second);
+        }
+    }
+
+    .gameweek-points {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px rgb(239, 239, 239) solid;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+
+        .gameweek-number {
+            color: var(--color-purple-second);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-right: 28px;
+
+            .gameweek-number-date {
+                font-weight: 500;
+            }
+        }
+
+        .paginate-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.6);
+            color: var(--color-purple-second);
+            font-weight: 700;
+            cursor: pointer;
+
+            .arrow {
+                fill: var(--color-purple-second);
+            }
+        }
+    }
+
+    .fixture-day {
+        margin-top: 20px;
+        border-top: 1px solid rgb(216, 216, 216);
+
+        .control-headline {
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 20px;
+            padding: 0.2rem 1.5rem;
+            border-radius: 0px 0px 1rem 1rem;
+            width: fit-content;
+            background-color: var(--color-purple);
+            border-top: 1px solid;
+            border-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgb(239, 239, 239) 50%, rgba(255, 255, 255, 0) 100%);
+            border-image-slice: 1;
+
+            .gameweek {
+                background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-weight: 500;
+                font-size: 0.9rem;
+            }
+        }
+
+        .fixture-matches {
+            margin-top: 10px;
+
+            .fixture-match {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 10px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid rgb(216, 216, 216);
+
+                .team-home {
+                    width: 45%;
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                    gap: 10px;
+
+                    .team-name {
+                        color: var(--color-purple-second);
+                        font-weight: 700;
+                        font-size: 1.1rem;
+                    }
+
+                    img {
+                        width: 40px;
+                    }
+                }
+
+                .team-away {
+                    width: 45%;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 10px;
+
+                    .team-name {
+                        color: var(--color-purple-second);
+                        font-weight: 700;
+                        font-size: 1.1rem;
+                    }
+
+                    img {
+                        width: 40px;
+                    }
+                }
+
+                .time-holder {
+                    width: 10%;
+                    height: 35px;
+                    width: 60px;
+                    border-radius: 3px;
+                    border: 1px solid rgb(216, 216, 216);
+                    padding: 4px;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+
+
+                    .time-text {
+                        font-size: 1.2rem;
+                    }
+                }
+
+                .result-holder {
+                    width: 10%;
+                    background-color: var(--color-purple-second);
+                    height: 35px;
+                    width: 60px;
+                    border-radius: 3px;
+                    padding: 4px;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    gap: 2px;
+
+                    .goal-border {
+                        width: 0.5px;
+                        background-color: white;
+                        margin: auto 0;
+                        height: 20px;
+                    }
+
+                    .goal-home,
+                    .goal-away {
+                        color: white;
+                        font-size: 1.3rem;
+                        font-weight: 700;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 992px) {
+
+    .upper-wrapper-fixtures {
+        .fixtures-headline {
+            img {
+                width: 50px;
+            }
+
+            .fixtures-headline-text {
+                font-size: 1.5rem;
+            }
+        }
+
+        .gameweek-points {
+            .gameweek-number {
+                font-size: 1rem;
+                margin-right: 0;
+            }
+
+            .paginate-buttons {
+                padding: 10px 14px;
+
+                .paginate-text {
+                    display: none;
+                }
+            }
+        }
+
+        .fixture-day {
+            .fixture-matches {
+                .fixture-match {
+                    .team-home {
+                        .team-name {
+                            font-size: 1rem;
+                        }
+
+                        img {
+                            width: 30px;
+                        }
+                    }
+
+                    .team-away {
+                        .team-name {
+                            font-size: 1rem;
+                        }
+
+                        img {
+                            width: 30px;
+                        }
+                    }
+
+                    .time-holder {
+                        .time-text {
+                            font-size: 1rem;
+                        }
+                    }
+
+                    .result-holder {
+                        height: 25px;
+                        width: 50px;
+
+                        .goal-border {
+                            height: 15px;
+                        }
+
+                        .goal-home,
+                        .goal-away {
+                            font-size: 1rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 670px) {
+    .upper-wrapper-fixtures {
+        .fixtures-headline {
+            img {
+                width: 40px;
+            }
+
+            .fixtures-headline-text {
+                font-size: 1.4rem;
+            }
+        }
+
+        .gameweek-points {
+            .gameweek-number {
+                .gameweek-number-date {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 500px) {
+    .upper-wrapper-fixtures {
+        .fixtures-headline {
+            margin-right: 8px;
+        }
+
+        .fixture-day {
+            .fixture-matches {
+                .fixture-match {
+                    .team-home {
+                        gap: 5px;
+
+                        .team-name {
+                            font-size: 0.8rem;
+                        }
+                    }
+
+                    .team-away {
+                        gap: 5px;
+
+                        .team-name {
+                            font-size: 0.8rem;
+                        }
+                    }
+
+                    .time-holder {
+                        .time-text {
+                            font-size: 0.8rem;
+                        }
+                    }
+
+                    .result-holder {
+
+                        .goal-home,
+                        .goal-away {
+                            font-size: 0.8rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

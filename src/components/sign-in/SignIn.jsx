@@ -24,6 +24,7 @@ function SignIn({ onUpdateValueHome }) {
   const updatingRef = ref(database, "updating");
   const [error, setError] = useState(null);
   const [updating, setUpdating] = useState("");
+  const [signInButton, setSignInButton] = useState(false);
   const [windowWidth, setWindowWidth] = useState(
     window.matchMedia("(max-width: 992px)")
   );
@@ -96,6 +97,7 @@ function SignIn({ onUpdateValueHome }) {
     }
 
     if (retVal == true) {
+      setSignInButton(true);
       signInWithEmailAndPassword(
         auth,
         formData.emailSignIn,
@@ -113,29 +115,34 @@ function SignIn({ onUpdateValueHome }) {
                 let user = snapshot.val();
 
                 if (user.addedSquad == false) {
-                  document.cookie = `id=${user._id}`;
+                  localStorage.setItem("id", `${user._id}`);
                   onUpdateValueHome("/home");
                   navigate("/select-team");
                 } else if (user.addedSquad == true) {
                   if (user.gameweeks) {
-                    document.cookie = `id=${user._id}`;
+                    localStorage.setItem("id", `${user._id}`);
                     onUpdateValueHome("/points");
                     navigate("/");
                   } else {
-                    document.cookie = `id=${user._id}`;
+                    localStorage.setItem("id", `${user._id}`);
                     onUpdateValueHome("/pick-team");
                     navigate("/");
                   }
                 }
+
+                setSignInButton(false);
               } else {
+                setSignInButton(false);
                 setError("No data available for this user.");
               }
             })
             .catch((error) => {
+              setSignInButton(false);
               setError("Something went wrong. Please try again.");
             });
         })
         .catch((error) => {
+          setSignInButton(false);
           resetErrors();
           if (error.message === "Firebase: Error (auth/invalid-credential).") {
             setInvalidUser(true);
@@ -159,16 +166,16 @@ function SignIn({ onUpdateValueHome }) {
               let user = snapshot.val();
 
               if (user.addedSquad == false) {
-                document.cookie = `id=${user._id}`;
+                localStorage.setItem("id", `${user._id}`);
                 onUpdateValueHome("/home");
                 navigate("/select-team");
               } else if (user.addedSquad == true) {
                 if (user.gameweeks) {
-                  document.cookie = `id=${user._id}`;
+                  localStorage.setItem("id", `${user._id}`);
                   onUpdateValueHome("/points");
                   navigate("/");
                 } else {
-                  document.cookie = `id=${user._id}`;
+                  localStorage.setItem("id", `${user._id}`);
                   onUpdateValueHome("/pick-team");
                   navigate("/");
                 }
@@ -201,7 +208,7 @@ function SignIn({ onUpdateValueHome }) {
                     .then((snapshot) => {
                       if (snapshot.exists()) {
                         let user = snapshot.val();
-                        document.cookie = `id=${user._id}`;
+                        localStorage.setItem("id", `${user._id}`);
                         navigate("/select-team");
                       } else {
                         setError("No data available for this user.");
@@ -371,7 +378,11 @@ function SignIn({ onUpdateValueHome }) {
               />
             </Form.Group>
             <div className="button-wrapper text-center">
-              <Button type="submit" className="btn btn-primary my-button">
+              <Button
+                type="submit"
+                className="btn btn-primary my-button"
+                disabled={signInButton}
+              >
                 Sign In
               </Button>
             </div>

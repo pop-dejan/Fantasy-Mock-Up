@@ -42,6 +42,7 @@ function SignUp() {
   const updatingRef = ref(database, "updating");
   const [updating, setUpdating] = useState("");
   const [error, setError] = useState(null);
+  const [signUpButton, setSignUpButton] = useState(false);
   const [windowWidth, setWindowWidth] = useState(
     window.matchMedia("(max-width: 992px)")
   );
@@ -255,6 +256,7 @@ function SignUp() {
     }
 
     if (retVal == true) {
+      setSignUpButton(true);
       createUserWithEmailAndPassword(auth, formData.email, formData.password)
         .then((userCredential) => {
           setIsLoading(true);
@@ -286,18 +288,22 @@ function SignUp() {
               .then((snapshot) => {
                 if (snapshot.exists()) {
                   let user = snapshot.val();
-                  document.cookie = `id=${user._id}`;
+                  localStorage.setItem("id", `${user._id}`);
                   navigate("/select-team");
+                  setSignUpButton(false);
                 } else {
+                  setSignUpButton(false);
                   setError("No data available for this user.");
                 }
               })
               .catch((error) => {
+                setSignUpButton(false);
                 setError("Something went wrong. Please try again.");
               });
           });
         })
         .catch((error) => {
+          setSignUpButton(false);
           resetErrors();
           if (error.message === "Firebase: Error (auth/invalid-email).") {
             setInvalidEmail(true);
@@ -841,7 +847,11 @@ function SignUp() {
               />
             </Form.Group>
             <div className="button-wrapper text-center">
-              <Button type="submit" className="btn btn-primary my-button">
+              <Button
+                type="submit"
+                className="btn btn-primary my-button"
+                disabled={signUpButton}
+              >
                 Sign Up
               </Button>
             </div>

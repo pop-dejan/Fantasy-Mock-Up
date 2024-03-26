@@ -11,7 +11,6 @@ import { AuthProvider } from "./help-files/AuthContext";
 import { ProtectedRoute } from "./help-files/ProtectedRoute";
 import { auth, database } from "./help-files/firebase";
 import { get, ref } from "firebase/database";
-import getCookie from "./help-files/getCookie";
 import SignIn from "./components/sign-in/SignIn";
 import SignUp from "./components/sign-up/SignUp";
 import Points from "./components/points/Points";
@@ -22,22 +21,23 @@ import Transfers from "./components/transfers/Transfers";
 import Navbar from "./components/navbar/Navbar";
 import Home from "./components/home/Home";
 import NavbarSecond from "./components/navbar-second/NavbarSecond";
+import Fixtures from "./components/fixtures/Fixtures";
 
 function App() {
   // Function handling home page based on if user is logged
-  const usersRef = ref(database, "usersFantasy/" + getCookie("id"));
+  const usersRef = ref(database, "usersFantasy/" + localStorage.getItem("id"));
   const [error, setError] = useState("");
   const [valueHome, setValueHome] = useState(() => {
-    const storedValue = getCookie("myValueHome");
+    const storedValue = localStorage.getItem("myValueHome");
     if (storedValue === null) {
-      document.cookie = "myValueHome=/home";
+      localStorage.setItem("myValueHome", "/home");
       return "/home";
     }
     return storedValue;
   });
 
   useEffect(() => {
-    document.cookie = `myValueHome=${valueHome}`;
+    localStorage.setItem("myValueHome", `${valueHome}`);
   }, [valueHome]);
 
   const updateValueHome = (newValue) => {
@@ -49,6 +49,13 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    function handleStorageChange(event) {
+      if (event.key === "id") {
+        window.location.reload();
+      }
+    }
+    window.addEventListener("storage", handleStorageChange);
+
     const userCheck = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
         setCurrentUser(currentUser);
@@ -57,18 +64,18 @@ function App() {
       }
     });
 
-    if (!getCookie("id")) {
+    if (!localStorage.getItem("id")) {
       auth.signOut();
     } else {
       if (valueHome === "/home") {
-        document.cookie = `myValueHome=/home`;
+        localStorage.setItem("myValueHome", "/home");
         setValueHome("/home");
       } else if (valueHome === "/pick-team") {
         get(usersRef)
           .then((snapshot) => {
             if (snapshot.exists()) {
               if (snapshot.val().gameweeks) {
-                document.cookie = `myValueHome=/points`;
+                localStorage.setItem("myValueHome", "/points");
                 setValueHome("/points");
                 navigate("/");
               }
@@ -82,7 +89,7 @@ function App() {
           .then((snapshot) => {
             if (snapshot.exists()) {
               if (!snapshot.val().gameweeks) {
-                document.cookie = `myValueHome=/pick-team`;
+                localStorage.setItem("myValueHome", "/pick-team");
                 setValueHome("/pick-team");
                 navigate("/");
               }
@@ -119,7 +126,7 @@ function App() {
           <NavbarSecond
             showButtons={valueHome === "/points" || valueHome === "/pick-team"}
             showHome={valueHome === "/home"}
-            hideAllButtons={getCookie("id")}
+            hideAllButtons={localStorage.getItem("id")}
             onUpdateValueHome={updateValueHome}
             valueHome={valueHome}
           />
@@ -175,6 +182,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route path="/fixtures" element={<Fixtures />} />
         </Routes>
 
         <Footer />

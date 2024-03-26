@@ -4,16 +4,16 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../models/user.ts";
 import _ from "lodash";
-import getCookie from "../../help-files/getCookie.js";
 import { firebase, database } from "../../help-files/firebase.js";
 import { get, ref, set } from "firebase/database";
+import Fixtures from "../fixtures/Fixtures.jsx";
 import ReactLoading from "react-loading";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Updating from "../updating/Updating.jsx";
 
 function PickTeam() {
-  const userRef = ref(database, "usersFantasy/" + getCookie("id"));
+  const userRef = ref(database, "usersFantasy/" + localStorage.getItem("id"));
   const playersRef = ref(database, "players");
   const gameweekRef = ref(database, "currentGameweek");
   const updatingRef = ref(database, "updating");
@@ -31,6 +31,7 @@ function PickTeam() {
   const [player, setPlayer] = useState();
   const [selectPlayer, setSelectPlayer] = useState();
   const [playerElement, setPlayerElement] = useState();
+  const [initialCaptain, setInitialCaptain] = useState("");
   const [pickTeam, setPickTeam] = useState(true);
   const [firstSwitch, setfirstSwitch] = useState(false);
   const [showPickTeamButton, setShowPickTeamButton] = useState(true);
@@ -52,24 +53,25 @@ function PickTeam() {
     let defenceSubs = [];
     let midfieldSubs = [];
     let attackSubs = [];
+    let userTemp = user;
 
-    for (let i = 0; i < user.subs.length; i++) {
-      if (user.subs[i].position === "def") {
-        defenceSubs.push(user.subs[i]);
-      } else if (user.subs[i].position === "mid") {
-        midfieldSubs.push(user.subs[i]);
-      } else if (user.subs[i].position === "att") {
-        attackSubs.push(user.subs[i]);
+    for (let i = 0; i < userTemp.subs.length; i++) {
+      if (userTemp.subs[i].position === "def") {
+        defenceSubs.push(userTemp.subs[i]);
+      } else if (userTemp.subs[i].position === "mid") {
+        midfieldSubs.push(userTemp.subs[i]);
+      } else if (userTemp.subs[i].position === "att") {
+        attackSubs.push(userTemp.subs[i]);
       }
     }
 
-    if (user.goalkeeper.includes(player)) {
+    if (userTemp.goalkeeper.includes(player)) {
       selectedPlayer();
       let subsGoalkeeper;
 
-      for (let i = 0; i < user.subs.length; i++) {
-        if (user.subs[i].position === "gkp") {
-          subsGoalkeeper = user.subs[i];
+      for (let i = 0; i < userTemp.subs.length; i++) {
+        if (userTemp.subs[i].position === "gkp") {
+          subsGoalkeeper = userTemp.subs[i];
         }
       }
 
@@ -80,7 +82,7 @@ function PickTeam() {
       }
 
       subsGoalkeeper.switch2 = true;
-    } else if (user.defence.includes(player)) {
+    } else if (userTemp.defence.includes(player)) {
       selectedPlayer();
 
       for (let i = 0; i < subsElements.length; i++) {
@@ -93,8 +95,8 @@ function PickTeam() {
 
       let midfieldFlag = false;
       if (
-        (user.defence.length === 4 || user.defence.length === 5) &&
-        (user.midfield.length === 4 || user.midfield.length === 3)
+        (userTemp.defence.length === 4 || userTemp.defence.length === 5) &&
+        (userTemp.midfield.length === 4 || userTemp.midfield.length === 3)
       ) {
         midfieldFlag = true;
       } else {
@@ -103,8 +105,8 @@ function PickTeam() {
 
       let attackFlag = false;
       if (
-        (user.defence.length === 4 || user.defence.length === 5) &&
-        (user.attack.length === 1 || user.attack.length === 2)
+        (userTemp.defence.length === 4 || userTemp.defence.length === 5) &&
+        (userTemp.attack.length === 1 || userTemp.attack.length === 2)
       ) {
         attackFlag = true;
       } else {
@@ -142,7 +144,7 @@ function PickTeam() {
       for (let i = 0; i < defenceSubs.length; i++) {
         defenceSubs[i].switch2 = true;
       }
-    } else if (user.midfield.includes(player)) {
+    } else if (userTemp.midfield.includes(player)) {
       selectedPlayer();
 
       for (let i = 0; i < subsElements.length; i++) {
@@ -155,8 +157,8 @@ function PickTeam() {
 
       let defenceFlag = false;
       if (
-        (user.defence.length === 4 || user.defence.length === 3) &&
-        (user.midfield.length === 4 || user.midfield.length === 5)
+        (userTemp.defence.length === 4 || userTemp.defence.length === 3) &&
+        (userTemp.midfield.length === 4 || userTemp.midfield.length === 5)
       ) {
         defenceFlag = true;
       } else {
@@ -165,8 +167,8 @@ function PickTeam() {
 
       let attackFlag = false;
       if (
-        (user.midfield.length === 4 || user.midfield.length === 5) &&
-        (user.attack.length === 1 || user.attack.length === 2)
+        (userTemp.midfield.length === 4 || userTemp.midfield.length === 5) &&
+        (userTemp.attack.length === 1 || userTemp.attack.length === 2)
       ) {
         attackFlag = true;
       } else {
@@ -204,7 +206,7 @@ function PickTeam() {
       for (let i = 0; i < midfieldSubs.length; i++) {
         midfieldSubs[i].switch2 = true;
       }
-    } else if (user.attack.includes(player)) {
+    } else if (userTemp.attack.includes(player)) {
       selectedPlayer();
       for (let i = 0; i < subsElements.length; i++) {
         for (let j = 0; j < attackSubs.length; j++) {
@@ -216,8 +218,8 @@ function PickTeam() {
 
       let defenceFlag = false;
       if (
-        (user.defence.length === 4 || user.defence.length === 3) &&
-        (user.attack.length === 3 || user.attack.length === 2)
+        (userTemp.defence.length === 4 || userTemp.defence.length === 3) &&
+        (userTemp.attack.length === 3 || userTemp.attack.length === 2)
       ) {
         defenceFlag = true;
       } else {
@@ -226,8 +228,8 @@ function PickTeam() {
 
       let midfieldFlag = false;
       if (
-        (user.midfield.length === 4 || user.midfield.length === 3) &&
-        (user.attack.length === 3 || user.attack.length === 2)
+        (userTemp.midfield.length === 4 || userTemp.midfield.length === 3) &&
+        (userTemp.attack.length === 3 || userTemp.attack.length === 2)
       ) {
         midfieldFlag = true;
       } else {
@@ -265,29 +267,29 @@ function PickTeam() {
       for (let i = 0; i < attackSubs.length; i++) {
         attackSubs[i].switch2 = true;
       }
-    } else if (user.subs.includes(player)) {
+    } else if (userTemp.subs.includes(player)) {
       if (player.position === "gkp") {
         selectedPlayer();
 
         for (let i = 0; i < playersElements.length; i++) {
-          if (playersElements[i].id === user.goalkeeper[0].name) {
+          if (playersElements[i].id === userTemp.goalkeeper[0].name) {
             selectedSub(playersElements[i]);
           }
         }
 
         buttonsVisibility(player);
-        user.goalkeeper[0].switch2 = true;
+        userTemp.goalkeeper[0].switch2 = true;
         setShowPickTeamButton(true);
         setShowUpdateMessage(false);
-        setUser(user);
+        setUser(userTemp);
         setPickTeam(true);
         setShow(false);
       } else if (player.position === "def") {
         selectedPlayer();
 
         for (let i = 0; i < playersElements.length; i++) {
-          for (let j = 0; j < user.defence.length; j++) {
-            if (playersElements[i].id === user.defence[j].name) {
+          for (let j = 0; j < userTemp.defence.length; j++) {
+            if (playersElements[i].id === userTemp.defence[j].name) {
               selectedSub(playersElements[i]);
             }
           }
@@ -295,8 +297,8 @@ function PickTeam() {
 
         let midfieldFlag = false;
         if (
-          (user.defence.length === 3 || user.defence.length === 4) &&
-          (user.midfield.length === 5 || user.midfield.length === 4)
+          (userTemp.defence.length === 3 || userTemp.defence.length === 4) &&
+          (userTemp.midfield.length === 5 || userTemp.midfield.length === 4)
         ) {
           midfieldFlag = true;
         } else {
@@ -305,8 +307,8 @@ function PickTeam() {
 
         let attackFlag = false;
         if (
-          (user.defence.length === 3 || user.defence.length === 4) &&
-          (user.attack.length === 2 || user.attack.length === 3)
+          (userTemp.defence.length === 3 || userTemp.defence.length === 4) &&
+          (userTemp.attack.length === 2 || userTemp.attack.length === 3)
         ) {
           attackFlag = true;
         } else {
@@ -315,39 +317,39 @@ function PickTeam() {
 
         if (midfieldFlag == true) {
           for (let i = 0; i < playersElements.length; i++) {
-            for (let j = 0; j < user.midfield.length; j++) {
-              if (playersElements[i].id === user.midfield[j].name) {
+            for (let j = 0; j < userTemp.midfield.length; j++) {
+              if (playersElements[i].id === userTemp.midfield[j].name) {
                 selectedSub(playersElements[i]);
               }
             }
           }
 
-          for (let i = 0; i < user.midfield.length; i++) {
-            user.midfield[i].switch2 = true;
+          for (let i = 0; i < userTemp.midfield.length; i++) {
+            userTemp.midfield[i].switch2 = true;
           }
         }
 
         if (attackFlag == true) {
           for (let i = 0; i < playersElements.length; i++) {
-            for (let j = 0; j < user.attack.length; j++) {
-              if (playersElements[i].id === user.attack[j].name) {
+            for (let j = 0; j < userTemp.attack.length; j++) {
+              if (playersElements[i].id === userTemp.attack[j].name) {
                 selectedSub(playersElements[i]);
               }
             }
           }
 
-          for (let i = 0; i < user.attack.length; i++) {
-            user.attack[i].switch2 = true;
+          for (let i = 0; i < userTemp.attack.length; i++) {
+            userTemp.attack[i].switch2 = true;
           }
         }
 
-        for (let i = 0; i < user.defence.length; i++) {
-          user.defence[i].switch2 = true;
+        for (let i = 0; i < userTemp.defence.length; i++) {
+          userTemp.defence[i].switch2 = true;
         }
 
-        for (let i = 1; i < user.subs.length; i++) {
-          if (user.subs[i] !== player) {
-            user.subs[i].switch2 = true;
+        for (let i = 1; i < userTemp.subs.length; i++) {
+          if (userTemp.subs[i] !== player) {
+            userTemp.subs[i].switch2 = true;
           }
         }
 
@@ -360,15 +362,15 @@ function PickTeam() {
         buttonsVisibility(player);
         setShowPickTeamButton(true);
         setShowUpdateMessage(false);
-        setUser(user);
+        setUser(userTemp);
         setPickTeam(true);
         setShow(false);
       } else if (player.position === "mid") {
         selectedPlayer();
 
         for (let i = 0; i < playersElements.length; i++) {
-          for (let j = 0; j < user.midfield.length; j++) {
-            if (playersElements[i].id === user.midfield[j].name) {
+          for (let j = 0; j < userTemp.midfield.length; j++) {
+            if (playersElements[i].id === userTemp.midfield[j].name) {
               selectedSub(playersElements[i]);
             }
           }
@@ -376,8 +378,8 @@ function PickTeam() {
 
         let defenceFlag = false;
         if (
-          (user.defence.length === 4 || user.defence.length === 5) &&
-          (user.midfield.length === 3 || user.midfield.length === 4)
+          (userTemp.defence.length === 4 || userTemp.defence.length === 5) &&
+          (userTemp.midfield.length === 3 || userTemp.midfield.length === 4)
         ) {
           defenceFlag = true;
         } else {
@@ -386,8 +388,8 @@ function PickTeam() {
 
         let attackFlag = false;
         if (
-          (user.midfield.length === 3 || user.midfield.length === 4) &&
-          (user.attack.length === 2 || user.attack.length === 3)
+          (userTemp.midfield.length === 3 || userTemp.midfield.length === 4) &&
+          (userTemp.attack.length === 2 || userTemp.attack.length === 3)
         ) {
           attackFlag = true;
         } else {
@@ -396,39 +398,39 @@ function PickTeam() {
 
         if (defenceFlag == true) {
           for (let i = 0; i < playersElements.length; i++) {
-            for (let j = 0; j < user.defence.length; j++) {
-              if (playersElements[i].id === user.defence[j].name) {
+            for (let j = 0; j < userTemp.defence.length; j++) {
+              if (playersElements[i].id === userTemp.defence[j].name) {
                 selectedSub(playersElements[i]);
               }
             }
           }
 
-          for (let i = 0; i < user.defence.length; i++) {
-            user.defence[i].switch2 = true;
+          for (let i = 0; i < userTemp.defence.length; i++) {
+            userTemp.defence[i].switch2 = true;
           }
         }
 
         if (attackFlag == true) {
           for (let i = 0; i < playersElements.length; i++) {
-            for (let j = 0; j < user.attack.length; j++) {
-              if (playersElements[i].id === user.attack[j].name) {
+            for (let j = 0; j < userTemp.attack.length; j++) {
+              if (playersElements[i].id === userTemp.attack[j].name) {
                 selectedSub(playersElements[i]);
               }
             }
           }
 
-          for (let i = 0; i < user.attack.length; i++) {
-            user.attack[i].switch2 = true;
+          for (let i = 0; i < userTemp.attack.length; i++) {
+            userTemp.attack[i].switch2 = true;
           }
         }
 
-        for (let i = 0; i < user.midfield.length; i++) {
-          user.midfield[i].switch2 = true;
+        for (let i = 0; i < userTemp.midfield.length; i++) {
+          userTemp.midfield[i].switch2 = true;
         }
 
-        for (let i = 1; i < user.subs.length; i++) {
-          if (user.subs[i] !== player) {
-            user.subs[i].switch2 = true;
+        for (let i = 1; i < userTemp.subs.length; i++) {
+          if (userTemp.subs[i] !== player) {
+            userTemp.subs[i].switch2 = true;
           }
         }
 
@@ -441,15 +443,15 @@ function PickTeam() {
         buttonsVisibility(player);
         setShowPickTeamButton(true);
         setShowUpdateMessage(false);
-        setUser(user);
+        setUser(userTemp);
         setPickTeam(true);
         setShow(false);
       } else if (player.position === "att") {
         selectedPlayer();
 
         for (let i = 0; i < playersElements.length; i++) {
-          for (let j = 0; j < user.attack.length; j++) {
-            if (playersElements[i].id === user.attack[j].name) {
+          for (let j = 0; j < userTemp.attack.length; j++) {
+            if (playersElements[i].id === userTemp.attack[j].name) {
               selectedSub(playersElements[i]);
             }
           }
@@ -457,8 +459,8 @@ function PickTeam() {
 
         let defenceFlag = false;
         if (
-          (user.defence.length === 4 || user.defence.length === 5) &&
-          (user.attack.length === 1 || user.attack.length === 2)
+          (userTemp.defence.length === 4 || userTemp.defence.length === 5) &&
+          (userTemp.attack.length === 1 || userTemp.attack.length === 2)
         ) {
           defenceFlag = true;
         } else {
@@ -467,8 +469,8 @@ function PickTeam() {
 
         let midfieldFlag = false;
         if (
-          (user.midfield.length === 4 || user.midfield.length === 5) &&
-          (user.attack.length === 1 || user.attack.length === 2)
+          (userTemp.midfield.length === 4 || userTemp.midfield.length === 5) &&
+          (userTemp.attack.length === 1 || userTemp.attack.length === 2)
         ) {
           midfieldFlag = true;
         } else {
@@ -477,39 +479,39 @@ function PickTeam() {
 
         if (defenceFlag == true) {
           for (let i = 0; i < playersElements.length; i++) {
-            for (let j = 0; j < user.defence.length; j++) {
-              if (playersElements[i].id === user.defence[j].name) {
+            for (let j = 0; j < userTemp.defence.length; j++) {
+              if (playersElements[i].id === userTemp.defence[j].name) {
                 selectedSub(playersElements[i]);
               }
             }
           }
 
-          for (let i = 0; i < user.defence.length; i++) {
-            user.defence[i].switch2 = true;
+          for (let i = 0; i < userTemp.defence.length; i++) {
+            userTemp.defence[i].switch2 = true;
           }
         }
 
         if (midfieldFlag == true) {
           for (let i = 0; i < playersElements.length; i++) {
-            for (let j = 0; j < user.midfield.length; j++) {
-              if (playersElements[i].id === user.midfield[j].name) {
+            for (let j = 0; j < userTemp.midfield.length; j++) {
+              if (playersElements[i].id === userTemp.midfield[j].name) {
                 selectedSub(playersElements[i]);
               }
             }
           }
 
-          for (let i = 0; i < user.midfield.length; i++) {
-            user.midfield[i].switch2 = true;
+          for (let i = 0; i < userTemp.midfield.length; i++) {
+            userTemp.midfield[i].switch2 = true;
           }
         }
 
-        for (let i = 0; i < user.attack.length; i++) {
-          user.attack[i].switch2 = true;
+        for (let i = 0; i < userTemp.attack.length; i++) {
+          userTemp.attack[i].switch2 = true;
         }
 
-        for (let i = 1; i < user.subs.length; i++) {
-          if (user.subs[i] !== player) {
-            user.subs[i].switch2 = true;
+        for (let i = 1; i < userTemp.subs.length; i++) {
+          if (userTemp.subs[i] !== player) {
+            userTemp.subs[i].switch2 = true;
           }
         }
 
@@ -522,7 +524,7 @@ function PickTeam() {
     }
     setShowPickTeamButton(true);
     setShowUpdateMessage(false);
-    setUser(user);
+    setUser(userTemp);
     setPickTeam(true);
     buttonsVisibility(player);
     setSelectPlayer(player);
@@ -534,78 +536,87 @@ function PickTeam() {
     let playersElements = document.querySelectorAll(".player");
     let selectedPlayer;
     let playerToSub;
+    let userTemp = user;
 
-    for (let i = 0; i < players.length; i++) {
-      if (players[i].name === player.name) {
-        selectedPlayer = players[i];
-      } else if (players[i].name === selectPlayer.name) {
-        playerToSub = players[i];
+    let allPlayers = [
+      ...userTemp.goalkeeper,
+      ...userTemp.defence,
+      ...userTemp.midfield,
+      ...userTemp.attack,
+      ...userTemp.subs,
+    ];
+
+    for (let i = 0; i < allPlayers.length; i++) {
+      if (allPlayers[i].name === player.name) {
+        selectedPlayer = allPlayers[i];
+      } else if (allPlayers[i].name === selectPlayer.name) {
+        playerToSub = allPlayers[i];
       }
     }
 
-    let isSelectedPlayerInArray = user.subs.some(
+    let isSelectedPlayerInArray = userTemp.subs.some(
       (obj) => obj.name === selectedPlayer.name
     );
-    let isPlayerToSubInArray = user.subs.some(
+    let isPlayerToSubInArray = userTemp.subs.some(
       (obj) => obj.name === playerToSub.name
     );
 
     if (isSelectedPlayerInArray) {
       if (isPlayerToSubInArray) {
-        let indexSelectedPlayer = user.subs.findIndex(
+        let indexSelectedPlayer = userTemp.subs.findIndex(
           (obj) => obj.name === selectedPlayer.name
         );
-        let indexPlayerToSub = user.subs.findIndex(
+        let indexPlayerToSub = userTemp.subs.findIndex(
           (obj) => obj.name === playerToSub.name
         );
-        [user.subs[indexSelectedPlayer], user.subs[indexPlayerToSub]] = [
-          user.subs[indexPlayerToSub],
-          user.subs[indexSelectedPlayer],
-        ];
+        [userTemp.subs[indexSelectedPlayer], userTemp.subs[indexPlayerToSub]] =
+          [userTemp.subs[indexPlayerToSub], userTemp.subs[indexSelectedPlayer]];
 
         playersElements.forEach((player) => {
           player.style.opacity = "1";
           player.style.backgroundColor = "transparent";
         });
 
-        let userTemp = user;
         userTemp = new User(userTemp);
+
         setUser(userTemp);
         setfirstSwitch(true);
         setPickTeam(false);
         setShow(false);
       } else {
-        user.subs = user.subs.filter((obj) => obj.name !== selectedPlayer.name);
+        userTemp.subs = userTemp.subs.filter(
+          (obj) => obj.name !== selectedPlayer.name
+        );
         if (playerToSub.position === "gkp") {
-          user.subs.unshift(playerToSub);
+          userTemp.subs.unshift(playerToSub);
         } else {
-          user.subs.push(playerToSub);
+          userTemp.subs.push(playerToSub);
         }
 
         if (selectedPlayer.position === "gkp") {
-          user.goalkeeper.push(selectedPlayer);
+          userTemp.goalkeeper.push(selectedPlayer);
         } else if (selectedPlayer.position === "def") {
-          user.defence.push(selectedPlayer);
+          userTemp.defence.push(selectedPlayer);
         } else if (selectedPlayer.position === "mid") {
-          user.midfield.push(selectedPlayer);
+          userTemp.midfield.push(selectedPlayer);
         } else if (selectedPlayer.position === "att") {
-          user.attack.push(selectedPlayer);
+          userTemp.attack.push(selectedPlayer);
         }
 
         if (playerToSub.position === "gkp") {
-          user.goalkeeper = user.goalkeeper.filter(
+          userTemp.goalkeeper = userTemp.goalkeeper.filter(
             (obj) => obj.name !== playerToSub.name
           );
         } else if (playerToSub.position === "def") {
-          user.defence = user.defence.filter(
+          userTemp.defence = userTemp.defence.filter(
             (obj) => obj.name !== playerToSub.name
           );
         } else if (playerToSub.position === "mid") {
-          user.midfield = user.midfield.filter(
+          userTemp.midfield = userTemp.midfield.filter(
             (obj) => obj.name !== playerToSub.name
           );
         } else if (playerToSub.position === "att") {
-          user.attack = user.attack.filter(
+          userTemp.attack = userTemp.attack.filter(
             (obj) => obj.name !== playerToSub.name
           );
         }
@@ -615,45 +626,56 @@ function PickTeam() {
           player.style.backgroundColor = "transparent";
         });
 
-        let userTemp = user;
+        userTemp.subs.forEach((playerTemp) => {
+          if (
+            playerToSub.captain == true &&
+            playerTemp.name === playerToSub.name
+          ) {
+            handleMakeCaptain(selectedPlayer);
+          }
+        });
+
         userTemp = new User(userTemp);
+
         setUser(userTemp);
         setfirstSwitch(true);
         setPickTeam(false);
         setShow(false);
       }
     } else {
-      user.subs = user.subs.filter((obj) => obj.name !== playerToSub.name);
+      userTemp.subs = userTemp.subs.filter(
+        (obj) => obj.name !== playerToSub.name
+      );
       if (selectedPlayer.position === "gkp") {
-        user.subs.unshift(selectedPlayer);
+        userTemp.subs.unshift(selectedPlayer);
       } else {
-        user.subs.push(selectedPlayer);
+        userTemp.subs.push(selectedPlayer);
       }
 
       if (playerToSub.position === "gkp") {
-        user.goalkeeper.push(playerToSub);
+        userTemp.goalkeeper.push(playerToSub);
       } else if (playerToSub.position === "def") {
-        user.defence.push(playerToSub);
+        userTemp.defence.push(playerToSub);
       } else if (playerToSub.position === "mid") {
-        user.midfield.push(playerToSub);
+        userTemp.midfield.push(playerToSub);
       } else if (playerToSub.position === "att") {
-        user.attack.push(playerToSub);
+        userTemp.attack.push(playerToSub);
       }
 
       if (selectedPlayer.position === "gkp") {
-        user.goalkeeper = user.goalkeeper.filter(
+        userTemp.goalkeeper = userTemp.goalkeeper.filter(
           (obj) => obj.name !== selectedPlayer.name
         );
       } else if (selectedPlayer.position === "def") {
-        user.defence = user.defence.filter(
+        userTemp.defence = userTemp.defence.filter(
           (obj) => obj.name !== selectedPlayer.name
         );
       } else if (selectedPlayer.position === "mid") {
-        user.midfield = user.midfield.filter(
+        userTemp.midfield = userTemp.midfield.filter(
           (obj) => obj.name !== selectedPlayer.name
         );
       } else if (selectedPlayer.position === "att") {
-        user.attack = user.attack.filter(
+        userTemp.attack = userTemp.attack.filter(
           (obj) => obj.name !== selectedPlayer.name
         );
       }
@@ -663,8 +685,17 @@ function PickTeam() {
         player.style.backgroundColor = "transparent";
       });
 
-      let userTemp = user;
+      userTemp.subs.forEach((playerTemp) => {
+        if (
+          selectedPlayer.captain == true &&
+          playerTemp.name === selectedPlayer.name
+        ) {
+          handleMakeCaptain(playerToSub);
+        }
+      });
+
       userTemp = new User(userTemp);
+
       setUser(userTemp);
       setfirstSwitch(true);
       setPickTeam(false);
@@ -674,12 +705,13 @@ function PickTeam() {
 
   // Function that handle canceling selected player to be switched
   function handleCancel(player) {
+    let userTemp = user;
     const allPlayers = [
-      ...user.goalkeeper,
-      ...user.defence,
-      ...user.midfield,
-      ...user.attack,
-      ...user.subs,
+      ...userTemp.goalkeeper,
+      ...userTemp.defence,
+      ...userTemp.midfield,
+      ...userTemp.attack,
+      ...userTemp.subs,
     ];
 
     let playersElements = document.querySelectorAll(".player");
@@ -702,18 +734,19 @@ function PickTeam() {
     } else {
       setPickTeam(false);
     }
-    setUser(user);
+    setUser(userTemp);
     setShow(false);
   }
 
   // Function that determines what buttons will be shown in modal based on parametars
   function buttonsVisibility(player) {
+    let userTemp = user;
     const allPlayers = [
-      ...user.goalkeeper,
-      ...user.defence,
-      ...user.midfield,
-      ...user.attack,
-      ...user.subs,
+      ...userTemp.goalkeeper,
+      ...userTemp.defence,
+      ...userTemp.midfield,
+      ...userTemp.attack,
+      ...userTemp.subs,
     ];
     player.switch = false;
     player.cancel = true;
@@ -722,7 +755,7 @@ function PickTeam() {
     for (let i = 0; i < allPlayers.length; i++) {
       allPlayers[i].switch = false;
     }
-    setUser(user);
+    setUser(userTemp);
   }
 
   // Function highlighting the player that is chosen to be switched
@@ -771,6 +804,51 @@ function PickTeam() {
     }
   }
 
+  // Function handling render of make captain button
+  function shouldRenderCaptainButton(player) {
+    let retVal = true;
+    user.subs.forEach((playerSub) => {
+      if (playerSub.name === player.name) {
+        retVal = false;
+      }
+    });
+    return retVal;
+  }
+
+  // Function handling setting new captain
+  function handleMakeCaptain(player) {
+    let userTemp = user;
+    let allPlayers = [
+      ...userTemp.goalkeeper,
+      ...userTemp.defence,
+      ...userTemp.midfield,
+      ...userTemp.attack,
+      ...userTemp.subs,
+    ];
+
+    let newCaptain = "";
+    allPlayers.forEach((playerTemp) => {
+      if (playerTemp.name === player.name) {
+        playerTemp.captain = true;
+        newCaptain = playerTemp.name;
+      } else {
+        playerTemp.captain = false;
+      }
+    });
+
+    if (newCaptain !== initialCaptain) {
+      setPickTeam(false);
+    } else {
+      setPickTeam(true);
+    }
+
+    setShowPickTeamButton(true);
+    setShowUpdateMessage(false);
+
+    setUser(userTemp);
+    setShow(false);
+  }
+
   // Function handling pick team function
   function handlePickTeam() {
     let userTemp = user;
@@ -809,7 +887,10 @@ function PickTeam() {
       const data3 = snapshot3.val();
       const data4 = snapshot4.val();
 
-      if (data4.isUpdating && getCookie("myValueHome") !== "/pick-team") {
+      if (
+        data4.isUpdating &&
+        localStorage.getItem("myValueHome") !== "/pick-team"
+      ) {
         navigate("/");
       }
 
@@ -821,6 +902,19 @@ function PickTeam() {
         });
 
         player.points = count;
+      });
+
+      let allPlayers = [
+        ...data1.goalkeeper,
+        ...data1.defence,
+        ...data1.midfield,
+        ...data1.attack,
+      ];
+
+      allPlayers.forEach((playerTemp) => {
+        if (playerTemp.captain == true) {
+          setInitialCaptain(playerTemp.name);
+        }
       });
 
       setUser(data1);
@@ -913,13 +1007,17 @@ function PickTeam() {
               Switch
             </Button>
           )}
-          <Button
-            variant="primary"
-            className="btn btn-secondary info"
-            onClick={handleClose}
-          >
-            View Informattion
-          </Button>
+          {player &&
+            shouldRenderCaptainButton(player) &&
+            switchButton(player) && (
+              <Button
+                variant="primary"
+                className="btn btn-secondary btn-captain"
+                onClick={() => handleMakeCaptain(player)}
+              >
+                Make Captain
+              </Button>
+            )}
           {player && cancelButton(player) && (
             <Button
               variant="primary"
@@ -929,6 +1027,13 @@ function PickTeam() {
               Cancel
             </Button>
           )}
+          <Button
+            variant="primary"
+            className="btn btn-secondary info"
+            onClick={handleClose}
+          >
+            View Informattion
+          </Button>
         </Modal.Body>
       </Modal>
 
@@ -965,6 +1070,25 @@ function PickTeam() {
               id={user.goalkeeper[0].name}
               onClick={(event) => handleShow(event, user.goalkeeper[0])}
             >
+              {user.goalkeeper[0].captain && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  role="img"
+                  focusable="false"
+                  className="captain"
+                >
+                  <title>Captain</title>
+                  <circle cx="12" cy="12" r="12" aria-hidden="true"></circle>
+                  <path
+                    d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
+                    fill="white"
+                    aria-hidden="true"
+                  ></path>
+                </svg>
+              )}
               <div className="kit">
                 <img
                   src={user ? `${user.goalkeeper[0].kit_src}` : ""}
@@ -984,6 +1108,30 @@ function PickTeam() {
                   key={index}
                   onClick={(event) => handleShow(event, player)}
                 >
+                  {player.captain && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      role="img"
+                      focusable="false"
+                      className="captain"
+                    >
+                      <title>Captain</title>
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="12"
+                        aria-hidden="true"
+                      ></circle>
+                      <path
+                        d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
+                        fill="white"
+                        aria-hidden="true"
+                      ></path>
+                    </svg>
+                  )}
                   <div className="kit">
                     <img src={player.kit_src} alt={player.club + ".jpeg"} />
                   </div>
@@ -1001,6 +1149,30 @@ function PickTeam() {
                   key={index}
                   onClick={(event) => handleShow(event, player)}
                 >
+                  {player.captain && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      role="img"
+                      focusable="false"
+                      className="captain"
+                    >
+                      <title>Captain</title>
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="12"
+                        aria-hidden="true"
+                      ></circle>
+                      <path
+                        d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
+                        fill="white"
+                        aria-hidden="true"
+                      ></path>
+                    </svg>
+                  )}
                   <div className="kit">
                     <img src={player.kit_src} alt={player.club + ".jpeg"} />
                   </div>
@@ -1018,6 +1190,30 @@ function PickTeam() {
                   key={index}
                   onClick={(event) => handleShow(event, player)}
                 >
+                  {player.captain && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      role="img"
+                      focusable="false"
+                      className="captain"
+                    >
+                      <title>Captain</title>
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="12"
+                        aria-hidden="true"
+                      ></circle>
+                      <path
+                        d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
+                        fill="white"
+                        aria-hidden="true"
+                      ></path>
+                    </svg>
+                  )}
                   <div className="kit">
                     <img src={player.kit_src} alt={player.club + ".jpeg"} />
                   </div>
@@ -1059,6 +1255,8 @@ function PickTeam() {
             Save Your Team
           </button>
         )}
+
+        <Fixtures></Fixtures>
       </div>
     </>
   );

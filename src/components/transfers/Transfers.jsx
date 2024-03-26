@@ -1,7 +1,6 @@
 import "./Transfers.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
-import getCookie from "../../help-files/getCookie.js";
 import { firebase, database } from "../../help-files/firebase.js";
 import { get, ref, set } from "firebase/database";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +14,7 @@ import Form from "react-bootstrap/Form";
 import Pagination from "../pagination/Pagination.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import Fixtures from "../fixtures/Fixtures.jsx";
 
 function Transfers() {
   // Variables related to fetching data, error and loading interface and other
@@ -28,7 +28,7 @@ function Transfers() {
   const [error, setError] = useState(null);
   const [countTransfers, setCountTransfers] = useState(0);
 
-  const userRef = ref(database, "usersFantasy/" + getCookie("id"));
+  const userRef = ref(database, "usersFantasy/" + localStorage.getItem("id"));
   const playersRef = ref(database, "players");
   const gameweekRef = ref(database, "currentGameweek");
   const updatingRef = ref(database, "updating");
@@ -47,7 +47,6 @@ function Transfers() {
   const [playersPerPageGkp, setPlayersPerPageGkp] = useState(3);
   const [disablePrevious, setDisablePrevious] = useState(true);
   const [disableNext, setDisableNext] = useState(false);
-  const [shouldSeePagination, setShouldSeePagination] = useState(true);
 
   // Values for functionality of view and sorted select
   const optionGroups = [
@@ -841,6 +840,7 @@ function Transfers() {
       let playersDiv = document.querySelector(".players");
       let wrapperDiv = document.querySelector(".pitch-wrapper-transfers");
       let upperWrapperDiv = document.querySelector(".upper-wrapper-transfers");
+      let fixturesWrapper = document.querySelector(".fixtures-wrapper");
       let titleWrapperDiv = document.querySelector(".title-wrapper");
       let positionsDivs = document.querySelectorAll(".position");
       let makeTransfersButton = document.querySelector(".make-transfers");
@@ -855,6 +855,7 @@ function Transfers() {
         makeTransfersButton.style.display = "block";
         playersDiv.style.display = "none";
         upperWrapperDiv.style.display = "block";
+        fixturesWrapper.style.display = "block";
 
         if (playersDiv.classList.contains("active")) {
           backToPitchDiv.style.display = "flex";
@@ -863,6 +864,7 @@ function Transfers() {
           makeTransfersButton.style.display = "none";
           playersDiv.style.display = "block";
           upperWrapperDiv.style.display = "none";
+          fixturesWrapper.style.display = "none";
           titleWrapperDiv.style.display = "none";
         }
       } else {
@@ -882,6 +884,7 @@ function Transfers() {
         playerList.style.display = "none";
         playersDiv.style.display = "none";
         upperWrapperDiv.style.display = "block";
+        fixturesWrapper.style.display = "block";
 
         if (playersDiv.classList.contains("active")) {
           backToPitchDiv.style.display = "none";
@@ -908,6 +911,7 @@ function Transfers() {
     let playersDiv = document.querySelector(".players");
     let wrapperDiv = document.querySelector(".pitch-wrapper-transfers");
     let upperWrapperDiv = document.querySelector(".upper-wrapper-transfers");
+    let fixturesWrapper = document.querySelector(".fixtures-wrapper");
     let titleWrapperDiv = document.querySelector(".title-wrapper");
     let makeTransfersButton = document.querySelector(".make-transfers");
     let backToPitchDiv = document.querySelector(".back-to-pitch");
@@ -919,6 +923,7 @@ function Transfers() {
     wrapperDiv.style.display = "none";
     playersDiv.style.display = "block";
     upperWrapperDiv.style.display = "none";
+    fixturesWrapper.style.display = "none";
     playersDiv.classList.add("active");
   }
 
@@ -928,6 +933,7 @@ function Transfers() {
     let wrapperDiv = document.querySelector(".pitch-wrapper-transfers");
     let playerList = document.querySelector(".player-list");
     let upperWrapperDiv = document.querySelector(".upper-wrapper-transfers");
+    let fixturesWrapper = document.querySelector(".fixtures-wrapper");
     let titleWrapperDiv = document.querySelector(".title-wrapper");
     let makeTransfersButton = document.querySelector(".make-transfers");
     let backToPitchDiv = document.querySelector(".back-to-pitch");
@@ -939,6 +945,7 @@ function Transfers() {
     playersDiv.style.display = "none";
     playerList.style.display = "flex";
     upperWrapperDiv.style.display = "block";
+    fixturesWrapper.style.display = "block";
     playersDiv.classList.remove("active");
   }
 
@@ -1036,6 +1043,38 @@ function Transfers() {
       updatePlayers(playersTemp);
       shouldShowPlayers();
       setSelectSortValue(event.target.value);
+      paginatePrevEnd();
+      if (
+        selectViewValue === "All Players" ||
+        selectViewValue === "Goalkeepers" ||
+        selectViewValue === "Defenders" ||
+        selectViewValue === "Midfielders" ||
+        selectViewValue === "Attackers"
+      ) {
+        if (inputSeatchValue != "") {
+          let next = document.querySelector(".next");
+          let nextEnd = document.querySelector(".next-end");
+          let previous = document.querySelector(".previous");
+          let previousEnd = document.querySelector(".previous-end");
+          next.classList.add("my-disabled");
+          nextEnd.classList.add("my-disabled");
+          previous.classList.add("my-disabled");
+          previousEnd.classList.add("my-disabled");
+          setDisableNext(true);
+          setDisablePrevious(true);
+        }
+      } else {
+        let next = document.querySelector(".next");
+        let nextEnd = document.querySelector(".next-end");
+        let previous = document.querySelector(".previous");
+        let previousEnd = document.querySelector(".previous-end");
+        next.classList.add("my-disabled");
+        nextEnd.classList.add("my-disabled");
+        previous.classList.add("my-disabled");
+        previousEnd.classList.add("my-disabled");
+        setDisableNext(true);
+        setDisablePrevious(true);
+      }
     }
 
     if (selectedOption === "price-asc") {
@@ -1847,6 +1886,9 @@ function Transfers() {
           >
             Make Transfers
           </button>
+          <div className="fixtures-wrapper">
+            <Fixtures></Fixtures>
+          </div>
         </div>
         <div className="players g-col-12 g-col-lg-3">
           <div className="player-selection">
@@ -2265,21 +2307,19 @@ function Transfers() {
             </div>
           )}
 
-          {shouldSeePagination && (
-            <div className="pagination-holder">
-              <Pagination
-                playersPerPage={playersPerPage}
-                totalPlayers={totalPlayers}
-                paginatePrev={paginatePrev}
-                paginateNext={paginateNext}
-                paginatePrevEnd={paginatePrevEnd}
-                paginateNextEnd={paginateNextEnd}
-                disablePrevious={disablePrevious}
-                disableNext={disableNext}
-                currentPage={currentPage}
-              ></Pagination>
-            </div>
-          )}
+          <div className="pagination-holder">
+            <Pagination
+              playersPerPage={playersPerPage}
+              totalPlayers={totalPlayers}
+              paginatePrev={paginatePrev}
+              paginateNext={paginateNext}
+              paginatePrevEnd={paginatePrevEnd}
+              paginateNextEnd={paginateNextEnd}
+              disablePrevious={disablePrevious}
+              disableNext={disableNext}
+              currentPage={currentPage}
+            ></Pagination>
+          </div>
         </div>
       </div>
     </>

@@ -1,10 +1,12 @@
 const express = require("express");
 const admin = require("firebase-admin");
 
-const serviceAccount = require("admin.sdk");
+// Initialize Firebase Admin SDK
+const serviceAccount = require("./fantasy-mock-up-firebase-admin-sdk.json"); // Update path to your service account key
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "******************************",
+  databaseURL:
+    "https://fantasy-mock-up-default-rtdb.europe-west1.firebasedatabase.app",
 });
 
 const app = express();
@@ -30,6 +32,7 @@ function settingNewGameweekPlayers(refPlayers) {
         }
       });
 
+      ///Updating players for gameweek
       refPlayers
         .set(data)
         .then(() => {
@@ -235,37 +238,48 @@ function determineAveragePoints(refPlayers, refUsers, refGameweek) {
     .once("value", (snapshot) => {
       const data = snapshot.val();
 
+      /// Function calculating average
       let countUsers = 0;
-      let count = 0;
 
       function calculateAverage(data) {
         let allPlayers = [
-          ...data.goalkeeper,
-          ...data.defence,
-          ...data.midfield,
-          ...data.attack,
+          ...data.gameweeks[data.gameweeks.length - 1].goalkeeper,
+          ...data.gameweeks[data.gameweeks.length - 1].defence,
+          ...data.gameweeks[data.gameweeks.length - 1].midfield,
+          ...data.gameweeks[data.gameweeks.length - 1].attack,
         ];
 
+        let count = 0;
         Object.keys(allPlayers).forEach((keys) => {
           Object.keys(players).forEach((key) => {
             if (allPlayers[keys].name === players[key].name) {
-              count +=
-                players[key].playerGameweeks[
-                  players[key].playerGameweeks.length - 1
-                ].gameweekPoints;
+              if (allPlayers[keys].captain == true) {
+                count +=
+                  players[key].playerGameweeks[
+                    players[key].playerGameweeks.length - 1
+                  ].gameweekPoints * 2;
+              } else {
+                count +=
+                  players[key].playerGameweeks[
+                    players[key].playerGameweeks.length - 1
+                  ].gameweekPoints;
+              }
             }
           });
         });
+
+        return count;
       }
 
+      let countFinal = 0;
       Object.keys(data).forEach((key) => {
         if (data[key].addedSquad == true) {
           countUsers++;
-          calculateAverage(data[key]);
+          countFinal += calculateAverage(data[key]);
         }
       });
 
-      let average = count / countUsers;
+      let average = countFinal / countUsers;
 
       refGameweek
         .once("value", (snapshot) => {
@@ -311,20 +325,27 @@ function determineHighestPoints(refPlayers, refUsers, refGameweek) {
 
       function calculatePoints(data) {
         let allPlayers = [
-          ...data.goalkeeper,
-          ...data.defence,
-          ...data.midfield,
-          ...data.attack,
+          ...data.gameweeks[data.gameweeks.length - 1].goalkeeper,
+          ...data.gameweeks[data.gameweeks.length - 1].defence,
+          ...data.gameweeks[data.gameweeks.length - 1].midfield,
+          ...data.gameweeks[data.gameweeks.length - 1].attack,
         ];
 
         let count = 0;
         Object.keys(allPlayers).forEach((keys) => {
           Object.keys(players).forEach((key) => {
             if (allPlayers[keys].name === players[key].name) {
-              count +=
-                players[key].playerGameweeks[
-                  players[key].playerGameweeks.length - 1
-                ].gameweekPoints;
+              if (allPlayers[keys].captain == true) {
+                count +=
+                  players[key].playerGameweeks[
+                    players[key].playerGameweeks.length - 1
+                  ].gameweekPoints * 2;
+              } else {
+                count +=
+                  players[key].playerGameweeks[
+                    players[key].playerGameweeks.length - 1
+                  ].gameweekPoints;
+              }
             }
           });
         });
@@ -382,22 +403,22 @@ function ranking(refPlayers, refUsers) {
     .once("value", (snapshot) => {
       const data = snapshot.val();
 
-      function calculatePoints(data) {
-        let allPlayers = [
-          ...data.goalkeeper,
-          ...data.defence,
-          ...data.midfield,
-          ...data.attack,
-        ];
-
+      function calculatePoints(allPlayers) {
         let count = 0;
         Object.keys(allPlayers).forEach((keys) => {
           Object.keys(players).forEach((key) => {
             if (allPlayers[keys].name === players[key].name) {
-              count +=
-                players[key].playerGameweeks[
-                  players[key].playerGameweeks.length - 1
-                ].gameweekPoints;
+              if (allPlayers[keys].captain == true) {
+                count +=
+                  players[key].playerGameweeks[
+                    players[key].playerGameweeks.length - 1
+                  ].gameweekPoints * 2;
+              } else {
+                count +=
+                  players[key].playerGameweeks[
+                    players[key].playerGameweeks.length - 1
+                  ].gameweekPoints;
+              }
             }
           });
         });
@@ -407,10 +428,17 @@ function ranking(refPlayers, refUsers) {
       let array = [];
       Object.keys(data).forEach((key) => {
         if (data[key].addedSquad == true) {
+          let allPlayers = [
+            ...data[key].gameweeks[data[key].gameweeks.length - 1].goalkeeper,
+            ...data[key].gameweeks[data[key].gameweeks.length - 1].defence,
+            ...data[key].gameweeks[data[key].gameweeks.length - 1].midfield,
+            ...data[key].gameweeks[data[key].gameweeks.length - 1].attack,
+          ];
+
           array.push({
             id: data[key]._id,
             points:
-              calculatePoints(data[key]) -
+              calculatePoints(allPlayers) -
               data[key].gameweeks[data[key].gameweeks.length - 1]
                 .gameweekCostCount,
           });
@@ -418,11 +446,25 @@ function ranking(refPlayers, refUsers) {
       });
 
       array.sort((a, b) => b.points - a.points);
-      Object.keys(array).forEach((key, index) => {
+      let gameweekRank = 1;
+      let prevPoints = array[0].points;
+      array[0].gameweekRank = gameweekRank;
+
+      for (let i = 1; i < array.length; i++) {
+        if (array[i].points < prevPoints) {
+          gameweekRank++;
+        }
+        array[i].gameweekRank = gameweekRank;
+        prevPoints = array[i].points;
+      }
+
+      console.log(array);
+
+      Object.keys(array).forEach((key) => {
         Object.keys(data).forEach((keys) => {
           if (data[keys]._id === array[key].id) {
             data[keys].gameweeks[data[keys].gameweeks.length - 1].gameweekRank =
-              index + 1;
+              array[key].gameweekRank;
           }
         });
       });
@@ -471,10 +513,17 @@ function finalGameweekPoints(refPlayers, refUsers) {
         Object.keys(allPlayers).forEach((keys) => {
           Object.keys(players).forEach((key) => {
             if (allPlayers[keys].name === players[key].name) {
-              count +=
-                players[key].playerGameweeks[
-                  players[key].playerGameweeks.length - 1
-                ].gameweekPoints;
+              if (allPlayers[keys].captain == true) {
+                count +=
+                  players[key].playerGameweeks[
+                    players[key].playerGameweeks.length - 1
+                  ].gameweekPoints * 2;
+              } else {
+                count +=
+                  players[key].playerGameweeks[
+                    players[key].playerGameweeks.length - 1
+                  ].gameweekPoints;
+              }
             }
           });
         });
@@ -483,7 +532,7 @@ function finalGameweekPoints(refPlayers, refUsers) {
 
       Object.keys(data).forEach((key) => {
         data[key].gameweeks[data[key].gameweeks.length - 1].finalPoints =
-          calculatePoints(data[key]) -
+          calculatePoints(data[key].gameweeks[data[key].gameweeks.length - 1]) -
           data[key].gameweeks[data[key].gameweeks.length - 1].gameweekCostCount;
         if (
           data[key].gameweeks[data[key].gameweeks.length - 1].finalPoints < 0

@@ -4,7 +4,7 @@ function Updating() {
   return (
     <>
       <div className="updating-wrapper">
-        <h3>The game is updating and will bre available soon.</h3>
+        <h3>The game is updating and will be available soon.</h3>
         <h4>While you wait did you know...?</h4>
         <ul>
           <li>

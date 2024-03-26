@@ -39,6 +39,7 @@
 .down {
     margin-left: 10%;
     margin-right: 10%;
+    margin-bottom: 50px;
     box-shadow: rgba(107, 107, 107, 0.08) 0px 8px 12px 0px;
     overflow: hidden;
 
@@ -196,7 +197,7 @@
         }
     }
 
-    .pitch-wrapper {
+    .pitch-wrapper-points {
         background-image: url("../../assets/img/pitch.svg");
         height: 1000px;
         background-repeat: no-repeat;
@@ -216,15 +217,21 @@
             font-weight: bold;
 
             .player-points {
-                padding-left: 2%;
-                padding-right: 2%;
+                position: relative;
+                width: 100px;
+
+                .captain {
+                    position: absolute;
+                    right: 0;
+                    bottom: 70px;
+                }
 
                 .kit {
                     text-align: center;
 
                     img {
-                        height: 100px;
-                        width: 90px;
+                        height: 80px;
+                        width: 60px;
                         margin-bottom: 10px;
                     }
                 }
@@ -263,15 +270,21 @@
             align-self: center;
 
             .player-points {
-                padding-left: 2%;
-                padding-right: 2%;
+                position: relative;
+                width: 100px;
+
+                .captain {
+                    position: absolute;
+                    right: 0;
+                    bottom: 70px;
+                }
 
                 .kit {
                     text-align: center;
 
                     img {
-                        height: 100px;
-                        width: 90px;
+                        height: 80px;
+                        width: 60px;
                         margin-bottom: 10px;
                     }
                 }
@@ -310,15 +323,21 @@
             align-self: center;
 
             .player-points {
-                padding-left: 2%;
-                padding-right: 2%;
+                position: relative;
+                width: 100px;
+
+                .captain {
+                    position: absolute;
+                    right: 0;
+                    bottom: 70px;
+                }
 
                 .kit {
                     text-align: center;
 
                     img {
-                        height: 100px;
-                        width: 90px;
+                        height: 80px;
+                        width: 60px;
                         margin-bottom: 10px;
                     }
                 }
@@ -357,15 +376,21 @@
             align-self: center;
 
             .player-points {
-                padding-left: 2%;
-                padding-right: 2%;
+                position: relative;
+                width: 100px;
+
+                .captain {
+                    position: absolute;
+                    right: 0;
+                    bottom: 70px;
+                }
 
                 .kit {
                     text-align: center;
 
                     img {
-                        height: 100px;
-                        width: 90px;
+                        height: 80px;
+                        width: 60px;
                         margin-bottom: 10px;
                     }
                 }
@@ -403,8 +428,7 @@
             background-color: rgba(114, 207, 159, 0.9);
 
             .player-points {
-                padding-left: 2%;
-                padding-right: 2%;
+                width: 100px;
 
                 .position-points {
                     text-align: center;
@@ -415,8 +439,8 @@
                     text-align: center;
 
                     img {
-                        height: 100px;
-                        width: 90px;
+                        height: 80px;
+                        width: 60px;
                         margin-bottom: 10px;
                     }
                 }
@@ -445,7 +469,7 @@
 
 @media (max-width: 1560px) {
     .down {
-        .pitch-wrapper {
+        .pitch-wrapper-points {
             background-position: center;
             background-size: 1400px 1000px;
         }
@@ -559,7 +583,7 @@
 
 @media (max-width: 800px) {
     .down {
-        .pitch-wrapper {
+        .pitch-wrapper-points {
             background-position: top;
             background-size: 1000px;
             height: 757px;
@@ -574,7 +598,7 @@
 
                         img {
                             height: 70px;
-                            width: 65px;
+                            width: 60px;
                         }
                     }
                 }
@@ -590,7 +614,7 @@
 
                         img {
                             height: 70px;
-                            width: 65px;
+                            width: 60px;
                         }
                     }
                 }
@@ -606,7 +630,7 @@
 
                         img {
                             height: 70px;
-                            width: 65px;
+                            width: 60px;
                         }
                     }
                 }
@@ -622,7 +646,7 @@
 
                         img {
                             height: 70px;
-                            width: 65px;
+                            width: 60px;
                         }
                     }
                 }
@@ -639,7 +663,7 @@
 
                         img {
                             height: 70px;
-                            width: 65px;
+                            width: 60px;
                         }
                     }
                 }
@@ -650,7 +674,7 @@
 
 @media (max-width: 670px) {
     .down {
-        .pitch-wrapper {
+        .pitch-wrapper-points {
             font-size: 0.625rem;
             background-size: 900px;
             height: 666px;
@@ -659,10 +683,18 @@
                 margin-top: 20px;
 
                 .player-points {
+                    width: 80px;
+
+                    .captain {
+                        width: 18px;
+                        height: 18px;
+                        bottom: 50px;
+                    }
+
                     .kit {
                         img {
-                            width: 60px;
-                            height: 60px;
+                            height: 55px;
+                            width: 45px;
                         }
                     }
 
@@ -677,10 +709,18 @@
                 margin-top: 60px;
 
                 .player-points {
+                    width: 80px;
+
+                    .captain {
+                        width: 18px;
+                        height: 18px;
+                        bottom: 50px;
+                    }
+
                     .kit {
                         img {
-                            width: 60px;
-                            height: 60px;
+                            height: 55px;
+                            width: 45px;
                         }
                     }
 
@@ -695,10 +735,18 @@
                 margin-top: 60px;
 
                 .player-points {
+                    width: 80px;
+
+                    .captain {
+                        width: 18px;
+                        height: 18px;
+                        bottom: 50px;
+                    }
+
                     .kit {
                         img {
-                            width: 60px;
-                            height: 60px;
+                            height: 55px;
+                            width: 45px;
                         }
                     }
 
@@ -713,10 +761,18 @@
                 margin-top: 60px;
 
                 .player-points {
+                    width: 80px;
+
+                    .captain {
+                        width: 18px;
+                        height: 18px;
+                        bottom: 50px;
+                    }
+
                     .kit {
                         img {
-                            width: 60px;
-                            height: 60px;
+                            height: 55px;
+                            width: 45px;
                         }
                     }
 
@@ -732,8 +788,8 @@
                 .player-points {
                     .kit {
                         img {
-                            width: 60px;
-                            height: 60px;
+                            height: 55px;
+                            width: 45px;
                         }
                     }
 
@@ -761,7 +817,7 @@
             }
         }
 
-        .pitch-wrapper {
+        .pitch-wrapper-points {
             background-size: 610px;
             height: 480px;
 
@@ -771,8 +827,16 @@
                 font-size: 0.625rem;
 
                 .player-points {
-                    padding-left: 3px;
-                    padding-right: 3px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    .captain {
+                        width: 15px;
+                        height: 15px;
+                        left: 60px;
+                        bottom: 50px;
+                    }
 
                     .kit {
                         img {
@@ -790,8 +854,16 @@
                 width: 340px;
 
                 .player-points {
-                    padding-left: 3px;
-                    padding-right: 3px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    .captain {
+                        width: 15px;
+                        height: 15px;
+                        left: 57px;
+                        bottom: 50px;
+                    }
 
                     .kit {
                         img {
@@ -809,8 +881,16 @@
                 width: 340px;
 
                 .player-points {
-                    padding-left: 3px;
-                    padding-right: 3px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    .captain {
+                        width: 15px;
+                        height: 15px;
+                        left: 50px;
+                        bottom: 50px;
+                    }
 
                     .kit {
                         img {
@@ -828,8 +908,16 @@
                 width: 360px;
 
                 .player-points {
-                    padding-left: 3px;
-                    padding-right: 3px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    .captain {
+                        width: 15px;
+                        height: 15px;
+                        left: 57px;
+                        bottom: 50px;
+                    }
 
                     .kit {
                         img {
@@ -847,8 +935,9 @@
                 width: 330px;
 
                 .player-points {
-                    padding-left: 3px;
-                    padding-right: 3px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
 
                     .kit {
                         img {

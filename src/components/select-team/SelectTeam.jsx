@@ -1,7 +1,6 @@
 import "./SelectTeam.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
-import getCookie from "../../help-files/getCookie.js";
 import { firebase, database } from "../../help-files/firebase.js";
 import { get, ref, set } from "firebase/database";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +9,7 @@ import { Player } from "../../models/players.ts";
 import Users from "../../assets/help-jsons/usersFantasyStart.json";
 import Countries from "../../assets/help-jsons/countries.json";
 import { Clubs } from "../../assets/help-jsons/clubs.js";
+import Fixtures from "../fixtures/Fixtures.jsx";
 import Select from "react-select";
 import ReactLoading from "react-loading";
 import Form from "react-bootstrap/Form";
@@ -24,7 +24,7 @@ function SelectTeam({ onUpdateValueHome }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const usersRef = ref(database, "usersFantasy/" + getCookie("id"));
+  const usersRef = ref(database, "usersFantasy/" + localStorage.getItem("id"));
   const playersRef = ref(database, "players");
   const gameweekRef = ref(database, "currentGameweek");
   const updatingRef = ref(database, "updating");
@@ -393,7 +393,9 @@ function SelectTeam({ onUpdateValueHome }) {
     playersElements.forEach((player) => {
       player.style.opacity = "1";
     });
-    playerElement.style.backgroundColor = "transparent";
+    if (playerElement) {
+      playerElement.style.backgroundColor = "transparent";
+    }
 
     allPlayers.forEach((player) => {
       if (player.remove == true) {
@@ -404,7 +406,10 @@ function SelectTeam({ onUpdateValueHome }) {
       player.restore = false;
       player.chosen = false;
     });
-    player.restore = false;
+
+    if (player) {
+      player.restore = false;
+    }
 
     setPlayer(player);
     setUser(user);
@@ -443,6 +448,7 @@ function SelectTeam({ onUpdateValueHome }) {
       let wrapperDiv = document.querySelector(".pitch-wrapper");
       let formSelect = document.querySelector(".select-form");
       let upperWrapperDiv = document.querySelector(".upper-wrapper-select");
+      let fixturesWrapper = document.querySelector(".fixtures-wrapper");
       let titleWrapperDiv = document.querySelector(".title-wrapper");
       let positionsDivs = document.querySelectorAll(".position");
       let addSquadButton = document.querySelector(".enter-squad");
@@ -460,6 +466,7 @@ function SelectTeam({ onUpdateValueHome }) {
         addSquadButton.style.display = "block";
         playersDiv.style.display = "none";
         upperWrapperDiv.style.display = "block";
+        fixturesWrapper.style.display = "block";
 
         if (playersDiv.classList.contains("active")) {
           backToPitchDiv.style.display = "flex";
@@ -471,6 +478,7 @@ function SelectTeam({ onUpdateValueHome }) {
           addSquadButton.style.display = "none";
           playersDiv.style.display = "block";
           upperWrapperDiv.style.display = "none";
+          fixturesWrapper.style.display = "none";
           titleWrapperDiv.style.display = "none";
         }
       } else {
@@ -490,6 +498,7 @@ function SelectTeam({ onUpdateValueHome }) {
         playerList.style.display = "none";
         playersDiv.style.display = "none";
         upperWrapperDiv.style.display = "block";
+        fixturesWrapper.style.display = "block";
 
         if (playersDiv.classList.contains("active")) {
           backToPitchDiv.style.display = "none";
@@ -519,6 +528,7 @@ function SelectTeam({ onUpdateValueHome }) {
     let wrapperDiv = document.querySelector(".pitch-wrapper");
     let formSelect = document.querySelector(".select-form");
     let upperWrapperDiv = document.querySelector(".upper-wrapper-select");
+    let fixturesWrapper = document.querySelector(".fixtures-wrapper");
     let titleWrapperDiv = document.querySelector(".title-wrapper");
     let addSquadButton = document.querySelector(".enter-squad");
     let backToPitchDiv = document.querySelector(".back-to-pitch");
@@ -533,6 +543,7 @@ function SelectTeam({ onUpdateValueHome }) {
     }
     playersDiv.style.display = "block";
     upperWrapperDiv.style.display = "none";
+    fixturesWrapper.style.display = "none";
     playersDiv.classList.add("active");
   }
 
@@ -543,6 +554,7 @@ function SelectTeam({ onUpdateValueHome }) {
     let formSelect = document.querySelector(".select-form");
     let playerList = document.querySelector(".player-list");
     let upperWrapperDiv = document.querySelector(".upper-wrapper-select");
+    let fixturesWrapper = document.querySelector(".fixtures-wrapper");
     let titleWrapperDiv = document.querySelector(".title-wrapper");
     let addSquadButton = document.querySelector(".enter-squad");
     let backToPitchDiv = document.querySelector(".back-to-pitch");
@@ -557,6 +569,7 @@ function SelectTeam({ onUpdateValueHome }) {
     playersDiv.style.display = "none";
     playerList.style.display = "flex";
     upperWrapperDiv.style.display = "block";
+    fixturesWrapper.style.display = "block";
     playersDiv.classList.remove("active");
   }
 
@@ -571,6 +584,7 @@ function SelectTeam({ onUpdateValueHome }) {
 
   // Functions handling auto-pick button
   const handleAutopick = () => {
+    handleRestore();
     let condition = autoPickCallback(
       JSON.parse(JSON.stringify(user)),
       JSON.parse(JSON.stringify(players))
@@ -733,6 +747,19 @@ function SelectTeam({ onUpdateValueHome }) {
       top: 350,
       behavior: "instant",
     });
+    restorePlayer();
+
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      squadName: "",
+      gender: "",
+      countryOfOrigin: "",
+      favouriteClub: "",
+      dateOfBirth: "",
+    });
+    resetErrors();
   }
 
   // Function handling add squad button
@@ -741,6 +768,7 @@ function SelectTeam({ onUpdateValueHome }) {
       if (handleFormData() == true) {
         let userTemp = user;
         userTemp = new User(userTemp);
+        userTemp.attack[0].captain = true;
         let allPlayers = [
           ...userTemp.goalkeeper,
           ...userTemp.defence,
@@ -779,6 +807,7 @@ function SelectTeam({ onUpdateValueHome }) {
     } else if (user.signInProviders == false) {
       let userTemp = user;
       userTemp = new User(userTemp);
+      userTemp.attack[0].captain = true;
       let allPlayers = [
         ...userTemp.goalkeeper,
         ...userTemp.defence,
@@ -1827,6 +1856,10 @@ function SelectTeam({ onUpdateValueHome }) {
           >
             Enter Squad
           </button>
+
+          <div className="fixtures-wrapper">
+            <Fixtures></Fixtures>
+          </div>
         </div>
         <div className="players g-col-12 g-col-lg-3">
           <div className="player-selection">

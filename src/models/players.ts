@@ -6,6 +6,7 @@ export class Player {
   add: boolean;
   remove: boolean;
   set: boolean;
+  captain: boolean;
   price: number;
   points: number;
   playerGameweeks: PlayerGameweeks[];
@@ -20,6 +21,7 @@ export class Player {
     this.add = (obj && obj.add) || false;
     this.remove = (obj && obj.remove) || false;
     this.set = (obj && obj.set) || false;
+    this.captain = (obj && obj.captain) || false;
   }
 }
 
