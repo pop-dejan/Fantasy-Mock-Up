@@ -21,7 +21,7 @@ import Transfers from "./components/transfers/Transfers";
 import Navbar from "./components/navbar/Navbar";
 import Home from "./components/home/Home";
 import NavbarSecond from "./components/navbar-second/NavbarSecond";
-import Fixtures from "./components/fixtures/Fixtures";
+import TotalTransfers from "./components/total-transfers/TotalTransfers";
 
 function App() {
   // Function handling home page based on if user is logged
@@ -183,7 +183,14 @@ function App() {
             }
           />
 
-          <Route path="/fixtures" element={<Fixtures />} />
+          <Route
+            path="/total-transfers"
+            element={
+              <ProtectedRoute valueHome={valueHome} pageType={"gamePages"}>
+                <TotalTransfers />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
 
         <Footer />

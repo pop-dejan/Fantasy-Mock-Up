@@ -11,9 +11,9 @@ admin.initializeApp({
 
 const app = express();
 const port = 3000;
-const currentGameweek = 29;
-const nextGameweek = 30;
-const deadline = "Sat 30 Mar 12:00";
+const currentGameweek = 30;
+const nextGameweek = 31;
+const deadline = "Tue 2 Apr 19:00";
 
 // Function setting new gameweek for players (run first)
 function settingNewGameweekPlayers(refPlayers) {
@@ -68,8 +68,10 @@ function settingNewGameweek(refUsers) {
           gameweekUnit.subs = data[key].subs;
           gameweekUnit.gameweekTransfersCount = data[key].countTransfers;
           gameweekUnit.gameweekCostCount = data[key].cost;
+          gameweekUnit.gameweekTransfers = data[key].gameweekTransfers;
           data[key].countTransfers = 0;
           data[key].cost = 0;
+          data[key].gameweekTransfers = [];
 
           if (data && Array.isArray(data[key].gameweeks)) {
             data[key].gameweeks.push(gameweekUnit);
@@ -272,8 +274,10 @@ function determineAveragePoints(refPlayers, refUsers, refGameweek) {
       }
 
       let countFinal = 0;
+      let countAllUsers = 0;
       Object.keys(data).forEach((key) => {
-        if (data[key].addedSquad == true) {
+        countAllUsers++;
+        if (data[key].addedSquad == true && data[key].gameweeks) {
           countUsers++;
           countFinal += calculateAverage(data[key]);
         }
@@ -285,6 +289,7 @@ function determineAveragePoints(refPlayers, refUsers, refGameweek) {
         .once("value", (snapshot) => {
           let data = snapshot.val();
           data.gameweeks[data.gameweeks.length - 1].average = average;
+          data.totalUsers = countAllUsers;
 
           refGameweek
             .update(data)
@@ -354,7 +359,7 @@ function determineHighestPoints(refPlayers, refUsers, refGameweek) {
 
       let highest = 0;
       Object.keys(data).forEach((key) => {
-        if (data[key].addedSquad == true) {
+        if (data[key].addedSquad == true && data[key].gameweeks) {
           if (highest < calculatePoints(data[key])) {
             highest = calculatePoints(data[key]);
           }
@@ -427,7 +432,7 @@ function ranking(refPlayers, refUsers) {
 
       let array = [];
       Object.keys(data).forEach((key) => {
-        if (data[key].addedSquad == true) {
+        if (data[key].addedSquad == true && data[key].gameweeks) {
           let allPlayers = [
             ...data[key].gameweeks[data[key].gameweeks.length - 1].goalkeeper,
             ...data[key].gameweeks[data[key].gameweeks.length - 1].defence,
@@ -556,6 +561,81 @@ function finalGameweekPoints(refPlayers, refUsers) {
     });
 }
 
+// Function determining overall rank (run at the end of gameweek)
+function overallRanking(refPlayers, refUsers) {
+  let players = [];
+  refPlayers
+    .once("value", (snapshot) => {
+      data = snapshot.val();
+      players = data;
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+      res.status(500).json({ error: "Internal server error" });
+    });
+
+  refUsers
+    .once("value", (snapshot) => {
+      const data = snapshot.val();
+
+      function calculatePoints(data) {
+        let count = 0;
+        let gameweeks = data.gameweeks;
+        Object.keys(gameweeks).forEach((key) => {
+          count += gameweeks[key].finalPoints;
+        });
+
+        return count;
+      }
+
+      let array = [];
+      Object.keys(data).forEach((key) => {
+        if (data[key].addedSquad == true && data[key].gameweeks) {
+          array.push({
+            id: data[key]._id,
+            points: calculatePoints(data[key]),
+          });
+        }
+      });
+
+      array.sort((a, b) => b.points - a.points);
+      let overallRank = 1;
+      let prevPoints = array[0].points;
+      array[0].overallRank = overallRank;
+
+      for (let i = 1; i < array.length; i++) {
+        if (array[i].points < prevPoints) {
+          overallRank++;
+        }
+        array[i].overallRank = overallRank;
+        prevPoints = array[i].points;
+      }
+
+      console.log(array);
+
+      Object.keys(array).forEach((key) => {
+        Object.keys(data).forEach((keys) => {
+          if (data[keys]._id === array[key].id) {
+            data[keys].overallRank = array[key].overallRank;
+          }
+        });
+      });
+
+      refUsers
+        .update(data)
+        .then(() => {
+          console.log("Data updated successfully");
+        })
+        .catch((error) => {
+          console.error("Error updating data:", error);
+        });
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+      res.status(500).json({ error: "Internal server error" });
+    });
+}
+
 // Define a route to fetch data from Firebase Realtime Database
 app.get("/", (req, res) => {
   const db = admin.database();
@@ -563,6 +643,7 @@ app.get("/", (req, res) => {
   const refUsers = db.ref("usersFantasy");
   const refGameweek = db.ref("currentGameweek");
   const refPlayers = db.ref("players");
+  determineAveragePoints(refPlayers, refUsers, refGameweek);
 });
 
 app.listen(port, () => {

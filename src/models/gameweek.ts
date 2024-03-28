@@ -11,6 +11,7 @@ export class Gameweek {
     midfield: Player[];
     attack: Player[];
     subs: Player[];
+    gameweekTransfers: string[][];
 
     constructor(obj?: any) {
         this.gameweekNumber = (obj && obj.gameweekNumber) || 0;
@@ -23,5 +24,6 @@ export class Gameweek {
         this.midfield = obj && obj.midfield && obj.midfield.map((elem: any) => new Player(elem)) || [];
         this.attack = obj && obj.attack && obj.attack.map((elem: any) => new Player(elem)) || [];
         this.subs = obj && obj.subs && obj.subs.map((elem: any) => new Player(elem)) || [];
+        this.gameweekTransfers = obj && obj.gameweekTransfers && obj.gameweekTransfers.map((elem: string[]) => elem.map(str => str)) || [];
     }
 }

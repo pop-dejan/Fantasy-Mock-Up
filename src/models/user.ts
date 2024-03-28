@@ -18,13 +18,16 @@ export class User {
   gender: string;
   dateOfBirth: string;
   countryOfOrigin: string;
+  countryCode: string;
   favouriteClub: string;
   email: string;
   addedSquad: boolean;
   signInProviders: boolean;
   gameweeks: Gameweek[];
   countTransfers: number;
-  cost:number
+  cost: number;
+  overallRank: number;
+  gameweekTransfers: string[][];
 
   constructor(obj?: any) {
     this._id = (obj && obj._id) || "";
@@ -43,6 +46,7 @@ export class User {
     this.gender = (obj && obj.gender) || "";
     this.dateOfBirth = (obj && obj.dateOfBirth) || "";
     this.countryOfOrigin = (obj && obj.countryOfOrigin) || "";
+    this.countryCode = (obj && obj.countryCode) || "";
     this.favouriteClub = (obj && obj.favouriteClub) || "";
     this.email = (obj && obj.email) || "";
     this.addedSquad = (obj && obj.addedSquad) || false;
@@ -50,6 +54,8 @@ export class User {
     this.gameweeks = obj && obj.gameweeks && obj.gameweeks.map((elem: any) => new Gameweek(elem)) || [];
     this.countTransfers = (obj && obj.countTransfers) || 0;
     this.cost = (obj && obj.cost) || 0;
+    this.overallRank = (obj && obj.overallRank) || 0;
+    this.gameweekTransfers = obj && obj.gameweekTransfers && obj.gameweekTransfers.map((elem: string[]) => elem.map(str => str)) || [];
   }
 }
 

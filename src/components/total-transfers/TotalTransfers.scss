@@ -1,0 +1,132 @@
+@import url("https://fonts.cdnfonts.com/css/premier-sans");
+
+.page-wrapper-total {
+    margin: 0 10%;
+
+    .left-side {
+        .title-total {
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            height: 70px;
+            color: var(--color-purple-second);
+            font-size: 1.7rem;
+            font-weight: 700;
+            padding-left: 10px;
+            gap: 5px;
+
+            p {
+                margin: 0;
+            }
+        }
+
+        .title-total::before {
+            display: none;
+            content: "";
+            position: absolute;
+            height: 1px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgb(239, 239, 239) 50%, rgba(255, 255, 255, 0) 100%);
+        }
+
+        table {
+            margin-top: 10px;
+            width: 100%;
+
+            thead {
+                border-bottom: 1px solid rgb(239, 239, 239);
+
+                th {
+                    font-size: 0.7rem;
+                    color: rgb(122, 122, 122);
+                    padding: 7px 10px;
+                }
+            }
+
+            tbody {
+                td {
+                    font-size: 0.82rem;
+                    color: var(--color-purple);
+                    padding: 9px 10px;
+                    border-bottom: 1px solid rgb(239, 239, 239);
+                }
+
+                .player-in,
+                .player-out {
+                    font-weight: 700;
+                }
+
+                .player-in {
+                    width: 28%;
+                }
+
+                .player-out {
+                    width: 36%;
+                }
+
+                .active {
+                    width: 10%;
+                }
+
+                .date {
+                    width: 26%;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1240px) {
+    .page-wrapper-total {
+        margin: 0 1%;
+    }
+}
+
+@media (max-width: 992px) {
+    .page-wrapper-total {
+        .left-side {
+            .title-total {
+                margin-bottom: 20px;
+                font-size: 1.55rem;
+            }
+
+            .title-total::before {
+                display: block;
+            }
+        }
+    }
+}
+
+@media (max-width: 670px) {
+    .page-wrapper-total {
+        .left-side {
+            table {
+                thead {
+                    th {
+                        font-size: 0.55rem;
+                    }
+                }
+
+                tbody {
+                    td {
+                        font-size: 0.67rem;
+                    }
+
+                    .player-in {
+                        width: 30%;
+                    }
+
+                    .player-out {
+                        width: 30%;
+                    }
+
+                    .date {
+                        width: 30%;
+                    }
+                }
+            }
+        }
+    }
+}

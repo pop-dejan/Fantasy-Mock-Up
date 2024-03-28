@@ -1,0 +1,103 @@
+@import url("https://fonts.cdnfonts.com/css/premier-sans");
+
+.finances {
+    margin-bottom: 20px;
+    margin-top: 1.5rem;
+    padding: 12px 10px;
+    height: 390px;
+    border-radius: 6px;
+    background-repeat: no-repeat;
+    background-position: 0px center, right top, 0px center;
+    background-image: linear-gradient(rgba(255, 255, 255, 0) 10px, rgba(255, 255, 255, 0.2) 30px, white 75px), url(../../assets/img/pattern.png), linear-gradient(to right, rgb(2, 239, 255), rgb(98, 123, 255));
+    box-shadow: rgba(107, 107, 107, 0.08) 0px 8px 12px 0px;
+    overflow: auto;
+    color: var(--color-purple-second);
+
+    .headline-text {
+        font-weight: 700;
+        font-size: 1.24rem;
+    }
+
+    .headline-wrapper,
+    .headline-wrapper-second {
+        margin-top: 40px;
+        padding-bottom: 10px;
+        border-top: 1px solid rgb(226, 225, 225);
+
+        .control-headline {
+            padding: 0.2rem 1rem;
+            border-radius: 0px 0px 1rem 1rem;
+            background-color: var(--color-purple);
+            border-top: 1px solid;
+            border-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgb(239, 239, 239) 50%, rgba(255, 255, 255, 0) 100%);
+            border-image-slice: 1;
+            width: 90px;
+
+            .gameweek {
+                background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-weight: 600;
+                font-size: 0.85rem;
+            }
+        }
+    }
+
+    .headline-wrapper-second {
+        margin-top: 20px;
+
+        .control-headline {
+            width: 88px;
+        }
+    }
+
+    .total {
+        border-bottom: 1px solid rgb(226, 225, 225);
+    }
+
+    .overall {
+        padding: 8px 0;
+        font-size: 0.95rem;
+        border-top: 1px solid rgb(226, 225, 225);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .transfer-history {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin: 8px 0;
+        color: var(--color-purple-second);
+        text-decoration: none;
+
+        svg {
+            z-index: 2;
+            margin-top: 2px;
+            fill: var(--color-purple-second);
+        }
+
+        .history-text {
+            z-index: 2;
+        }
+
+        .transfer-history-hover {
+            position: absolute;
+            visibility: hidden;
+            z-index: 1;
+            margin-top: 12px;
+            width: 100%;
+            height: 0.5px;
+            background-color: rgb(0, 179, 255);
+        }
+
+        &:hover {
+            .transfer-history-hover {
+                visibility: visible;
+            }
+        }
+    }
+}
