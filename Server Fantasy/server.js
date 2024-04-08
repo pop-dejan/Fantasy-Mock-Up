@@ -554,9 +554,12 @@ function ranking(refPlayers, refUsers) {
 
       Object.keys(array).forEach((key) => {
         Object.keys(data).forEach((keys) => {
-          if (data[keys]._id === array[key].id) {
-            data[keys].gameweeks[data[keys].gameweeks.length - 1].gameweekRank =
-              array[key].gameweekRank;
+          if (data[key].addedSquad == true && data[key].gameweeks) {
+            if (data[keys]._id === array[key].id) {
+              data[keys].gameweeks[
+                data[keys].gameweeks.length - 1
+              ].gameweekRank = array[key].gameweekRank;
+            }
           }
         });
       });
@@ -640,13 +643,17 @@ function finalGameweekPoints(refPlayers, refUsers) {
       }
 
       Object.keys(data).forEach((key) => {
-        data[key].gameweeks[data[key].gameweeks.length - 1].finalPoints =
-          calculatePoints(data[key].gameweeks[data[key].gameweeks.length - 1]);
+        if (data[key].addedSquad == true && data[key].gameweeks) {
+          data[key].gameweeks[data[key].gameweeks.length - 1].finalPoints =
+            calculatePoints(
+              data[key].gameweeks[data[key].gameweeks.length - 1]
+            );
 
-        data[key].gameweeks[data[key].gameweeks.length - 1].benchPoints =
-          calculateBenchPoints(
-            data[key].gameweeks[data[key].gameweeks.length - 1]
-          );
+          data[key].gameweeks[data[key].gameweeks.length - 1].benchPoints =
+            calculateBenchPoints(
+              data[key].gameweeks[data[key].gameweeks.length - 1]
+            );
+        }
       });
 
       refUsers
@@ -719,12 +726,15 @@ function overallRanking(refPlayers, refUsers) {
 
       Object.keys(array).forEach((key) => {
         Object.keys(data).forEach((keys) => {
-          if (data[keys]._id === array[key].id) {
-            data[keys].gameweeks[data[keys].gameweeks.length - 1].overallRank =
-              array[key].overallRank;
-            data[keys].gameweeks[
-              data[keys].gameweeks.length - 1
-            ].overallPoints = array[key].points;
+          if (data[key].addedSquad == true && data[key].gameweeks) {
+            if (data[keys]._id === array[key].id) {
+              data[keys].gameweeks[
+                data[keys].gameweeks.length - 1
+              ].overallRank = array[key].overallRank;
+              data[keys].gameweeks[
+                data[keys].gameweeks.length - 1
+              ].overallPoints = array[key].points;
+            }
           }
         });
       });

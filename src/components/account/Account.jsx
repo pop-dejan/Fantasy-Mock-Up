@@ -17,7 +17,7 @@ import Form from "react-bootstrap/Form";
 import { Button, ToggleButtonGroup } from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
 
-function Account() {
+function Account({ onUpdateValueHome }) {
   const navigate = useNavigate();
   const [render, setRender] = useState(false);
   const [updateButton, setUpdateButton] = useState(false);
@@ -324,6 +324,19 @@ function Account() {
     });
   }, []);
 
+  // Determining if personal info should be rendered
+  function shouldRenderPersonalInfo() {
+    if (user.signUpMethod === "provider") {
+      if (user.addedSquad) {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (user.signUpMethod === "signUp") {
+      return true;
+    }
+  }
+
   // Fetching user from database and handling render of loading and error interface
   const getData = async () => {
     try {
@@ -421,7 +434,7 @@ function Account() {
         <div className="account-wrapper">
           <div className="manage-account">
             <h1 className="account-headline">Manage Account</h1>
-            {user.addedSquad && (
+            {shouldRenderPersonalInfo() && (
               <div className="change-info">
                 <h3 className="personal">Personal details</h3>
                 <p className="personal-text">

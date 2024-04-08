@@ -1,16 +1,20 @@
-import "./PickTeam.scss";
+import "../pick-team/PickTeam.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../models/user.ts";
-import _ from "lodash";
 import { firebase, database } from "../../help-files/firebase.js";
 import { get, ref, set } from "firebase/database";
-import Fixtures from "../fixtures/Fixtures.jsx";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
+import "tippy.js/themes/light.css";
+import Fixtures from "../fixtures/Fixtures";
 import ReactLoading from "react-loading";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import Updating from "../updating/Updating.jsx";
+import Updating from "../updating/Updating";
+import UserInfo from "../user-info/UserInfo";
+import Finances from "../finances/Finances";
 
 function PickTeam() {
   const userRef = ref(database, "usersFantasy/" + localStorage.getItem("id"));
@@ -804,6 +808,68 @@ function PickTeam() {
     }
   }
 
+  // Variable and function that determines widnow width
+  const [windowWidth, setWindowWidth] = useState(
+    window.matchMedia("(max-width: 500px)").matches
+  );
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.matchMedia("(max-width: 500px)").matches);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  // Function displaying opponents of player
+  function displayOpponents(player) {
+    let opponents = [];
+    players.forEach((playerTemp) => {
+      if (playerTemp.name === player.name) {
+        opponents =
+          playerTemp.playerGameweeks[playerTemp.playerGameweeks.length - 1]
+            .opponents;
+      }
+    });
+
+    let parent = document.querySelector(`#${player.name}`);
+
+    if (!opponents) {
+      return (
+        <div
+          className="club"
+          style={{ height: "5px", marginBottom: "10px" }}
+        ></div>
+      );
+    } else if (opponents.length == 1) {
+      return <div className="club">{opponents}</div>;
+    } else if (opponents.length == 2) {
+      if (windowWidth) {
+        if (parent) {
+          let captain = parent.querySelector(".captain");
+          if (captain) {
+            captain.style.bottom = "61px";
+          }
+        }
+
+        return (
+          <>
+            <div className="club">
+              {opponents[0] + ","} <br /> {opponents[1]}
+            </div>
+          </>
+        );
+      } else {
+        return (
+          <>
+            <div className="club">{opponents[0] + ", " + opponents[1]}</div>
+          </>
+        );
+      }
+    }
+  }
+
   // Function handling render of make captain button
   function shouldRenderCaptainButton(player) {
     let retVal = true;
@@ -867,6 +933,19 @@ function PickTeam() {
     updateUser(userTemp);
   }
 
+  // Function displaying positions in tooltip
+  function displayPosition(position) {
+    if (position === "GKP") {
+      return "Goalkeeper";
+    } else if (position === "DEF") {
+      return "Defender";
+    } else if (position === "MID") {
+      return "Midfielder";
+    } else if (position === "ATT") {
+      return "Attacker";
+    }
+  }
+
   // Fetching user and players from database and handling render of loading and error interface
   useEffect(() => {
     getData();
@@ -921,6 +1000,11 @@ function PickTeam() {
       setPlayers(playersTemp);
       setGameweekInfo(data3);
       setUpdating(data4);
+
+      window.scrollTo({
+        top: 0,
+        behavior: "instant",
+      });
     } catch (error) {
       setError("Something went wrong. Please try again.");
       navigate("/");
@@ -1037,225 +1121,270 @@ function PickTeam() {
         </Modal.Body>
       </Modal>
 
-      <div className="title-pick">
-        <p>Pick Team</p>
-        <p className="squad-name">- {user && user.squadName}</p>
-      </div>
-      <div className="down">
-        <div className="upper-wrapper">
-          <div className="control-wrapper">
-            <div className="control-headline">
-              <div className="gameweek">
-                Gameweek {gameweekInfo.currentGameweekNumber}
+      <div className="page-wrapper grid gap-3">
+        <div className="left-side g-col-12 g-col-lg-9">
+          <div className="title-pick">
+            <p>Pick Team</p>
+            <p className="squad-name">- {user && user.squadName}</p>
+          </div>
+          <div className="down">
+            <div className="upper-wrapper-pick">
+              <div className="control-wrapper">
+                <div className="control-headline">
+                  <div className="gameweek">
+                    Gameweek {gameweekInfo.currentGameweekNumber}
+                  </div>
+                </div>
+                <div className="timeline">
+                  <span className="week">
+                    Gameweek {gameweekInfo.currentGameweekNumber} deadline:
+                  </span>
+                  <span className="time">
+                    {gameweekInfo.currentGameweekDeadline}
+                  </span>
+                </div>
+              </div>
+              <div className="info">
+                To change your captain use the menu which appears when clicking
+                on a player
               </div>
             </div>
-            <div className="timeline">
-              <span className="week">
-                Gameweek {gameweekInfo.currentGameweekNumber} deadline:
-              </span>
-              <span className="time">
-                {gameweekInfo.currentGameweekDeadline}
-              </span>
-            </div>
-          </div>
-          <div className="info">
-          To change your captain use the menu which appears when clicking on a player
-          </div>
-        </div>
-        <div className="pitch-wrapper">
-          <div className="goalkepper">
-            <div
-              className="player"
-              id={user.goalkeeper[0].name}
-              onClick={(event) => handleShow(event, user.goalkeeper[0])}
-            >
-              {user.goalkeeper[0].captain && (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  role="img"
-                  focusable="false"
-                  className="captain"
+            <div className="pitch-wrapper">
+              <div className="goalkepper">
+                <div
+                  className="player"
+                  id={user.goalkeeper[0].name}
+                  onClick={(event) => handleShow(event, user.goalkeeper[0])}
                 >
-                  <title>Captain</title>
-                  <circle cx="12" cy="12" r="12" aria-hidden="true"></circle>
-                  <path
-                    d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
-                    fill="white"
-                    aria-hidden="true"
-                  ></path>
-                </svg>
-              )}
-              <div className="kit">
-                <img
-                  src={user ? `${user.goalkeeper[0].kit_src}` : ""}
-                  alt={user ? `${user.goalkeeper[0].club}.jpg` : ""}
-                />
+                  {user.goalkeeper[0].captain && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      role="img"
+                      focusable="false"
+                      className="captain"
+                    >
+                      <title>Captain</title>
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="12"
+                        aria-hidden="true"
+                      ></circle>
+                      <path
+                        d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
+                        fill="white"
+                        aria-hidden="true"
+                      ></path>
+                    </svg>
+                  )}
+                  <div className="kit">
+                    <img
+                      src={user ? `${user.goalkeeper[0].kit_src}` : ""}
+                      alt={user ? `${user.goalkeeper[0].club}.jpg` : ""}
+                    />
+                  </div>
+                  <div className="name">{user && user.goalkeeper[0].name}</div>
+                  {displayOpponents(user.goalkeeper[0])}
+                </div>
               </div>
-              <div className="name">{user && user.goalkeeper[0].name}</div>
-              <div className="club">{user && user.goalkeeper[0].club}</div>
+              <div
+                className="defence"
+                style={
+                  user.defence.length < 5
+                    ? { justifyContent: "space-around" }
+                    : {}
+                }
+              >
+                {user &&
+                  user.defence.map((player, index) => (
+                    <div
+                      className="player"
+                      id={player.name}
+                      key={index}
+                      onClick={(event) => handleShow(event, player)}
+                    >
+                      {player.captain && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          role="img"
+                          focusable="false"
+                          className="captain"
+                        >
+                          <title>Captain</title>
+                          <circle
+                            cx="12"
+                            cy="12"
+                            r="12"
+                            aria-hidden="true"
+                          ></circle>
+                          <path
+                            d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
+                            fill="white"
+                            aria-hidden="true"
+                          ></path>
+                        </svg>
+                      )}
+                      <div className="kit">
+                        <img src={player.kit_src} alt={player.club + ".jpeg"} />
+                      </div>
+                      <div className="name">{player.name}</div>
+                      {displayOpponents(player)}
+                    </div>
+                  ))}
+              </div>
+              <div
+                className="midfield"
+                style={
+                  user.midfield.length < 5
+                    ? { justifyContent: "space-around" }
+                    : {}
+                }
+              >
+                {user &&
+                  user.midfield.map((player, index) => (
+                    <div
+                      className="player"
+                      id={player.name}
+                      key={index}
+                      onClick={(event) => handleShow(event, player)}
+                    >
+                      {player.captain && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          role="img"
+                          focusable="false"
+                          className="captain"
+                        >
+                          <title>Captain</title>
+                          <circle
+                            cx="12"
+                            cy="12"
+                            r="12"
+                            aria-hidden="true"
+                          ></circle>
+                          <path
+                            d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
+                            fill="white"
+                            aria-hidden="true"
+                          ></path>
+                        </svg>
+                      )}
+                      <div className="kit">
+                        <img src={player.kit_src} alt={player.club + ".jpeg"} />
+                      </div>
+                      <div className="name">{player.name}</div>
+                      {displayOpponents(player)}
+                    </div>
+                  ))}
+              </div>
+              <div className="attack">
+                {user &&
+                  user.attack.map((player, index) => (
+                    <div
+                      className="player"
+                      id={player.name}
+                      key={index}
+                      onClick={(event) => handleShow(event, player)}
+                    >
+                      {player.captain && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          role="img"
+                          focusable="false"
+                          className="captain"
+                        >
+                          <title>Captain</title>
+                          <circle
+                            cx="12"
+                            cy="12"
+                            r="12"
+                            aria-hidden="true"
+                          ></circle>
+                          <path
+                            d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
+                            fill="white"
+                            aria-hidden="true"
+                          ></path>
+                        </svg>
+                      )}
+                      <div className="kit">
+                        <img src={player.kit_src} alt={player.club + ".jpeg"} />
+                      </div>
+                      <div className="name">{player.name}</div>
+                      {displayOpponents(player)}
+                    </div>
+                  ))}
+              </div>
+              <div className="subs">
+                {user &&
+                  user.subs.map((player, index) => (
+                    <div key={index}>
+                      <div className="position-pick">
+                        <Tippy
+                          theme="light"
+                          content={
+                            <span>
+                              {displayPosition(player.position.toUpperCase())}
+                            </span>
+                          }
+                          arrow={true}
+                        >
+                          <span className={player.name}>
+                            {player.position.toUpperCase()}
+                          </span>
+                        </Tippy>
+                      </div>
+                      <div
+                        id={player.name}
+                        className="player"
+                        onClick={(event) => handleShow(event, player)}
+                      >
+                        <div className="kit">
+                          <img
+                            src={player.kit_src}
+                            alt={player.club + ".jpeg"}
+                          />
+                        </div>
+                        <div className="name">{player.name}</div>
+                        {displayOpponents(player)}
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+            {showUpdateMessage && (
+              <div className="update-message">Your team has been saved.</div>
+            )}
+            {showPickTeamButton && (
+              <button
+                className="save-team"
+                disabled={pickTeam}
+                onClick={() => handlePickTeam()}
+              >
+                Save Your Team
+              </button>
+            )}
+            <div className="fixtures-wrapper">
+              <Fixtures></Fixtures>
             </div>
           </div>
-          <div className="defence">
-            {user &&
-              user.defence.map((player, index) => (
-                <div
-                  className="player"
-                  id={player.name}
-                  key={index}
-                  onClick={(event) => handleShow(event, player)}
-                >
-                  {player.captain && (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      role="img"
-                      focusable="false"
-                      className="captain"
-                    >
-                      <title>Captain</title>
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="12"
-                        aria-hidden="true"
-                      ></circle>
-                      <path
-                        d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
-                        fill="white"
-                        aria-hidden="true"
-                      ></path>
-                    </svg>
-                  )}
-                  <div className="kit">
-                    <img src={player.kit_src} alt={player.club + ".jpeg"} />
-                  </div>
-                  <div className="name">{player.name}</div>
-                  <div className="club">{player.club}</div>
-                </div>
-              ))}
-          </div>
-          <div className="midfield">
-            {user &&
-              user.midfield.map((player, index) => (
-                <div
-                  className="player"
-                  id={player.name}
-                  key={index}
-                  onClick={(event) => handleShow(event, player)}
-                >
-                  {player.captain && (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      role="img"
-                      focusable="false"
-                      className="captain"
-                    >
-                      <title>Captain</title>
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="12"
-                        aria-hidden="true"
-                      ></circle>
-                      <path
-                        d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
-                        fill="white"
-                        aria-hidden="true"
-                      ></path>
-                    </svg>
-                  )}
-                  <div className="kit">
-                    <img src={player.kit_src} alt={player.club + ".jpeg"} />
-                  </div>
-                  <div className="name">{player.name}</div>
-                  <div className="club">{player.club}</div>
-                </div>
-              ))}
-          </div>
-          <div className="attack">
-            {user &&
-              user.attack.map((player, index) => (
-                <div
-                  className="player"
-                  id={player.name}
-                  key={index}
-                  onClick={(event) => handleShow(event, player)}
-                >
-                  {player.captain && (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      role="img"
-                      focusable="false"
-                      className="captain"
-                    >
-                      <title>Captain</title>
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="12"
-                        aria-hidden="true"
-                      ></circle>
-                      <path
-                        d="M15.0769667,14.370341 C14.4472145,15.2780796 13.4066319,15.8124328 12.3019667,15.795341 C10.4380057,15.795341 8.92696674,14.284302 8.92696674,12.420341 C8.92696674,10.55638 10.4380057,9.045341 12.3019667,9.045341 C13.3988206,9.06061696 14.42546,9.58781014 15.0769667,10.470341 L17.2519667,8.295341 C15.3643505,6.02401882 12.1615491,5.35094208 9.51934028,6.67031017 C6.87713147,7.98967826 5.49079334,10.954309 6.17225952,13.8279136 C6.8537257,16.7015182 9.42367333,18.7279285 12.3769667,18.720341 C14.2708124,18.7262708 16.0646133,17.8707658 17.2519667,16.395341 L15.0769667,14.370341 Z"
-                        fill="white"
-                        aria-hidden="true"
-                      ></path>
-                    </svg>
-                  )}
-                  <div className="kit">
-                    <img src={player.kit_src} alt={player.club + ".jpeg"} />
-                  </div>
-                  <div className="name">{player.name}</div>
-                  <div className="club">{player.club}</div>
-                </div>
-              ))}
-          </div>
-          <div className="subs">
-            {user &&
-              user.subs.map((player, index) => (
-                <div
-                  id={player.name}
-                  className="player"
-                  key={index}
-                  onClick={(event) => handleShow(event, player)}
-                >
-                  <div className="position-pick">
-                    {player.position.toUpperCase()}
-                  </div>
-                  <div className="kit">
-                    <img src={player.kit_src} alt={player.club + ".jpeg"} />
-                  </div>
-                  <div className="name">{player.name}</div>
-                  <div className="club">{player.club}</div>
-                </div>
-              ))}
-          </div>
         </div>
-        {showUpdateMessage && (
-          <div className="update-message">Your team has been saved.</div>
-        )}
-        {showPickTeamButton && (
-          <button
-            className="save-team"
-            disabled={pickTeam}
-            onClick={() => handlePickTeam()}
-          >
-            Save Your Team
-          </button>
-        )}
-
-        <Fixtures></Fixtures>
+        <div className="right-side g-col-12 g-col-lg-3">
+          <UserInfo user={user}></UserInfo>
+          <Finances user={user} players={players}></Finances>
+        </div>
       </div>
     </>
   );
