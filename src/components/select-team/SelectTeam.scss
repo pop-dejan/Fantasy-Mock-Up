@@ -156,10 +156,15 @@
                 .my-select-countries {
 
                     .css-art2ul-ValueContainer2 {
-                        height: 55px;
+                        height: 60px;
+                    }
+
+                    .css-13cymwt-control {
+                        min-height: 60px;
                     }
 
                     .css-t3ipsp-control {
+                        min-height: 60px;
                         border-color: #37003c;
                         box-shadow: 0 0 0 1px #37003c;
                     }
@@ -178,11 +183,16 @@
             }
         }
 
+        .fixtures-wrapper-select {
+            padding-top: 20px;
+            border-top: 2px rgb(239, 239, 239) solid;
+        }
+
         .enter-squad {
             width: 40%;
             margin-left: 30%;
             font-size: 0.8rem;
-            margin-bottom: 50px;
+            margin-bottom: 20px;
             border-radius: 3px;
             color: white;
             background-color: rgba(150, 60, 255);
@@ -464,6 +474,9 @@
                     cursor: pointer;
                     width: 110px;
                     padding: 0 5px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
 
                     .kit {
                         text-align: center;
@@ -479,7 +492,7 @@
                         text-align: center;
                         background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
                         color: var(--color-purple);
-                        min-width: 60px;
+                        width: 100px;
                         font-size: 0.8rem;
                         padding: 5px 1.7px;
                     }
@@ -488,7 +501,10 @@
                         text-align: center;
                         background-color: #37003c;
                         color: white;
-                        min-width: 60px;
+                        width: 100px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                         padding-left: 1px;
                         padding-right: 1px;
                     }
@@ -497,7 +513,10 @@
                         text-align: center;
                         background-color: white;
                         color: #37003c;
-                        min-width: 60px;
+                        width: 100px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                         padding-left: 1px;
                         padding-right: 1px;
                     }
@@ -521,6 +540,9 @@
                     width: 110px;
                     padding: 0 5px;
                     cursor: pointer;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
 
                     .kit {
                         text-align: center;
@@ -536,7 +558,10 @@
                         text-align: center;
                         background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
                         color: var(--color-purple);
-                        min-width: 60px;
+                        width: 100px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                         font-size: 0.8rem;
                         padding: 5px 2px;
                     }
@@ -545,7 +570,10 @@
                         text-align: center;
                         background-color: #37003c;
                         color: white;
-                        min-width: 60px;
+                        width: 100px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                         padding-left: 1px;
                         padding-right: 1px;
                     }
@@ -554,7 +582,10 @@
                         text-align: center;
                         background-color: white;
                         color: #37003c;
-                        min-width: 60px;
+                        width: 100px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                         padding-left: 1px;
                         padding-right: 1px;
                     }
@@ -578,6 +609,9 @@
                     cursor: pointer;
                     width: 110px;
                     padding: 0 5px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
 
                     .kit {
                         text-align: center;
@@ -593,7 +627,10 @@
                         text-align: center;
                         background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
                         color: var(--color-purple);
-                        min-width: 60px;
+                        width: 100px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                         font-size: 0.8rem;
                         padding: 5px 2px;
                     }
@@ -602,7 +639,10 @@
                         text-align: center;
                         background-color: #37003c;
                         color: white;
-                        min-width: 60px;
+                        width: 100px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                         padding-left: 1px;
                         padding-right: 1px;
                     }
@@ -611,7 +651,10 @@
                         text-align: center;
                         background-color: white;
                         color: #37003c;
-                        min-width: 60px;
+                        width: 100px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                         padding-left: 1px;
                         padding-right: 1px;
                     }
@@ -635,6 +678,9 @@
                     cursor: pointer;
                     width: 110px;
                     padding: 0 5px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
 
                     .kit {
                         text-align: center;
@@ -650,7 +696,10 @@
                         text-align: center;
                         background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
                         color: var(--color-purple);
-                        min-width: 60px;
+                        width: 100px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                         font-size: 0.8rem;
                         padding: 5px 2px;
                     }
@@ -659,7 +708,10 @@
                         text-align: center;
                         background-color: #37003c;
                         color: white;
-                        min-width: 60px;
+                        width: 100px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                         padding-left: 1px;
                         padding-right: 1px;
                     }
@@ -668,7 +720,10 @@
                         text-align: center;
                         background-color: white;
                         color: #37003c;
-                        min-width: 60px;
+                        width: 100px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                         padding-left: 1px;
                         padding-right: 1px;
                     }
@@ -1020,7 +1075,17 @@
                         }
                     }
 
+                    .name,
+                    .club,
+                    .price {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        width: 80px;
+                    }
+
                     .position {
+                        width: 80px;
                         padding: 2px;
                     }
                 }
@@ -1040,7 +1105,17 @@
                         }
                     }
 
+                    .name,
+                    .club,
+                    .price {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        width: 80px;
+                    }
+
                     .position {
+                        width: 80px;
                         padding: 2px;
                     }
                 }
@@ -1060,7 +1135,17 @@
                         }
                     }
 
+                    .name,
+                    .club,
+                    .price {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        width: 80px;
+                    }
+
                     .position {
+                        width: 80px;
                         padding: 2px;
                     }
                 }
@@ -1080,7 +1165,17 @@
                         }
                     }
 
+                    .name,
+                    .club,
+                    .price {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        width: 80px;
+                    }
+
                     .position {
+                        width: 80px;
                         padding: 2px;
                     }
                 }
@@ -1133,7 +1228,17 @@
                             }
                         }
 
+                        .name,
+                        .club,
+                        .price {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            width: 60px;
+                        }
+
                         .position {
+                            width: 60px;
                             font-size: 0.72rem;
                         }
                     }
@@ -1160,7 +1265,17 @@
                             }
                         }
 
+                        .name,
+                        .club,
+                        .price {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            width: 60px;
+                        }
+
                         .position {
+                            width: 60px;
                             font-size: 0.72rem;
                         }
                     }
@@ -1187,7 +1302,17 @@
                             }
                         }
 
+                        .name,
+                        .club,
+                        .price {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            width: 60px;
+                        }
+
                         .position {
+                            width: 60px;
                             font-size: 0.72rem;
                         }
                     }
@@ -1213,7 +1338,17 @@
                             }
                         }
 
+                        .name,
+                        .club,
+                        .price {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            width: 60px;
+                        }
+
                         .position {
+                            width: 60px;
                             font-size: 0.72rem;
                         }
                     }
