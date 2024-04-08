@@ -6,6 +6,10 @@ export class Gameweek {
     gameweekCostCount: number;
     gameweekRank: number;
     finalPoints: number;
+    benchPoints: number;
+    overallRank: number;
+    overallPoints: number;
+    squadValue: number;
     goalkeeper: Player[];
     defence: Player[];
     midfield: Player[];
@@ -19,6 +23,10 @@ export class Gameweek {
         this.gameweekCostCount = (obj && obj.gameweekCostCount) || 0;
         this.gameweekRank = (obj && obj.gameweekRank) || 0;
         this.finalPoints = (obj && obj.finalPoints) || 0;
+        this.benchPoints = (obj && obj.benchPoints) || 0;
+        this.overallRank = (obj && obj.overallRank) || 0;
+        this.overallPoints = (obj && obj.overallPoints) || 0;
+        this.squadValue = (obj && obj.squadValue) || 0;
         this.goalkeeper = obj && obj.goalkeeper && obj.goalkeeper.map((elem: any) => new Player(elem)) || [];
         this.defence = obj && obj.defence && obj.defence.map((elem: any) => new Player(elem)) || [];
         this.midfield = obj && obj.midfield && obj.midfield.map((elem: any) => new Player(elem)) || [];

@@ -9,7 +9,7 @@ export class Player {
   captain: boolean;
   price: number;
   points: number;
-  playerGameweeks: PlayerGameweeks[];
+  playerGameweeks: PlayerGameweek[];
 
   constructor(obj?: any) {
     this.kit_src = (obj && obj.kit_src) || '';
@@ -22,15 +22,20 @@ export class Player {
     this.remove = (obj && obj.remove) || false;
     this.set = (obj && obj.set) || false;
     this.captain = (obj && obj.captain) || false;
+    this.playerGameweeks = obj && obj.playerGameweeks && obj.playerGameweeks.map((elem: any) => new PlayerGameweek(elem)) || [];
   }
 }
 
-class PlayerGameweeks {
+class PlayerGameweek {
   gameweekNumber: number;
   gameweekPoints: number;
+  matchStart: boolean;
+  opponents: string[];
 
   constructor(obj?: any) {
     this.gameweekNumber = (obj && obj.gameweekNumber) || 0;
     this.gameweekPoints = (obj && obj.gameweekPoints) || 0;
+    this.matchStart = (obj && obj.matchStart) || false;
+    this.opponents = obj && obj.opponents || [];
   }
 }

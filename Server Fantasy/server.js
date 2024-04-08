@@ -3,17 +3,17 @@ const admin = require("firebase-admin");
 
 // Initialize Firebase Admin SDK
 const serviceAccount = require("./fantasy-mock-up-firebase-admin-sdk.json"); // Update path to your service account key
+const { refreshToken } = require("firebase-admin/app");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL:
-    "https://fantasy-mock-up-default-rtdb.europe-west1.firebasedatabase.app",
+  databaseURL: "*****************************************",
 });
 
 const app = express();
 const port = 3000;
-const currentGameweek = 30;
-const nextGameweek = 31;
-const deadline = "Tue 2 Apr 19:00";
+const currentGameweek = 33;
+const nextGameweek = 34;
+const deadline = "Sat 20 Apr 14:30";
 
 // Function setting new gameweek for players (run first)
 function settingNewGameweekPlayers(refPlayers) {
@@ -22,8 +22,51 @@ function settingNewGameweekPlayers(refPlayers) {
       data = snapshot.val();
       Object.keys(data).forEach((key) => {
         let gameweekUnit = {};
-        gameweekUnit.gameweekNumber = currentGameweek;
+        gameweekUnit.gameweekNumber = nextGameweek;
         gameweekUnit.gameweekPoints = 0;
+        gameweekUnit.matchStart = false;
+
+        if (data[key].club === "Arsenal") {
+          gameweekUnit.opponents = ["WOL (A)", "CHE(H)"];
+        } else if (data[key].club === "Villa") {
+          gameweekUnit.opponents = ["BOU (H)"];
+        } else if (data[key].club === "Bournemouth") {
+          gameweekUnit.opponents = ["AST (A)", "WOL(A)"];
+        } else if (data[key].club === "Brentford") {
+          gameweekUnit.opponents = ["LUT (A)"];
+        } else if (data[key].club === "Brighton") {
+          gameweekUnit.opponents = ["CIT (H)"];
+        } else if (data[key].club === "Burnley") {
+          gameweekUnit.opponents = ["SHE (A)"];
+        } else if (data[key].club === "Chelsea") {
+          gameweekUnit.opponents = ["ARS (A)"];
+        } else if (data[key].club === "Everton") {
+          gameweekUnit.opponents = ["NOT (H)", "LIV(H)"];
+        } else if (data[key].club === "Forest") {
+          gameweekUnit.opponents = ["EVE (A)"];
+        } else if (data[key].club === "Fulham") {
+          gameweekUnit.opponents = ["LIV (H)"];
+        } else if (data[key].club === "Palace") {
+          gameweekUnit.opponents = ["WES (H)", "NEW(H)"];
+        } else if (data[key].club === "Liverpool") {
+          gameweekUnit.opponents = ["FUL (A)", "EVE(A)"];
+        } else if (data[key].club === "Luton") {
+          gameweekUnit.opponents = ["BRE (H)"];
+        } else if (data[key].club === "City") {
+          gameweekUnit.opponents = ["BRI (A)"];
+        } else if (data[key].club === "United") {
+          gameweekUnit.opponents = ["SHE (H)"];
+        } else if (data[key].club === "Sheffield") {
+          gameweekUnit.opponents = ["BUR (H)", "UNI(A)"];
+        } else if (data[key].club === "Tottenham") {
+          gameweekUnit.opponents = [];
+        } else if (data[key].club === "Newcastle") {
+          gameweekUnit.opponents = ["CRY (A)"];
+        } else if (data[key].club === "West Ham") {
+          gameweekUnit.opponents = ["CRY (A)"];
+        } else if (data[key].club === "Wolves") {
+          gameweekUnit.opponents = ["ARS (H)", "BOU(H)"];
+        }
 
         if (data && Array.isArray(data[key].playerGameweeks)) {
           data[key].playerGameweeks.push(gameweekUnit);
@@ -49,13 +92,42 @@ function settingNewGameweekPlayers(refPlayers) {
 }
 
 // Function setting new gameweek (run second)
-function settingNewGameweek(refUsers) {
+function settingNewGameweek(refPlayers, refUsers) {
+  let players = [];
+  refPlayers
+    .once("value", (snapshot) => {
+      data = snapshot.val();
+      players = data;
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+      res.status(500).json({ error: "Internal server error" });
+    });
+
   refUsers
     .once("value", (snapshot) => {
       const data = snapshot.val();
 
       Object.keys(data).forEach((key) => {
         if (data[key].addedSquad == true) {
+          let allPlayers = [
+            ...data[key].goalkeeper,
+            ...data[key].defence,
+            ...data[key].midfield,
+            ...data[key].attack,
+            ...data[key].subs,
+          ];
+
+          let squadValue = 0;
+
+          allPlayers.forEach((playerTeam) => {
+            players.forEach((player) => {
+              if (playerTeam.name === player.name) {
+                squadValue += player.price;
+              }
+            });
+          });
+
           data[key].freeTransfers++;
           let gameweekUnit = {};
           gameweekUnit.gameweekNumber = currentGameweek;
@@ -68,7 +140,13 @@ function settingNewGameweek(refUsers) {
           gameweekUnit.subs = data[key].subs;
           gameweekUnit.gameweekTransfersCount = data[key].countTransfers;
           gameweekUnit.gameweekCostCount = data[key].cost;
-          gameweekUnit.gameweekTransfers = data[key].gameweekTransfers;
+          gameweekUnit.squadValue = squadValue.toFixed(1);
+          if (data[key].gameweekTransfers) {
+            gameweekUnit.gameweekTransfers = data[key].gameweekTransfers;
+          } else {
+            gameweekUnit.gameweekTransfers = [];
+          }
+
           data[key].countTransfers = 0;
           data[key].cost = 0;
           data[key].gameweekTransfers = [];
@@ -140,8 +218,11 @@ function updatePlayerPoints(refPlayers, playerName, points) {
       Object.keys(data).forEach((key) => {
         if (data[key].name === playerName) {
           data[key].playerGameweeks[
-            data[key].playerGameweeks.length - 1
-          ].gameweekPoints += points;
+            data[key].playerGameweeks.length - 2
+          ].gameweekPoints = points;
+          data[key].playerGameweeks[
+            data[key].playerGameweeks.length - 2
+          ].matchStart = true;
           console.log(data[key]);
         }
       });
@@ -171,8 +252,11 @@ function updateMultiplePlayerPoints(refPlayers, dataArray) {
         Object.keys(dataArray).forEach((player) => {
           if (data[key].name === dataArray[player].name) {
             data[key].playerGameweeks[
-              data[key].playerGameweeks.length - 1
-            ].gameweekPoints += dataArray[player].points;
+              data[key].playerGameweeks.length - 2
+            ].gameweekPoints = dataArray[player].points;
+            data[key].playerGameweeks[
+              data[key].playerGameweeks.length - 2
+            ].matchStart = true;
             console.log(data[key]);
           }
         });
@@ -202,8 +286,11 @@ function updateTeamPlayerPoints(refPlayers, teamName, points) {
       Object.keys(data).forEach((key) => {
         if (data[key].club === teamName) {
           data[key].playerGameweeks[
-            data[key].playerGameweeks.length - 1
-          ].gameweekPoints += points;
+            data[key].playerGameweeks.length - 2
+          ].gameweekPoints = points;
+          data[key].playerGameweeks[
+            data[key].playerGameweeks.length - 2
+          ].matchStart = true;
           console.log(data[key]);
         }
       });
@@ -258,12 +345,12 @@ function determineAveragePoints(refPlayers, refUsers, refGameweek) {
               if (allPlayers[keys].captain == true) {
                 count +=
                   players[key].playerGameweeks[
-                    players[key].playerGameweeks.length - 1
+                    players[key].playerGameweeks.length - 2
                   ].gameweekPoints * 2;
               } else {
                 count +=
                   players[key].playerGameweeks[
-                    players[key].playerGameweeks.length - 1
+                    players[key].playerGameweeks.length - 2
                   ].gameweekPoints;
               }
             }
@@ -343,12 +430,12 @@ function determineHighestPoints(refPlayers, refUsers, refGameweek) {
               if (allPlayers[keys].captain == true) {
                 count +=
                   players[key].playerGameweeks[
-                    players[key].playerGameweeks.length - 1
+                    players[key].playerGameweeks.length - 2
                   ].gameweekPoints * 2;
               } else {
                 count +=
                   players[key].playerGameweeks[
-                    players[key].playerGameweeks.length - 1
+                    players[key].playerGameweeks.length - 2
                   ].gameweekPoints;
               }
             }
@@ -416,12 +503,12 @@ function ranking(refPlayers, refUsers) {
               if (allPlayers[keys].captain == true) {
                 count +=
                   players[key].playerGameweeks[
-                    players[key].playerGameweeks.length - 1
+                    players[key].playerGameweeks.length - 2
                   ].gameweekPoints * 2;
               } else {
                 count +=
                   players[key].playerGameweeks[
-                    players[key].playerGameweeks.length - 1
+                    players[key].playerGameweeks.length - 2
                   ].gameweekPoints;
               }
             }
@@ -521,12 +608,12 @@ function finalGameweekPoints(refPlayers, refUsers) {
               if (allPlayers[keys].captain == true) {
                 count +=
                   players[key].playerGameweeks[
-                    players[key].playerGameweeks.length - 1
+                    players[key].playerGameweeks.length - 2
                   ].gameweekPoints * 2;
               } else {
                 count +=
                   players[key].playerGameweeks[
-                    players[key].playerGameweeks.length - 1
+                    players[key].playerGameweeks.length - 2
                   ].gameweekPoints;
               }
             }
@@ -535,15 +622,31 @@ function finalGameweekPoints(refPlayers, refUsers) {
         return count;
       }
 
+      function calculateBenchPoints(data) {
+        let allPlayers = [...data.subs];
+
+        let count = 0;
+        Object.keys(allPlayers).forEach((keys) => {
+          Object.keys(players).forEach((key) => {
+            if (allPlayers[keys].name === players[key].name) {
+              count +=
+                players[key].playerGameweeks[
+                  players[key].playerGameweeks.length - 2
+                ].gameweekPoints;
+            }
+          });
+        });
+        return count;
+      }
+
       Object.keys(data).forEach((key) => {
         data[key].gameweeks[data[key].gameweeks.length - 1].finalPoints =
-          calculatePoints(data[key].gameweeks[data[key].gameweeks.length - 1]) -
-          data[key].gameweeks[data[key].gameweeks.length - 1].gameweekCostCount;
-        if (
-          data[key].gameweeks[data[key].gameweeks.length - 1].finalPoints < 0
-        ) {
-          data[key].gameweeks[data[key].gameweeks.length - 1].finalPoints = 0;
-        }
+          calculatePoints(data[key].gameweeks[data[key].gameweeks.length - 1]);
+
+        data[key].gameweeks[data[key].gameweeks.length - 1].benchPoints =
+          calculateBenchPoints(
+            data[key].gameweeks[data[key].gameweeks.length - 1]
+          );
       });
 
       refUsers
@@ -582,7 +685,8 @@ function overallRanking(refPlayers, refUsers) {
         let count = 0;
         let gameweeks = data.gameweeks;
         Object.keys(gameweeks).forEach((key) => {
-          count += gameweeks[key].finalPoints;
+          count +=
+            gameweeks[key].finalPoints - gameweeks[key].gameweekCostCount;
         });
 
         return count;
@@ -616,7 +720,11 @@ function overallRanking(refPlayers, refUsers) {
       Object.keys(array).forEach((key) => {
         Object.keys(data).forEach((keys) => {
           if (data[keys]._id === array[key].id) {
-            data[keys].overallRank = array[key].overallRank;
+            data[keys].gameweeks[data[keys].gameweeks.length - 1].overallRank =
+              array[key].overallRank;
+            data[keys].gameweeks[
+              data[keys].gameweeks.length - 1
+            ].overallPoints = array[key].points;
           }
         });
       });
@@ -639,11 +747,9 @@ function overallRanking(refPlayers, refUsers) {
 // Define a route to fetch data from Firebase Realtime Database
 app.get("/", (req, res) => {
   const db = admin.database();
-
   const refUsers = db.ref("usersFantasy");
   const refGameweek = db.ref("currentGameweek");
   const refPlayers = db.ref("players");
-  determineAveragePoints(refPlayers, refUsers, refGameweek);
 });
 
 app.listen(port, () => {

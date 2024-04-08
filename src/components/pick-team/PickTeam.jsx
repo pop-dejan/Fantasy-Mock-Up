@@ -1059,8 +1059,7 @@ function PickTeam() {
             </div>
           </div>
           <div className="info">
-            To change your player use the menu which appears when clicking on a
-            player.
+          To change your captain use the menu which appears when clicking on a player
           </div>
         </div>
         <div className="pitch-wrapper">

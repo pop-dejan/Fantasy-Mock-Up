@@ -1,0 +1,254 @@
+@import url("https://fonts.cdnfonts.com/css/premier-sans");
+
+.account-wrapper {
+    margin-top: 80px;
+
+    .manage-account {
+        margin: 0 10%;
+
+        .change-info {
+            position: relative;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            border: 2px solid #e8e8e8;
+            padding: 30px;
+            border-top: none;
+
+            .personal-text {
+                margin-top: 20px;
+                font-size: 1.1rem;
+            }
+
+            .button-wrapper {
+                margin-top: 40px;
+
+                .my-button {
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                    width: 100%;
+                    padding: 15px;
+                    background-color: var(--color-purple-second);
+                    transition: all 0.2s ease-in-out;
+                    --bs-btn-border-color: white;
+                    --bs-btn-hover-border-color: white;
+                    --bs-btn-active-bg: var(--color-purple-second);
+                    --bs-btn-active-border-color: var(--color-purple-second);
+                }
+            }
+
+            .form {
+                margin-top: 30px;
+                background-color: white;
+
+                .error-form {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                }
+
+                .password-success {
+                    background-color: rgb(4, 192, 104);
+                    text-align: center;
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                    padding: 5px 0;
+                    color: white;
+                    margin-top: 15px;
+                }
+
+                .form-group {
+                    margin-top: 10px;
+
+                    label {
+                        font-weight: 500;
+                        font-size: 1.1rem;
+                    }
+
+                    .gender-label {
+                        display: block;
+                        margin-bottom: 0;
+                    }
+
+                    .showPassword {
+                        margin-top: 5px;
+                        padding-left: 0;
+                    }
+
+                    .form-check-label {
+                        font-size: 0.8rem;
+                    }
+
+                    .form-check-input {
+                        box-shadow: 0 0 0 1px #e8e8e8;
+                        border-color: #e8e8e8;
+                    }
+
+                    .form-check-input:checked {
+                        box-shadow: 0 0 0 1px #e90052;
+                        background-color: #e90052;
+                        border-color: #e90052;
+                    }
+
+                    .form-control {
+                        border-color: hsl(0, 0%, 80%);
+                    }
+
+                    .form-control:focus {
+                        box-shadow: 0 0 0 1px var(--color-purple-second);
+                        border-color: var(--color-purple-second);
+                    }
+
+                    .gender-group {
+                        .form-check {
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+
+                            label {
+                                font-size: 0.9rem;
+                                font-weight: 500;
+                                margin-top: 5px;
+                            }
+
+                            .form-check-input:checked {
+                                box-shadow: 0 0 0 1px #e90052;
+                                background-color: #e90052;
+                                border-color: #e90052;
+                            }
+                        }
+                    }
+
+                    .my-select-clubs,
+                    .my-select-countries {
+
+                        .css-art2ul-ValueContainer2 {
+                            height: 60px;
+                        }
+
+                        .css-13cymwt-control {
+                            min-height: 60px;
+                        }
+
+                        .css-t3ipsp-control {
+                            min-height: 60px;
+                            border-color: var(--color-purple-second);
+                            box-shadow: 0 0 0 1px var(--color-purple-second);
+                        }
+
+                        input[type="text"] {
+                            caret-color: transparent;
+                        }
+
+                        .club-option {
+                            img {
+                                width: 50px;
+                                margin-right: 5px;
+                            }
+                        }
+                    }
+                }
+
+                .button-wrapper {
+                    margin-top: 40px;
+
+                    .my-button {
+                        font-size: 0.75rem;
+                        font-weight: 700;
+                        width: 100%;
+                        padding: 15px;
+                        background-color: var(--color-purple-second);
+                        transition: all 0.2s ease-in-out;
+                        --bs-btn-border-color: white;
+                        --bs-btn-hover-border-color: white;
+                        --bs-btn-active-bg: var(--color-purple-second);
+                        --bs-btn-active-border-color: var(--color-purple-second);
+                    }
+                }
+            }
+        }
+
+        .change-info::before {
+            position: absolute;
+            content: "";
+            width: 100%;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 5px;
+            background-color: #e90052;
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .account-wrapper {
+        margin-top: 60px;
+
+        .manage-account {
+            .account-headline {
+                font-size: 1.6rem;
+            }
+
+            .change-info {
+                margin-top: 13px;
+
+                .personal {
+                    font-size: 1.4rem;
+                }
+
+                .personal-text {
+                    font-size: 1rem;
+                }
+
+                .form {
+                    .form-group {
+                        label {
+                            font-size: 1rem;
+                        }
+
+                        .gender-group {
+                            .form-check {
+                                label {
+                                    font-size: 0.8rem;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 670px) {
+    .account-wrapper {
+
+        .manage-account {
+            margin: 0 3%;
+        }
+
+        .headline {
+            margin-bottom: 1.7rem;
+            margin-top: 20px;
+            font-size: 2rem;
+            background-size: auto 5rem;
+            background-position: right top;
+        }
+    }
+}
+
+@media (max-width: 500px) {
+    .account-wrapper {
+        .manage-account {
+            .change-info {
+                .form {
+                    .button-wrapper {
+                        .my-button {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -23,11 +23,12 @@ export class User {
   email: string;
   addedSquad: boolean;
   signInProviders: boolean;
+  signUpMethod: string;
   gameweeks: Gameweek[];
   countTransfers: number;
   cost: number;
-  overallRank: number;
   gameweekTransfers: string[][];
+
 
   constructor(obj?: any) {
     this._id = (obj && obj._id) || "";
@@ -51,10 +52,10 @@ export class User {
     this.email = (obj && obj.email) || "";
     this.addedSquad = (obj && obj.addedSquad) || false;
     this.signInProviders = (obj && obj.signInProviders) || false;
+    this.signUpMethod = (obj && obj.signUpMethod) || "";
     this.gameweeks = obj && obj.gameweeks && obj.gameweeks.map((elem: any) => new Gameweek(elem)) || [];
     this.countTransfers = (obj && obj.countTransfers) || 0;
     this.cost = (obj && obj.cost) || 0;
-    this.overallRank = (obj && obj.overallRank) || 0;
     this.gameweekTransfers = obj && obj.gameweekTransfers && obj.gameweekTransfers.map((elem: string[]) => elem.map(str => str)) || [];
   }
 }

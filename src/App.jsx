@@ -22,6 +22,8 @@ import Navbar from "./components/navbar/Navbar";
 import Home from "./components/home/Home";
 import NavbarSecond from "./components/navbar-second/NavbarSecond";
 import TotalTransfers from "./components/total-transfers/TotalTransfers";
+import Account from "./components/account/Account";
+import GameweekHistory from "./components/gameweek-history/GameweekHistory";
 
 function App() {
   // Function handling home page based on if user is logged
@@ -82,7 +84,7 @@ function App() {
             }
           })
           .catch((error) => {
-            setError(error.message);
+            setError("Something went wrong. Please try again.");
           });
       } else if (valueHome === "/points") {
         get(usersRef)
@@ -96,7 +98,7 @@ function App() {
             }
           })
           .catch((error) => {
-            setError(error.message);
+            setError("Something went wrong. Please try again.");
           });
       }
     }
@@ -148,7 +150,10 @@ function App() {
             path="/sign-in"
             element={<SignIn onUpdateValueHome={updateValueHome} />}
           />
-          <Route path="/sign-up" element={<SignUp />} />
+          <Route
+            path="/sign-up"
+            element={<SignUp onUpdateValueHome={updateValueHome} />}
+          />
 
           <Route
             path="/select-team"
@@ -191,6 +196,17 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/gameweek-history"
+            element={
+              <ProtectedRoute valueHome={valueHome} pageType={"gamePages"}>
+                <GameweekHistory />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="/account" element={<Account />} />
         </Routes>
 
         <Footer />
