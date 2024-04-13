@@ -87,409 +87,443 @@
     font-weight: 600;
 }
 
-.title-pick {
-    display: flex;
-    align-items: center;
-    height: 160px;
-    color: var(--color-purple-second);
-    font-size: 1.7rem;
-    font-weight: 700;
-    margin-left: 10%;
-    margin-right: 10%;
-    padding-left: 10px;
-    display: flex;
-    gap: 5px;
+.page-wrapper {
+    margin: 0 10%;
 
-    p {
-        margin: 0;
-    }
-}
-
-.down {
-    margin-left: 10%;
-    margin-right: 10%;
-    box-shadow: rgba(107, 107, 107, 0.08) 0px 8px 12px 0px;
-    overflow: hidden;
-
-    .save-team {
-        width: 40%;
-        margin-left: 30%;
-        margin-bottom: 50px;
-        font-size: 0.8rem;
-        border-radius: 3px;
-        background-color: rgba(150, 60, 255);
-        border: none;
-        padding-top: 12px;
-        padding-bottom: 12px;
-        font-weight: 600;
-        color: white;
-    }
-
-    .save-team:disabled {
-        border: none;
-        padding: 10px;
-        border-radius: 3px;
-        color: rgb(84, 84, 84);
-        font-weight: 600;
-        background-color: rgb(234, 233, 236);
-    }
-
-    .update-message {
-        text-align: center;
-        font-size: 0.9rem;
-        padding: 0.3rem 1.5rem;
-        border-radius: 3px;
-        background-color: var(--color-purple-second);
-        color: rgb(0, 255, 135);
-        display: block;
-        margin-bottom: 20px;
-    }
-
-    .upper-wrapper {
-        background-repeat: no-repeat;
-        background-position: 0px center, right top, 0px center;
-        background-image: linear-gradient(rgba(255, 255, 255, 0) 0px, rgba(255, 255, 255, 0.5) 100px, white 200px), url(../../assets/img/pattern.png), linear-gradient(to right, rgb(2, 239, 255), rgb(98, 123, 255));
-        height: 200px;
-        border-radius: 6px;
-        text-align: center;
-        padding: 15px;
-
-        .control-wrapper {
-            background: rgba(255, 255, 255, 0.6);
-            box-shadow: rgba(107, 107, 107, 0.32);
-            border-radius: 6px;
+    .left-side {
+        .title-pick {
+            display: flex;
+            align-items: center;
+            height: 160px;
+            color: var(--color-purple-second);
+            font-size: 1.7rem;
+            font-weight: 700;
             padding-left: 10px;
-            padding-right: 10px;
+            gap: 5px;
 
-            .control-headline {
-                padding: 0.2rem 1.5rem;
-                margin-left: 10px;
-                margin-right: 10px;
-                border-radius: 0px 0px 1rem 1rem;
-                background-color: var(--color-purple);
-                border-top: 1px solid;
-                border-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgb(239, 239, 239) 50%, rgba(255, 255, 255, 0) 100%);
-                border-image-slice: 1;
+            p {
+                margin: 0;
+            }
+        }
 
-                .gameweek {
-                    background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
-                    background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    font-weight: 500;
+        .down {
+            box-shadow: rgba(107, 107, 107, 0.08) 0px 8px 12px 0px;
+            overflow: hidden;
+
+            .save-team {
+                width: 40%;
+                margin-left: 30%;
+                font-size: 0.8rem;
+                border-radius: 3px;
+                background-color: rgba(150, 60, 255);
+                border: none;
+                margin-bottom: 20px;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                font-weight: 600;
+                color: white;
+            }
+
+            .fixtures-wrapper {
+                border-top: 2px rgb(239, 239, 239) solid;
+                padding-top: 20px;
+            }
+
+            .save-team:disabled {
+                border: none;
+                padding: 10px;
+                border-radius: 3px;
+                color: rgb(84, 84, 84);
+                font-weight: 600;
+                background-color: rgb(234, 233, 236);
+            }
+
+            .update-message {
+                text-align: center;
+                font-size: 0.9rem;
+                padding: 0.3rem 1.5rem;
+                border-radius: 3px;
+                background-color: var(--color-purple-second);
+                color: rgb(0, 255, 135);
+                display: block;
+                margin-bottom: 20px;
+            }
+
+            .upper-wrapper-pick {
+                background-repeat: no-repeat;
+                background-position: 0px center, right top, 0px center;
+                background-image: linear-gradient(rgba(255, 255, 255, 0) 0px, rgba(255, 255, 255, 0.5) 100px, white 200px), url(../../assets/img/pattern.png), linear-gradient(to right, rgb(2, 239, 255), rgb(98, 123, 255));
+                height: 200px;
+                border-radius: 6px;
+                text-align: center;
+                padding: 15px;
+
+                .control-wrapper {
+                    background: rgba(255, 255, 255, 0.6);
+                    box-shadow: rgba(107, 107, 107, 0.32);
+                    border-radius: 6px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+
+                    .control-headline {
+                        padding: 0.2rem 1.5rem;
+                        margin-left: 10px;
+                        margin-right: 10px;
+                        border-radius: 0px 0px 1rem 1rem;
+                        background-color: var(--color-purple);
+                        border-top: 1px solid;
+                        border-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgb(239, 239, 239) 50%, rgba(255, 255, 255, 0) 100%);
+                        border-image-slice: 1;
+
+                        .gameweek {
+                            background-image: linear-gradient(to right, rgb(0, 255, 135), rgb(2, 239, 255));
+                            background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            font-weight: 500;
+                        }
+                    }
+
+                    .timeline {
+                        color: var(--color-purple-second);
+                        padding: 10px 5px;
+                        margin-left: 20px;
+                        margin-right: 20px;
+                        border-bottom: 1px rgb(239, 239, 239) solid;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 5px;
+
+                        .week {
+
+                            font-size: 1rem;
+                            font-weight: 500;
+                        }
+
+                        .time {
+
+                            font-size: 1.1em;
+                            font-weight: 700;
+                        }
+                    }
+                }
+
+                .info {
+                    text-align: center;
+                    font-size: 0.9rem;
+                    padding: 0.3rem 1.5rem;
+                    border-radius: 3px;
+                    background-color: var(--color-purple-second);
+                    color: rgb(0, 255, 135);
+                    display: inline-block;
+                    margin-top: 30px;
                 }
             }
 
-            .timeline {
-                color: var(--color-purple-second);
-                padding: 10px 5px;
-                margin-left: 20px;
-                margin-right: 20px;
-                border-bottom: 1px rgb(239, 239, 239) solid;
+            .pitch-wrapper {
+                background-image: url("../../assets/img/pitch.svg");
+                height: 1000px;
+                background-repeat: no-repeat;
+                background-size: contain;
+                background-position: center;
                 display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 5px;
+                flex-direction: column;
+                font-size: 0.75rem;
+                margin-bottom: 20px;
 
-                .week {
+                .goalkepper {
+                    height: 10%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding-top: 70px;
+                    font-weight: bold;
 
-                    font-size: 1rem;
-                    font-weight: 500;
-                }
+                    .player {
+                        position: relative;
+                        cursor: pointer;
+                        width: 110px;
+                        padding: 0 5px;
 
-                .time {
+                        .captain {
+                            position: absolute;
+                            right: 0;
+                            bottom: 70px;
+                        }
 
-                    font-size: 1.1em;
-                    font-weight: 700;
-                }
-            }
-        }
+                        .kit {
+                            text-align: center;
 
-        .info {
-            text-align: center;
-            font-size: 0.9rem;
-            padding: 0.3rem 1.5rem;
-            border-radius: 3px;
-            background-color: var(--color-purple-second);
-            color: rgb(0, 255, 135);
-            display: inline-block;
-            margin-top: 30px;
-        }
-    }
+                            img {
+                                height: 80px;
+                                width: 60px;
+                                margin-bottom: 10px;
+                            }
+                        }
 
-    .pitch-wrapper {
-        background-image: url("../../assets/img/pitch.svg");
-        height: 1000px;
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: center;
-        display: flex;
-        flex-direction: column;
-        font-size: 0.75rem;
-        margin-bottom: 20px;
+                        .name {
+                            text-align: center;
+                            background-color: var(--color-purple-second);
+                            color: white;
+                            width: 100px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            padding-left: 1px;
+                            padding-right: 1px;
+                        }
 
-        .goalkepper {
-            height: 10%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-top: 70px;
-            font-weight: bold;
-
-            .player {
-                position: relative;
-                cursor: pointer;
-                width: 110px;
-                padding: 0 5px;
-
-                .captain {
-                    position: absolute;
-                    right: 0;
-                    bottom: 70px;
-                }
-
-                .kit {
-                    text-align: center;
-
-                    img {
-                        height: 80px;
-                        width: 60px;
-                        margin-bottom: 10px;
+                        .club {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            background-color: white;
+                            color: var(--color-purple-second);
+                            width: 102px;
+                            padding-left: 1px;
+                            padding-right: 1px;
+                        }
                     }
                 }
 
-                .name {
-                    text-align: center;
-                    background-color: var(--color-purple-second);
-                    color: white;
-                    min-width: 60px;
-                    padding-left: 1px;
-                    padding-right: 1px;
-                }
+                .defence {
+                    height: 10%;
+                    margin-top: 110px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+                    padding-top: 10px;
+                    font-weight: bold;
+                    width: 800px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    align-self: center;
 
-                .club {
-                    text-align: center;
-                    background-color: white;
-                    color: var(--color-purple-second);
-                    min-width: 60px;
-                    padding-left: 1px;
-                    padding-right: 1px;
-                }
-            }
-        }
+                    .player {
+                        position: relative;
+                        cursor: pointer;
+                        width: 110px;
+                        padding: 0 5px;
 
-        .defence {
-            height: 10%;
-            margin-top: 110px;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            padding-top: 10px;
-            font-weight: bold;
-            width: 800px;
-            padding-left: 10px;
-            padding-right: 10px;
-            align-self: center;
+                        .captain {
+                            position: absolute;
+                            right: 0;
+                            bottom: 70px;
+                        }
 
-            .player {
-                position: relative;
-                cursor: pointer;
-                width: 110px;
-                padding: 0 5px;
+                        .kit {
+                            text-align: center;
 
-                .captain {
-                    position: absolute;
-                    right: 0;
-                    bottom: 70px;
-                }
+                            img {
+                                height: 80px;
+                                width: 60px;
+                                margin-bottom: 10px;
+                            }
+                        }
 
-                .kit {
-                    text-align: center;
+                        .name {
+                            text-align: center;
+                            background-color: var(--color-purple-second);
+                            color: white;
+                            width: 100px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            padding-left: 1px;
+                            padding-right: 1px;
+                        }
 
-                    img {
-                        height: 80px;
-                        width: 60px;
-                        margin-bottom: 10px;
+                        .club {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            background-color: white;
+                            color: var(--color-purple-second);
+                            width: 102px;
+                            padding-left: 1px;
+                            padding-right: 1px;
+                        }
                     }
                 }
 
-                .name {
-                    text-align: center;
-                    background-color: var(--color-purple-second);
-                    color: white;
-                    min-width: 60px;
-                    padding-left: 1px;
-                    padding-right: 1px;
-                }
+                .midfield {
+                    height: 10%;
+                    margin-top: 100px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+                    padding-top: 10px;
+                    font-weight: bold;
+                    width: 800px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    align-self: center;
 
-                .club {
-                    text-align: center;
-                    background-color: white;
-                    color: var(--color-purple-second);
-                    min-width: 60px;
-                    padding-left: 1px;
-                    padding-right: 1px;
-                }
-            }
-        }
+                    .player {
+                        position: relative;
+                        cursor: pointer;
+                        width: 110px;
+                        padding: 0 5px;
 
-        .midfield {
-            height: 10%;
-            margin-top: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            padding-top: 10px;
-            font-weight: bold;
-            width: 800px;
-            padding-left: 10px;
-            padding-right: 10px;
-            align-self: center;
+                        .captain {
+                            position: absolute;
+                            right: 0;
+                            bottom: 70px;
+                        }
 
-            .player {
-                position: relative;
-                cursor: pointer;
-                width: 110px;
-                padding: 0 5px;
+                        .kit {
+                            text-align: center;
 
-                .captain {
-                    position: absolute;
-                    right: 0;
-                    bottom: 70px;
-                }
+                            img {
+                                height: 80px;
+                                width: 60px;
+                                margin-bottom: 10px;
+                            }
+                        }
 
-                .kit {
-                    text-align: center;
+                        .name {
+                            text-align: center;
+                            background-color: var(--color-purple-second);
+                            color: white;
+                            width: 100px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            padding-left: 1px;
+                            padding-right: 1px;
+                        }
 
-                    img {
-                        height: 80px;
-                        width: 60px;
-                        margin-bottom: 10px;
+                        .club {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            background-color: white;
+                            color: var(--color-purple-second);
+                            width: 102px;
+                            padding-left: 1px;
+                            padding-right: 1px;
+                        }
                     }
                 }
 
-                .name {
-                    text-align: center;
-                    background-color: var(--color-purple-second);
-                    color: white;
-                    min-width: 60px;
-                    padding-left: 1px;
-                    padding-right: 1px;
-                }
+                .attack {
+                    height: 10%;
+                    margin-top: 100px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+                    padding-top: 10px;
+                    font-weight: bold;
+                    width: 800px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    align-self: center;
 
-                .club {
-                    text-align: center;
-                    background-color: white;
-                    color: var(--color-purple-second);
-                    min-width: 60px;
-                    padding-left: 1px;
-                    padding-right: 1px;
-                }
-            }
-        }
+                    .player {
+                        position: relative;
+                        cursor: pointer;
+                        width: 110px;
+                        padding: 0 5px;
 
-        .attack {
-            height: 10%;
-            margin-top: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            padding-top: 10px;
-            font-weight: bold;
-            width: 800px;
-            padding-left: 10px;
-            padding-right: 10px;
-            align-self: center;
+                        .captain {
+                            position: absolute;
+                            right: 0;
+                            bottom: 70px;
+                        }
 
-            .player {
-                position: relative;
-                cursor: pointer;
-                width: 110px;
-                padding: 0 5px;
+                        .kit {
+                            text-align: center;
 
-                .captain {
-                    position: absolute;
-                    right: 0;
-                    bottom: 70px;
-                }
+                            img {
+                                height: 80px;
+                                width: 60px;
+                                margin-bottom: 10px;
+                            }
+                        }
 
-                .kit {
-                    text-align: center;
+                        .name {
+                            text-align: center;
+                            background-color: var(--color-purple-second);
+                            color: white;
+                            width: 100px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            padding-left: 1px;
+                            padding-right: 1px;
+                        }
 
-                    img {
-                        height: 80px;
-                        width: 60px;
-                        margin-bottom: 10px;
+                        .club {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            background-color: white;
+                            color: var(--color-purple-second);
+                            width: 102px;
+                            padding-left: 1px;
+                            padding-right: 1px;
+                        }
                     }
                 }
 
-                .name {
-                    text-align: center;
-                    background-color: var(--color-purple-second);
-                    color: white;
-                    min-width: 60px;
-                    padding-left: 1px;
-                    padding-right: 1px;
-                }
+                .subs {
+                    margin-top: 66px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+                    padding-top: 10px;
+                    font-weight: bold;
+                    width: 800px;
+                    padding: 25px;
+                    align-self: center;
+                    background-color: rgba(114, 207, 159, 0.9);
 
-                .club {
-                    text-align: center;
-                    background-color: white;
-                    color: var(--color-purple-second);
-                    min-width: 60px;
-                    padding-left: 1px;
-                    padding-right: 1px;
-                }
-            }
-        }
-
-        .subs {
-            margin-top: 66px;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            padding-top: 10px;
-            font-weight: bold;
-            width: 800px;
-            padding: 25px;
-            align-self: center;
-            background-color: rgba(114, 207, 159, 0.9);
-
-            .player {
-                cursor: pointer;
-                width: 100px;
-                padding: 0 5px;
-
-                .position-pick {
-                    text-align: center;
-                    margin-bottom: 10px;
-                }
-
-                .kit {
-                    text-align: center;
-
-                    img {
-                        height: 80px;
-                        width: 60px;
+                    .position-pick {
+                        text-align: center;
                         margin-bottom: 10px;
                     }
-                }
 
-                .name {
-                    text-align: center;
-                    background-color: var(--color-purple-second);
-                    color: white;
-                    min-width: 60px;
-                    padding-left: 1px;
-                    padding-right: 1px;
-                }
+                    .player {
+                        cursor: pointer;
+                        width: 100px;
+                        padding: 0 5px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
 
-                .club {
-                    text-align: center;
-                    background-color: white;
-                    color: var(--color-purple-second);
-                    min-width: 60px;
-                    padding-left: 1px;
-                    padding-right: 1px;
+                        .kit {
+                            text-align: center;
+
+                            img {
+                                height: 80px;
+                                width: 60px;
+                                margin-bottom: 10px;
+                            }
+                        }
+
+                        .name {
+                            text-align: center;
+                            background-color: var(--color-purple-second);
+                            color: white;
+                            width: 100px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            padding-left: 1px;
+                            padding-right: 1px;
+                        }
+
+                        .club {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            background-color: white;
+                            color: var(--color-purple-second);
+                            width: 102px;
+                            padding-left: 1px;
+                            padding-right: 1px;
+                        }
+                    }
                 }
             }
         }
@@ -497,115 +531,139 @@
 }
 
 @media (max-width: 1560px) {
-    .down {
-        .pitch-wrapper {
-            background-position: center;
-            background-size: 1400px 1000px;
+    .page-wrapper {
+        .left-side {
+            .down {
+                .pitch-wrapper {
+                    background-position: center;
+                    background-size: 1400px 1000px;
+                }
+            }
         }
     }
 }
 
 @media (max-width: 992px) {
-    .title-pick {
-        margin-left: 2%;
-        margin-right: 2%;
-    }
-
-    .down {
-        margin-left: 2%;
-        margin-right: 2%;
-
-        .save-team {
-            margin-left: 0;
-            margin-right: 0;
-            width: 100%;
+    .page-wrapper {
+        .left-side {
+            .down {
+                .save-team {
+                    margin-left: 0;
+                    margin-right: 0;
+                    width: 100%;
+                }
+            }
         }
     }
 }
 
 @media (max-width: 800px) {
-    .down {
-        .pitch-wrapper {
-            background-position: top;
-            background-size: 1000px;
-            height: 757px;
+    .page-wrapper {
+        .left-side {
+            .down {
+                .pitch-wrapper {
+                    background-position: top;
+                    background-size: 1000px;
+                    height: 757px;
 
-            .goalkepper {
-                margin-top: 30px;
-                padding-top: 20px;
+                    .goalkepper {
+                        margin-top: 30px;
+                        padding-top: 20px;
 
-                .player {
-                    .kit {
-                        text-align: center;
+                        .player {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
 
-                        img {
-                            height: 70px;
-                            width: 60px;
+                            .kit {
+                                text-align: center;
+
+                                img {
+                                    height: 70px;
+                                    width: 60px;
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            .defence {
-                margin-top: 70px;
-                width: 670px;
+                    .defence {
+                        margin-top: 70px;
+                        width: 670px;
 
-                .player {
-                    .kit {
-                        text-align: center;
+                        .player {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
 
-                        img {
-                            height: 70px;
-                            width: 60px;
+                            .kit {
+                                text-align: center;
+
+                                img {
+                                    height: 70px;
+                                    width: 60px;
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            .midfield {
-                margin-top: 70px;
-                width: 670px;
+                    .midfield {
+                        margin-top: 70px;
+                        width: 670px;
 
-                .player {
-                    .kit {
-                        text-align: center;
+                        .player {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
 
-                        img {
-                            height: 70px;
-                            width: 60px;
+                            .kit {
+                                text-align: center;
+
+                                img {
+                                    height: 70px;
+                                    width: 60px;
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            .attack {
-                margin-top: 70px;
-                width: 670px;
+                    .attack {
+                        margin-top: 70px;
+                        width: 670px;
 
-                .player {
-                    .kit {
-                        text-align: center;
+                        .player {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
 
-                        img {
-                            height: 70px;
-                            width: 60px;
+                            .kit {
+                                text-align: center;
+
+                                img {
+                                    height: 70px;
+                                    width: 60px;
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            .subs {
-                margin-top: 50px;
-                width: 600px;
-                padding: 10px;
+                    .subs {
+                        margin-top: 50px;
+                        width: 600px;
+                        padding: 10px;
 
-                .player {
-                    .kit {
-                        text-align: center;
+                        .player {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
 
-                        img {
-                            height: 70px;
-                            width: 60px;
+                            .kit {
+                                text-align: center;
+
+                                img {
+                                    height: 70px;
+                                    width: 60px;
+                                }
+                            }
                         }
                     }
                 }
@@ -615,130 +673,173 @@
 }
 
 @media (max-width: 670px) {
-    .down {
-        .pitch-wrapper {
-            font-size: 0.625rem;
-            background-size: 900px;
-            height: 666px;
+    .page-wrapper {
+        .left-side {
+            .down {
+                .pitch-wrapper {
+                    font-size: 0.625rem;
+                    background-size: 900px;
+                    height: 666px;
 
-            .goalkepper {
-                margin-top: 20px;
+                    .goalkepper {
+                        margin-top: 20px;
 
-                .player {
-                    width: 80px;
+                        .player {
+                            width: 85px;
 
-                    .captain {
-                        width: 18px;
-                        height: 18px;
-                        bottom: 50px;
-                    }
+                            .captain {
+                                width: 18px;
+                                height: 18px;
+                                bottom: 50px;
+                            }
 
-                    .kit {
-                        img {
-                            height: 55px;
-                            width: 45px;
+                            .kit {
+                                img {
+                                    height: 55px;
+                                    width: 45px;
+                                }
+                            }
+
+                            .name {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                width: 85px;
+                            }
+
+                            .club {
+                                width: 85px;
+                            }
                         }
                     }
 
-                    .position-pick {
-                        padding: 2px;
-                    }
-                }
-            }
+                    .defence {
+                        width: 510px;
+                        margin-top: 60px;
 
-            .defence {
-                width: 510px;
-                margin-top: 60px;
+                        .player {
+                            width: 85px;
 
-                .player {
-                    width: 80px;
+                            .captain {
+                                width: 18px;
+                                height: 18px;
+                                bottom: 50px;
+                            }
 
-                    .captain {
-                        width: 18px;
-                        height: 18px;
-                        bottom: 50px;
-                    }
+                            .name {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                width: 85px;
+                            }
 
-                    .kit {
-                        img {
-                            height: 55px;
-                            width: 45px;
+                            .club {
+                                width: 85px;
+                            }
+
+                            .kit {
+                                img {
+                                    height: 55px;
+                                    width: 45px;
+                                }
+                            }
                         }
                     }
 
-                    .position-pick {
-                        padding: 2px;
-                    }
-                }
-            }
+                    .midfield {
+                        width: 510px;
+                        margin-top: 60px;
 
-            .midfield {
-                width: 510px;
-                margin-top: 60px;
+                        .player {
+                            width: 85px;
 
-                .player {
-                    width: 80px;
+                            .captain {
+                                width: 18px;
+                                height: 18px;
+                                bottom: 50px;
+                            }
 
-                    .captain {
-                        width: 18px;
-                        height: 18px;
-                        bottom: 50px;
-                    }
+                            .name {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                width: 85px;
+                            }
 
-                    .kit {
-                        img {
-                            height: 55px;
-                            width: 45px;
+                            .club {
+                                width: 85px;
+                            }
+
+                            .kit {
+                                img {
+                                    height: 55px;
+                                    width: 45px;
+                                }
+                            }
                         }
                     }
 
-                    .position-pick {
-                        padding: 2px;
-                    }
-                }
-            }
+                    .attack {
+                        width: 510px;
+                        margin-top: 60px;
 
-            .attack {
-                width: 510px;
-                margin-top: 60px;
+                        .player {
+                            width: 85px;
 
-                .player {
-                    width: 80px;
+                            .captain {
+                                width: 18px;
+                                height: 18px;
+                                bottom: 50px;
+                            }
 
-                    .captain {
-                        width: 18px;
-                        height: 18px;
-                        bottom: 50px;
-                    }
+                            .name {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                width: 85px;
+                            }
 
-                    .kit {
-                        img {
-                            height: 55px;
-                            width: 45px;
+                            .club {
+                                width: 85px;
+                            }
+
+                            .kit {
+                                img {
+                                    height: 55px;
+                                    width: 45px;
+                                }
+                            }
                         }
                     }
 
-                    .position-pick {
-                        padding: 2px;
-                    }
-                }
-            }
+                    .subs {
+                        width: 490px;
 
-            .subs {
-                width: 490px;
-
-                .player {
-                    width: 80px;
-
-                    .kit {
-                        img {
-                            height: 55px;
-                            width: 45px;
+                        .position-pick {
+                            padding: 2px;
                         }
-                    }
 
-                    .position-pick {
-                        padding: 2px;
+                        .player {
+                            width: 85px;
+
+                            .kit {
+                                img {
+                                    height: 55px;
+                                    width: 45px;
+                                }
+                            }
+
+                            .name {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                width: 85px;
+                            }
+
+                            .club {
+                                width: 85px;
+                            }
+                        }
                     }
                 }
             }
@@ -747,164 +848,237 @@
 }
 
 @media (max-width: 500px) {
-    .down {
-        .upper-wrapper {
-            .control-wrapper {
-                .timeline {
-                    margin: 0;
+    .page-wrapper {
+        .left-side {
+            .down {
+                .upper-wrapper-pick {
+                    .control-wrapper {
+                        .timeline {
+                            margin: 0;
 
-                    .week {
-                        font-size: 0.7rem;
-                        font-weight: 500;
-                    }
+                            .week {
+                                font-size: 0.7rem;
+                                font-weight: 500;
+                            }
 
-                    .time {
-
-                        font-size: 0.8em;
-                        font-weight: 700;
-                    }
-                }
-            }
-        }
-
-        .pitch-wrapper {
-            background-size: 610px;
-            height: 480px;
-
-            .goalkepper {
-                padding-top: 40px;
-                margin-top: 0px;
-                font-size: 0.625rem;
-
-                .player {
-                    width: auto;
-                    padding-left: 3px;
-                    padding-right: 3px;
-
-                    .captain {
-                        width: 15px;
-                        height: 15px;
-                        left: 51px;
-                        bottom: 50px;
-                    }
-
-                    .kit {
-                        text-align: center;
-
-                        img {
-                            width: 35px;
-                            height: 40px;
+                            .time {
+                                font-size: 0.8em;
+                                font-weight: 700;
+                            }
                         }
                     }
                 }
-            }
 
-            .defence {
-                padding-top: 0;
-                margin-top: 60px;
-                font-size: 0.625rem;
-                width: 340px;
+                .pitch-wrapper {
+                    background-size: 680px;
+                    height: 550px;
 
-                .player {
-                    width: auto;
-                    padding-left: 3px;
-                    padding-right: 3px;
-                    margin-right: 3px;
+                    .goalkepper {
+                        padding-top: 5px;
+                        margin-top: 0px;
+                        font-size: 0.625rem;
+                        align-items: flex-start;
 
-                    .captain {
-                        width: 15px;
-                        height: 15px;
-                        left: 50px;
-                        bottom: 50px;
-                    }
+                        .player {
+                            width: auto;
+                            padding-left: 3px;
+                            padding-right: 3px;
 
-                    .kit {
-                        text-align: center;
+                            .captain {
+                                width: 15px;
+                                height: 15px;
+                                left: 51px;
+                                bottom: 50px;
+                            }
 
-                        img {
-                            width: 35px;
-                            height: 40px;
+                            .name {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                width: 60px;
+                            }
+
+                            .club {
+                                width: 60px;
+                                text-align: start;
+                            }
+
+                            .kit {
+                                text-align: center;
+
+                                img {
+                                    width: 35px;
+                                    height: 40px;
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            .midfield {
-                padding-top: 0;
-                margin-top: 40px;
-                font-size: 0.625rem;
-                width: 340px;
+                    .defence {
+                        padding-top: 0;
+                        margin-top: 52px;
+                        font-size: 0.625rem;
+                        width: 340px;
+                        align-items: flex-start;
+                        justify-content: center;
 
-                .player {
-                    width: auto;
-                    padding-left: 3px;
-                    padding-right: 3px;
-                    margin-right: 3px;
+                        .player {
+                            width: auto;
+                            padding-left: 3px;
+                            padding-right: 3px;
+                            margin-right: 1.5px;
+                            margin-left: 1.5px;
 
-                    .captain {
-                        width: 15px;
-                        height: 15px;
-                        left: 50px;
-                        bottom: 50px;
-                    }
+                            .captain {
+                                width: 15px;
+                                height: 15px;
+                                left: 50px;
+                                bottom: 50px;
+                            }
 
-                    .kit {
-                        text-align: center;
+                            .name {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                width: 60px;
+                            }
 
-                        img {
-                            width: 35px;
-                            height: 40px;
+                            .club {
+                                width: 60px;
+                                text-align: start;
+                            }
+
+                            .kit {
+                                text-align: center;
+
+                                img {
+                                    width: 35px;
+                                    height: 40px;
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            .attack {
-                padding-top: 0;
-                margin-top: 40px;
-                font-size: 0.625rem;
-                width: 360px;
+                    .midfield {
+                        padding-top: 0;
+                        margin-top: 46px;
+                        font-size: 0.625rem;
+                        width: 340px;
+                        align-items: flex-start;
+                        justify-content: center;
 
-                .player {
-                    width: auto;
-                    padding-left: 3px;
-                    padding-right: 3px;
+                        .player {
+                            width: auto;
+                            padding-left: 3px;
+                            padding-right: 3px;
+                            margin-right: 1.5px;
+                            margin-left: 1.5px;
 
-                    .captain {
-                        width: 15px;
-                        height: 15px;
-                        left: 50px;
-                        bottom: 50px;
-                    }
+                            .captain {
+                                width: 15px;
+                                height: 15px;
+                                left: 50px;
+                                bottom: 50px;
+                            }
 
-                    .kit {
-                        text-align: center;
+                            .name {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                width: 60px;
+                            }
 
-                        img {
-                            width: 35px;
-                            height: 40px;
+                            .club {
+                                width: 60px;
+                                text-align: start;
+                            }
+
+                            .kit {
+                                text-align: center;
+
+                                img {
+                                    width: 35px;
+                                    height: 40px;
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            .subs {
-                padding: 5px 0;
-                margin-top: 29px;
-                font-size: 0.625rem;
-                width: 330px;
+                    .attack {
+                        padding-top: 0;
+                        margin-top: 46px;
+                        font-size: 0.625rem;
+                        width: 360px;
+                        align-items: flex-start;
 
-                .player {
-                    width: auto;
-                    padding-left: 3px;
-                    padding-right: 3px;
+                        .player {
+                            width: auto;
+                            padding-left: 3px;
+                            padding-right: 3px;
 
-                    .kit {
-                        text-align: center;
+                            .captain {
+                                width: 15px;
+                                height: 15px;
+                                left: 50px;
+                                bottom: 50px;
+                            }
 
-                        img {
-                            width: 35px;
-                            height: 40px;
+                            .name {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                width: 60px;
+                            }
+
+                            .club {
+                                width: 60px;
+                                text-align: start;
+                            }
+
+                            .kit {
+                                text-align: center;
+
+                                img {
+                                    width: 35px;
+                                    height: 40px;
+                                }
+                            }
+                        }
+                    }
+
+                    .subs {
+                        padding: 5px 0;
+                        margin-top: 46px;
+                        font-size: 0.625rem;
+                        width: 330px;
+                        height: 134px;
+                        align-items: flex-start;
+
+                        .player {
+                            width: auto;
+                            padding-left: 3px;
+                            padding-right: 3px;
+
+                            .name {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                width: 60px;
+                            }
+
+                            .club {
+                                width: 60px;
+                                text-align: start;
+                            }
+
+                            .kit {
+                                text-align: center;
+
+                                img {
+                                    width: 35px;
+                                    height: 40px;
+                                }
+                            }
                         }
                     }
                 }
