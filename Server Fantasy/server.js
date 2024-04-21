@@ -11,9 +11,9 @@ admin.initializeApp({
 
 const app = express();
 const port = 3000;
-const currentGameweek = 33;
-const nextGameweek = 34;
-const deadline = "Sat 20 Apr 14:30";
+const currentGameweek = 35;
+const nextGameweek = 36;
+const deadline = "Fri 3 May 19:30";
 
 // Function setting new gameweek for players (run first)
 function settingNewGameweekPlayers(refPlayers) {
@@ -27,45 +27,45 @@ function settingNewGameweekPlayers(refPlayers) {
         gameweekUnit.matchStart = false;
 
         if (data[key].club === "Arsenal") {
-          gameweekUnit.opponents = ["WOL (A)", "CHE(H)"];
-        } else if (data[key].club === "Villa") {
           gameweekUnit.opponents = ["BOU (H)"];
-        } else if (data[key].club === "Bournemouth") {
-          gameweekUnit.opponents = ["AST (A)", "WOL(A)"];
-        } else if (data[key].club === "Brentford") {
-          gameweekUnit.opponents = ["LUT (A)"];
-        } else if (data[key].club === "Brighton") {
-          gameweekUnit.opponents = ["CIT (H)"];
-        } else if (data[key].club === "Burnley") {
-          gameweekUnit.opponents = ["SHE (A)"];
-        } else if (data[key].club === "Chelsea") {
-          gameweekUnit.opponents = ["ARS (A)"];
-        } else if (data[key].club === "Everton") {
-          gameweekUnit.opponents = ["NOT (H)", "LIV(H)"];
-        } else if (data[key].club === "Forest") {
-          gameweekUnit.opponents = ["EVE (A)"];
-        } else if (data[key].club === "Fulham") {
-          gameweekUnit.opponents = ["LIV (H)"];
-        } else if (data[key].club === "Palace") {
-          gameweekUnit.opponents = ["WES (H)", "NEW(H)"];
-        } else if (data[key].club === "Liverpool") {
-          gameweekUnit.opponents = ["FUL (A)", "EVE(A)"];
-        } else if (data[key].club === "Luton") {
-          gameweekUnit.opponents = ["BRE (H)"];
-        } else if (data[key].club === "City") {
+        } else if (data[key].club === "Villa") {
           gameweekUnit.opponents = ["BRI (A)"];
+        } else if (data[key].club === "Bournemouth") {
+          gameweekUnit.opponents = ["ARS (A)"];
+        } else if (data[key].club === "Brentford") {
+          gameweekUnit.opponents = ["FUL (H)"];
+        } else if (data[key].club === "Brighton") {
+          gameweekUnit.opponents = ["AST (H)"];
+        } else if (data[key].club === "Burnley") {
+          gameweekUnit.opponents = ["NEW (H)"];
+        } else if (data[key].club === "Chelsea") {
+          gameweekUnit.opponents = ["WES (H)"];
+        } else if (data[key].club === "Everton") {
+          gameweekUnit.opponents = ["LUT (A)"];
+        } else if (data[key].club === "Forest") {
+          gameweekUnit.opponents = ["SHE (A)"];
+        } else if (data[key].club === "Fulham") {
+          gameweekUnit.opponents = ["BRE (A)"];
+        } else if (data[key].club === "Palace") {
+          gameweekUnit.opponents = ["UNI (H)"];
+        } else if (data[key].club === "Liverpool") {
+          gameweekUnit.opponents = ["TOT (H)"];
+        } else if (data[key].club === "Luton") {
+          gameweekUnit.opponents = ["EVE (H)"];
+        } else if (data[key].club === "City") {
+          gameweekUnit.opponents = ["WOL (H)"];
         } else if (data[key].club === "United") {
-          gameweekUnit.opponents = ["SHE (H)"];
+          gameweekUnit.opponents = ["CRY (A)"];
         } else if (data[key].club === "Sheffield") {
-          gameweekUnit.opponents = ["BUR (H)", "UNI(A)"];
+          gameweekUnit.opponents = ["NOT (H)"];
         } else if (data[key].club === "Tottenham") {
-          gameweekUnit.opponents = [];
+          gameweekUnit.opponents = ["LIV (A)"];
         } else if (data[key].club === "Newcastle") {
-          gameweekUnit.opponents = ["CRY (A)"];
+          gameweekUnit.opponents = ["BUR (A)"];
         } else if (data[key].club === "West Ham") {
-          gameweekUnit.opponents = ["CRY (A)"];
+          gameweekUnit.opponents = ["CHE (A)"];
         } else if (data[key].club === "Wolves") {
-          gameweekUnit.opponents = ["ARS (H)", "BOU(H)"];
+          gameweekUnit.opponents = ["CIT (A)"];
         }
 
         if (data && Array.isArray(data[key].playerGameweeks)) {
@@ -210,13 +210,22 @@ function settingNextGameweek(refGameweek) {
 }
 
 // Function updating player points
-function updatePlayerPoints(refPlayers, playerName, points) {
+function updatePlayerPoints(refPlayers, playerName, points, secondMatchStart) {
   refPlayers
     .once("value", (snapshot) => {
       data = snapshot.val();
 
       Object.keys(data).forEach((key) => {
         if (data[key].name === playerName) {
+          if (
+            data[key].playerGameweeks[data[key].playerGameweeks.length - 2]
+              .opponents.length == 2
+          ) {
+            data[key].playerGameweeks[
+              data[key].playerGameweeks.length - 2
+            ].secondMatchStart = secondMatchStart;
+          }
+
           data[key].playerGameweeks[
             data[key].playerGameweeks.length - 2
           ].gameweekPoints = points;
@@ -251,6 +260,15 @@ function updateMultiplePlayerPoints(refPlayers, dataArray) {
       Object.keys(data).forEach((key) => {
         Object.keys(dataArray).forEach((player) => {
           if (data[key].name === dataArray[player].name) {
+            if (
+              data[key].playerGameweeks[data[key].playerGameweeks.length - 2]
+                .opponents.length == 2
+            ) {
+              data[key].playerGameweeks[
+                data[key].playerGameweeks.length - 2
+              ].secondMatchStart = dataArray[player].secondMatchStart;
+            }
+
             data[key].playerGameweeks[
               data[key].playerGameweeks.length - 2
             ].gameweekPoints = dataArray[player].points;
@@ -278,13 +296,26 @@ function updateMultiplePlayerPoints(refPlayers, dataArray) {
 }
 
 // Function updating whole team player points
-function updateTeamPlayerPoints(refPlayers, teamName, points) {
+function updateTeamPlayerPoints(
+  refPlayers,
+  teamName,
+  points,
+  secondMatchStart
+) {
   refPlayers
     .once("value", (snapshot) => {
       data = snapshot.val();
 
       Object.keys(data).forEach((key) => {
         if (data[key].club === teamName) {
+          if (
+            data[key].playerGameweeks[data[key].playerGameweeks.length - 2]
+              .opponents.length == 2
+          ) {
+            data[key].playerGameweeks[
+              data[key].playerGameweeks.length - 2
+            ].secondMatchStart = secondMatchStart;
+          }
           data[key].playerGameweeks[
             data[key].playerGameweeks.length - 2
           ].gameweekPoints = points;
@@ -519,7 +550,7 @@ function ranking(refPlayers, refUsers) {
 
       let array = [];
       Object.keys(data).forEach((key) => {
-        if (data[key].addedSquad == true && data[key].gameweeks) {
+        if (data[key].addedSquad && data[key].gameweeks) {
           let allPlayers = [
             ...data[key].gameweeks[data[key].gameweeks.length - 1].goalkeeper,
             ...data[key].gameweeks[data[key].gameweeks.length - 1].defence,
@@ -554,7 +585,7 @@ function ranking(refPlayers, refUsers) {
 
       Object.keys(array).forEach((key) => {
         Object.keys(data).forEach((keys) => {
-          if (data[key].addedSquad == true && data[key].gameweeks) {
+          if (data[keys].addedSquad && data[keys].gameweeks) {
             if (data[keys]._id === array[key].id) {
               data[keys].gameweeks[
                 data[keys].gameweeks.length - 1
@@ -726,7 +757,7 @@ function overallRanking(refPlayers, refUsers) {
 
       Object.keys(array).forEach((key) => {
         Object.keys(data).forEach((keys) => {
-          if (data[key].addedSquad == true && data[key].gameweeks) {
+          if (data[keys].addedSquad == true && data[keys].gameweeks) {
             if (data[keys]._id === array[key].id) {
               data[keys].gameweeks[
                 data[keys].gameweeks.length - 1
@@ -760,6 +791,17 @@ app.get("/", (req, res) => {
   const refUsers = db.ref("usersFantasy");
   const refGameweek = db.ref("currentGameweek");
   const refPlayers = db.ref("players");
+  overallRanking(refPlayers, refUsers);
+  updateMultiplePlayerPoints(refPlayers, [
+    { name: "Pickford", points: 1, secondMatchStart: false },
+    { name: "Tarkowski", points: 1, secondMatchStart: false },
+    { name: "Doucoure", points: 1, secondMatchStart: false },
+    { name: "Calvert-Lewin", points: 1, secondMatchStart: false },
+    { name: "Turner", points: 0, secondMatchStart: false },
+    { name: "Murillo", points: 1, secondMatchStart: false },
+    { name: "Elanga", points: 0, secondMatchStart: false },
+    { name: "Wood", points: 1, secondMatchStart: false },
+  ]);
 });
 
 app.listen(port, () => {
