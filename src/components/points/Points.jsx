@@ -162,11 +162,20 @@ function Points() {
           ) {
             return <div className="point">{captainPointsToDisplay}</div>;
           } else {
-            return (
-              <div className="point">
-                {captainPointsToDisplay + ", " + opponents[1]}
-              </div>
-            );
+            if (
+              gameweekNumber ==
+              playerToDisplay.playerGameweeks[
+                playerToDisplay.playerGameweeks.length - 2
+              ].gameweekNumber
+            ) {
+              return (
+                <div className="point">
+                  {captainPointsToDisplay + ", " + opponents[1]}
+                </div>
+              );
+            } else {
+              return <div className="point">{captainPointsToDisplay}</div>;
+            }
           }
         } else if (opponents.length < 2) {
           return <div className="point">{captainPointsToDisplay}</div>;
@@ -180,11 +189,20 @@ function Points() {
           ) {
             return <div className="point">{pointsToDisplay}</div>;
           } else {
-            return (
-              <div className="point">
-                {pointsToDisplay + ", " + opponents[1]}
-              </div>
-            );
+            if (
+              gameweekNumber ==
+              playerToDisplay.playerGameweeks[
+                playerToDisplay.playerGameweeks.length - 2
+              ].gameweekNumber
+            ) {
+              return (
+                <div className="point">
+                  {pointsToDisplay + ", " + opponents[1]}
+                </div>
+              );
+            } else {
+              return <div className="point">{pointsToDisplay}</div>;
+            }
           }
         } else if (opponents.length < 2) {
           return <div className="point">{pointsToDisplay}</div>;
@@ -713,3 +731,4 @@ function Points() {
 }
 
 export default Points;
+
